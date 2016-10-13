@@ -1,0 +1,289 @@
+
+/* ======= general ======= */
+body {
+	/*font-family: "Gill Sans", Helvetica, Arial, sans-serif;*/
+    font-family: 'Signika', sans-serif;
+}
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+html {
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat:no-repeat;
+    background: -webkit-linear-gradient( to top, #777, #ccc);
+    background: -moz-linear-gradient( to top, #777, #ccc);
+    background: -ms-linear-gradient( to top, #777, #ccc);
+    background: -o-linear-gradient( to top, #777, #ccc);
+    background: linear-gradient( to top, #777, #ccc);
+}
+
+/* ======= grid_image ======= */
+.grid_item {
+    width: 86px;
+    height: 110px;
+    margin: 10px 0 0 10px;
+    text-align: center;
+    background-color: #aaa;
+}
+.grid_image {
+    width: 86px;
+    height: auto;
+}
+.grid_text {
+    margin-top: 2px;
+    font-size: 1em;
+    font-weight: 400;
+    color: orange;
+}
+
+/* ======= hover text ======= */
+#hover_box {
+    position: absolute;
+    left: 10px;
+    top: 242px;
+    width: 520px;
+    height: 35px;
+    padding: 10px 10px 0 10px;
+    background-color: #aaa;
+    text-align: right;
+    z-index: 2;
+}
+.hover_text {
+    font-size: 1.4em;
+    font-weight: 400;
+    color: #666699;
+}
+
+/* ======= info ======= */
+#monitor_box {
+    position: absolute;
+    left: 855px;
+    top: 95px;
+    width: 160px;
+    height: 35px;
+    padding: 0;
+    text-align: center;
+}
+.tab_box_selected {
+    width: 190px;
+    height: 40px;
+    text-align: center;
+    border: solid 2px #666699;
+    border-bottom: solid 2px #aaa;
+    z-index: 2;
+}
+.tab_box_active {
+    width: 190px;
+    height: 35px;
+    text-align: center;
+    border: solid 2px #666699;
+    border-bottom: solid 2px #aaa;
+    z-index: 1;
+}
+#shop_tab {
+    position: absolute;
+    left: 740px;
+    top: 242px;
+    background-color: #aaa;
+    border-bottom: solid 2px #aaa;
+}
+#studio_tab {
+    position: absolute;
+    left: 540px;
+    top: 242px;
+    background-color: gray;
+    border-bottom: solid 2px gray;
+}
+#lesson_menu {
+    position: absolute;
+    left: 934px;
+    top: 242px;
+    text-align: center;
+    background-color: #aaa;
+}
+.label_text_selected {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    font-size: 1.8em;
+    font-weight: 700;
+    text-shadow: 2px 2px #555;
+    color: #ffbf80;
+    z-index: 2;
+}
+.label_text_active {
+    display: block;
+    height: 100%;
+    padding: 5px 0;
+    text-decoration: none;
+    font-size: 1.4em;
+    font-weight: 400;
+    color: #ffbf80;
+    z-index: 1;
+}
+/*.inactive {
+    display: block;
+    height: 35px;
+    border-bottom: solid 2px #aaa;
+}*/
+.label_text_selected:hover, .label_text_active:hover {
+    background-color: #666699;
+}
+
+/* ======= display areas ======= */
+.display {
+    background-color: white;
+    border-top: solid 2px #666699;
+    border-left: solid 2px #666699;
+    z-index: 1;
+}
+#shopLesson_display {
+    position: absolute;
+    left: 740px;
+    top: 280px;
+    width: 384px;
+    height: 405px;
+    overflow-y: scroll;
+}
+#shopLesson_display {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat:no-repeat;
+    background: -webkit-linear-gradient( to top, #777, #aaa);
+    background: -moz-linear-gradient( to top, #777, #aaa);
+    background: -ms-linear-gradient( to top, #777, #aaa);
+    background: -o-linear-gradient( to top, #777, #aaa);
+    background: linear-gradient( to top, #777, #aaa);
+}
+
+/* ======= menus ======= */
+#lessonMenu {
+    display: block;
+    margin: 0;
+    padding: 5px 10px;
+    text-decoration: none;
+    list-style-type: none;}
+#lessonMenu > li {
+    display: block;
+}
+.lessonItem {
+    display: block;
+    height: 70px;
+    padding: 10px 10px;
+    background-color: #aaa;
+    border-bottom: solid 1px gray;
+}
+.lessonItem:hover {
+    display: block;
+    background-color: lightsteelblue;
+}
+.lessonItem:hover > .menu_title_active {
+    color: #666699;
+}
+.lessonItem:hover > .menu_text_active {
+    color: purple;
+}
+.menu_title_active {
+	display: block;
+    margin: 0;
+    padding: 0;
+    font-size: 1.1em;
+    font-weight: 400;
+    color: purple;
+}
+.menu_text_active {
+	display: block;
+    margin: 5px 10px;
+    padding: 0;
+    font-size: 1.0em;
+    font-weight: 200;
+    color: yellow;
+}
+.menu_title_selected {
+	display: list-item;
+	width: 90%;
+}
+.menu_text_selected {
+	display: list-item;
+	width: 90%;
+}
+.selectedLesson {
+	display: inline-block;
+	float: left;
+	width: 90%;
+    height: 70px;
+	margin: 0 0 20px 0;
+    padding: 10px 10px 30px 10px;
+    background-color: #aaa;
+    border-bottom: solid 1px gray;
+}
+
+/* ======= navPanel ======= */
+#navPanel {
+	display: inline-block;
+	width: 5%;
+	height: auto;
+	margin-bottom: 30px;
+}
+.panelBtn {
+	width: 30px;
+	height: 30px;
+	margin: 4px;
+	padding: 8px;
+	text-align: center;
+}
+.panelLabel {
+	color: purple;
+}
+#prevBtn {
+	background-color: lavender;
+}
+#nextBtn {
+	background-color: orange;
+}
+
+/* ======= lessons ======= */
+.hide {
+	display: none;
+}
+#lessonText {
+	height: 0;
+	opacity: 0;
+}
+#lessonText > p {
+	margin: 10px;
+	line-height: 30px;
+	color: #222;
+}
+
+/* ======= canvases ======= */
+canvas {
+    background-color: gray;
+    border: solid 2px #666699;
+    z-index: 1;
+}
+#monitorCanvas {
+    box-shadow: 8px 8px 8px rgba(60, 10, 20, 0.7);
+}
+#studioCanvas  {
+    position: absolute;
+    left: 10px;
+    top: 280px;
+    width: 720px;
+    height: 405px;
+}
+#monitorCanvas  {
+    position: absolute;
+    left: 740px;
+    top: 10px;
+    width: 384px;
+    height: 216px;
+}
