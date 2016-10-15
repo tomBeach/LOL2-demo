@@ -3,102 +3,210 @@
 // ======= ======= ======= BEHAVIORS ======= ======= =======
 // ======= ======= ======= BEHAVIORS ======= ======= =======
 
-// ======= initDrag =======
-Item.prototype.initDrag = function(e) {
-    console.log("initDrag");
+// ======= initMove =======
+Item.prototype.initMove = function(e) {
+    console.log("initMove");
 
     // == get active item element
+    var page = clientApp.activePage;
     var item = clientApp.activeActor;
+    var itemType = item.itemType;
     item.itemEl = $("#" + item.itemId).eq(0);
+    console.log("item.itemTargets:", item.itemTargets);
 
     // == strip "px" suffix from left and top properties
     var locL = parseInt($(item.itemEl).css('left').substring(0, $(item.itemEl).css('left').length - 2));
     var locT = parseInt($(item.itemEl).css('top').substring(0, $(item.itemEl).css('top').length - 2));
-    console.log("locL:", locL);
-    console.log("locT:", locT);
+    $('#locXYWH').html("<p class='info-text'>left: " + locL + "</p><p class='info-text'>top: " + locT + "</p>");
 
-    // == set item/mouse locations and item offsets (pixels relative to window)
+    // == limit moves to max canvas boundaries
+    if (item.bounds.W > (displayItems.studio.canW - item.initLoc.W)) {
+        var itemBoundsW = displayItems.studio.canW - item.initLoc.W;
+    } else {
+        var itemBoundsW = item.bounds.W;
+    }
+    if (item.bounds.H > (displayItems.studio.canH - item.initLoc.H)) {
+        var itemBoundsH = displayItems.studio.canH - item.initLoc.H;
+    } else {
+        var itemBoundsH = item.bounds.H;
+    }
+
+    // == set item/mouse locations and bounds (absolute position)
     item.startXY.itemL = locL;
     item.startXY.itemT = locT;
     item.startXY.mouseX = e.clientX;
     item.startXY.mouseY = e.clientY;
     item.startXY.diffX = e.clientX - locL;
     item.startXY.diffY = e.clientY - locT;
+    item.minMaxLT.minL = displayItems.studio.canX + item.bounds.L;      // absolute
+    item.minMaxLT.minT = displayItems.studio.canY + item.bounds.T;      // absolute
+    item.minMaxLT.maxL = displayItems.studio.canX + item.bounds.L + itemBoundsW;      //  - item.initLoc.W;
+    item.minMaxLT.maxT = displayItems.studio.canY + item.bounds.T + itemBoundsH;      //  - item.initLoc.H;
 
-    if (item.itemMove == "dragger") {
-        window.addEventListener('mousemove', item.draggerMove, true);
-    } else if (item.itemMove == "slider") {
-        window.addEventListener('mousemove', item.sliderMove, true);
+    // == set relative bounds to absolute bounds
+    var target, setup;
+    if ((item.itemTargets.length > 0) && (page.SetupItems.length > 0)) {
+        setup = page.SetupItems[0];
+        for (var i = 0; i < item.itemTargets.length; i++) {
+            target = item.itemTargets[i];
+            target.absLoc.L = target.initLoc.L + setup.initLoc.L + displayItems.studio.canX;
+            target.absLoc.T = target.initLoc.T + setup.initLoc.T + displayItems.studio.canY;
+            target.absLoc.W = target.initLoc.L + setup.initLoc.L + displayItems.studio.canX + target.initLoc.W;
+            target.absLoc.H = target.initLoc.T + setup.initLoc.T + displayItems.studio.canY + target.initLoc.H;
+        }
     }
+
+    window.addEventListener('mousemove', item.moveItem, true);
     window.addEventListener('mouseup', item.mouseUp, true);
 }
 
-/// ======= sliderMove =======
-Item.prototype.sliderMove = function(e) {
-    // console.log("sliderMove");
+// ======= moveItem =======
+Item.prototype.moveItem = function(e) {
+    // console.log("moveItem");
 
     var item = clientApp.activeActor;
-
-    // == get movement boundaries (relative to canvas; add canvas offsets)
-    var minX = item.locator.L + displayItems.studio.canX;
-    var maxX = item.locator.L + item.locator.W + displayItems.studio.canX;
-    var minY = item.locator.T + displayItems.studio.canY;
-    var maxY = item.locator.T + item.locator.H + displayItems.studio.canY;
+    var itemMove = item.itemMove;
 
     // == calculate change in mouse X/Y location in pixels
     var dX = parseInt(e.clientX - item.startXY.mouseX);
     var dY = parseInt(e.clientY - item.startXY.mouseY);
-    var deltaX = ((dX + item.dropLoc.L)/item.locator.W).toFixed(2);
-    var deltaY = ((dY + item.dropLoc.T)/item.locator.H).toFixed(2);
-    var left = parseInt(item.startXY.itemL + dX);
-    var top = parseInt(item.startXY.itemT - item.dropLoc.T - (item.locator.H * deltaX));
+    var deltaX = ((dX + item.dropLoc.L)/item.bounds.W).toFixed(2);
+    var deltaY = ((dY + item.dropLoc.T)/item.bounds.H).toFixed(2);
 
-    // == set movement boundaries
-    if (left < minX) {
-        left = minX;
-    }
-    if (left > maxX) {
-        left = maxX;
-    }
-    if (top < minY) {
-        top = minY;
-    }
-    if (top > maxY) {
-        top = maxY;
-    }
-
-    // == calculate percent movement through frameset/limit frams to start/end
-    indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
-    if (indexX < 0) {
-        indexX = 0;
-    }
-    if (indexX > clientApp.activePage.studio.endFrame) {
-        indexX = clientApp.activePage.studio.endFrame;
+    // ======= getMoveBoundaries =======
+    function getMoveBoundaries(left, top) {
+        // console.log("getMoveBoundaries");
+        if (left < item.minMaxLT.minL) {
+            left = item.minMaxLT.minL;
+        }
+        if (left > item.minMaxLT.maxL) {
+            left = item.minMaxLT.maxL;
+        }
+        if (top < item.minMaxLT.minT) {
+            top = item.minMaxLT.minT;
+        }
+        if (top > item.minMaxLT.maxT) {
+            top = item.minMaxLT.maxT;
+        }
+        return [left, top];
     }
 
-    // == set real-time item loc and canvas frame based on slider position
-    $(clientApp.activeActor.itemEl).css('top', top + 'px');
-    $(clientApp.activeActor.itemEl).css('left', left + 'px');
-    item.startXY.dragL = left;
-    item.startXY.dragT = top;
-    clientApp.updateCanvas(left, top, indexX);
+    switch(itemMove) {
+        case "slider":
+            var left = parseInt(item.startXY.itemL + dX);
+            var top = parseInt(item.startXY.itemT - item.dropLoc.T - (item.bounds.H * deltaX));
+            var itemLT = getMoveBoundaries(left, top);
+            updateItemLoc(itemLT[0], itemLT[1]);
+            break;
+        case "dragger":
+            var left = parseInt(item.startXY.itemL + dX);
+            var top = parseInt(item.startXY.itemT + dY);
+            var itemLT = getMoveBoundaries(left, top);
+            if (item.itemTargets.length > 0) {
+                checkItemTargets(itemLT[0], itemLT[1]);
+            } else {
+                updateItemLoc(itemLT[0], itemLT[1]);
+            }
+        break;
+    }
+
+    // ======= updateItemLoc =======
+    function updateItemLoc(left, top) {
+        // console.log("updateItemLoc");
+
+        var item = clientApp.activeActor;
+
+        // == calculate percent movement through frameset/limit frames to start/end
+        indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
+        if (indexX < 0) {
+            indexX = 0;
+        }
+        if (indexX > clientApp.activePage.studio.endFrame) {
+            indexX = clientApp.activePage.studio.endFrame;
+        }
+
+        // == set real-time item loc and canvas frame based on slider position
+        $(item.itemEl).css('z-index', '10');
+        $(item.itemEl).css('top', top + 'px');
+        $(item.itemEl).css('left', left + 'px');
+        item.startXY.dragL = left;
+        item.startXY.dragT = top;
+        clientApp.updateCanvasFrame(left, top, indexX);
+        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+    }
+
+    // ======= swapTargetOccupiers =======
+    function swapTargetOccupiers(target, newOccupier) {
+        console.log("swapTargetOccupiers");
+        console.log("newOccupier.itemId:", newOccupier.itemId);
+        console.log("newOccupier.initLoc:", newOccupier.initLoc);
+
+        // == return target occupier to original location
+        var occupier = target.occupier;
+        if (occupier) {
+            console.log("occupier.initLoc.L:", occupier.initLoc.L);
+            console.log("occupier.initLoc.T:", occupier.initLoc.T);
+            $(occupier.itemEl).css('left', occupier.initLoc.L);
+            $(occupier.itemEl).css('top', occupier.initLoc.T);
+            $(occupier.itemEl).css('display', 'block');
+        }
+        target.occupier = newOccupier;
+    }
+
+    // ======= checkItemTargets =======
+    function checkItemTargets(left, top) {
+        // console.log("checkItemTargets");
+
+        var item = clientApp.activeActor;
+
+        // == set real-time item loc and canvas frame based on slider position
+        $(item.itemEl).css('z-index', '10');
+        $(item.itemEl).css('top', top + 'px');
+        $(item.itemEl).css('left', left + 'px');
+        item.startXY.dragL = left;
+        item.startXY.dragT = top;
+
+        // == collision detector for target
+        var target;
+        var overlap = 10;
+        var draggerL = left + item.initLoc.W/2;
+        var draggerT = top + item.initLoc.H/2;
+
+        for (var i = 0; i < item.itemTargets.length; i++) {
+            target = item.itemTargets[i];
+
+            // == set real-time item loc and canvas frame based on slider position
+            $(item.itemEl).css('top', top + 'px');
+            $(item.itemEl).css('left', left + 'px');
+            item.startXY.dragL = left;
+            item.startXY.dragT = top;
+
+            if ((draggerL < target.absLoc.W) && (draggerT > target.absLoc.T) && (draggerL > target.absLoc.L) && (draggerT < target.absLoc.H)) {
+                console.log("-- HIT -- HIT -- HIT --");
+                $(clientApp.activeActor.itemEl).off();
+                $(clientApp.activeActor.itemEl).css('z-index', '2');
+                $(clientApp.activeActor.itemEl).css('display', 'none');
+                window.removeEventListener('mousemove', item.moveItem, true);
+                clientApp.updateCanvasFrame(left, top, item.indexedFrame);
+                swapTargetOccupiers(target, item);
+                toggleHoverText(target, "target");
+            }
+        }
+        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+    }
 }
 
 // ======= mouseUp =======
 Item.prototype.mouseUp = function(e) {
     console.log("mouseUp");
     var item = clientApp.activeActor;
-    if (item.itemMove == "dragger") {
-        $(clientApp.activeActor.itemEl).off();
-        window.removeEventListener('mousemove', item.draggerMove, true);
-    } else if (item.itemMove == "slider") {
-        $(clientApp.activeActor.itemEl).off();
-        window.removeEventListener('mousemove', item.sliderMove, true);
-    }
+    $(clientApp.activeActor.itemEl).off();
+    $(clientApp.activeActor.itemEl).css('z-index', '2');
+    window.removeEventListener('mousemove', item.moveItem, true);
 
     // == store relative loc where item was dropped
-    item.dropLoc.L = item.startXY.dragL - (clientApp.displayItems.studio.canX + item.locator.L + item.locator.W);
-    item.dropLoc.T = item.startXY.dragT - (clientApp.displayItems.studio.canY + item.locator.T);
+    item.dropLoc.L = item.startXY.dragL - (clientApp.displayItems.studio.canX + item.bounds.L + item.bounds.W);
+    item.dropLoc.T = item.startXY.dragT - (clientApp.displayItems.studio.canY + item.bounds.T);
     item.dropLoc.W = null;
     item.dropLoc.H = null;
     console.log("\n******* dropLoc:", item.dropLoc.L, item.dropLoc.T);
@@ -106,34 +214,3 @@ Item.prototype.mouseUp = function(e) {
     // == reactivate item
     clientApp.activateLessonItems();
 }
-
-// ======= draggerMove =======
-// Item.prototype.draggerMove = function(e) {
-//     // console.log("draggerMove");
-//     var item = clientApp.activeActor;
-//     var dX = item.startXY.mouseX - e.clientX;
-//     var dY = item.startXY.mouseY - e.clientY;
-//     var left = item.startXY.itemL - dX;
-//     var top = item.startXY.itemT - dY;
-//     var minX = item.locator.L;
-//     var maxX = item.locator.R;
-//     var minY = item.locator.T;
-//     var maxY = item.locator.B;
-//     if (left < minX) {
-//         left = minX;
-//     }
-//     if (left > maxX) {
-//         left = maxX;
-//     }
-//     if (top < minY) {
-//         top = minY;
-//     }
-//     if (top > maxY) {
-//         top = maxY;
-//     }
-//     $(clientApp.activeActor.itemEl).css('top', top + 'px');
-//     $(clientApp.activeActor.itemEl).css('left', left + 'px');
-//
-//     // == set canvas frame based on slider position
-//     clientApp.updateCanvas(left, top, indexX);
-// }
