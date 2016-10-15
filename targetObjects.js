@@ -16,21 +16,21 @@ function initTargets() {
         /* itemType */ "setupTarget",
         /* itemText */ "drag items here",
         /* itemImage */ "null",
-        /* initLoc */ { L:110, T:10, W:80, H:200 },
+        /* initLTWH */ { L:110, T:10, W:80, H:200 },
         /* absLoc */ { L:0, T:0, W:0, H:0 },
         /* occupier */ null
     );
     return targets;
 }
 
-function Target(itemId, itemEl, itemName, itemType, itemText, itemImage, initLoc, absLoc, occupier) {
+function Target(itemId, itemEl, itemName, itemType, itemText, itemImage, initLTWH, absLoc, occupier) {
     this.itemId = itemId;
     this.itemEl = itemEl;
     this.itemName = itemName;
     this.itemType = itemType;
     this.itemText = itemText;
     this.itemImage = itemImage;
-    this.initLoc = initLoc;
+    this.initLTWH = initLTWH;
     this.absLoc = absLoc;
     this.occupier = occupier;
 }

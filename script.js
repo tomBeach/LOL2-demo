@@ -9,8 +9,8 @@
 // var Target_Data = {};
 
 var displayItems = {
-    monitor: { itemName: "monitor", itemText: "Monitor", canvasName: "monitorCanvas", can:null, ctx:null, canX:740, canY:10, canW:384, canH:216 },
-    studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canX:10, canY:280, canW:720, canH:405 },
+    monitor: { itemName: "monitor", itemText: "Monitor", canvasName: "monitorCanvas", can:null, ctx:null, canL:740, canT:10, canW:384, canH:216 },
+    studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
     shop: { itemName: "shop", itemText: "Shop Menu" },
     lessons: { itemName: "lessons", itemText: "Lesson Menu" },
     activeLesson: null
@@ -48,7 +48,7 @@ var clientApp = {
     makeLessonPage: function(lessonEl) {
         console.log("\n ******* makeLessonPage *******");
         console.log("activeLesson:", clientApp.activeLesson.lessonIndex);
-        console.log("activePage:", clientApp.activePage.pageKey);
+        console.log("activePage:  ", clientApp.activePage.pageKey);
 
         this.initLessonCanvases();
         this.clearLessonCanvases();
@@ -190,13 +190,16 @@ var clientApp = {
 
         var page = this.activePage;
         var setups = page.SetupItems;
-        var groups = page.GroupItems;
-        var gridders = page.GridItems;
         var actors = page.ActorItems;
-        var targets = page.TargetItems;
+        var groups = page.GroupItems;
         var guides = page.guides;
+        var targets = page.TargetItems;
+        var gridders = page.GridItems;
         console.log("setups:", setups);
         console.log("actors:", actors);
+        console.log("groups:", groups);
+        console.log("guides:", guides);
+        console.log("targets:", targets);
         console.log("gridders:", gridders);
 
         var lessonItemsArray = [setups, groups, gridders, actors, targets];
@@ -214,10 +217,9 @@ var clientApp = {
         function makeItemEls(items) {
             console.log("makeItemEls");
             console.log("items:", items);
-            var item, itemType, urlString, newDiv, target;
-            var gridW;
-            var gridL = clientApp.displayItems.studio.canX + 10;
-            var gridT = clientApp.displayItems.studio.canY + 10;
+            var item, itemType, urlString, newDiv, target, gridW;
+            var gridL = clientApp.displayItems.studio.canL + 10;
+            var gridT = clientApp.displayItems.studio.canT + 10;
             $('#grid').css('left', gridL + 'px');
             $('#grid').css('top', gridT + 'px');
 
@@ -230,7 +232,7 @@ var clientApp = {
                     case "grid":
                         newDiv = makeItemHtml(item);
                         item.itemEl = newDiv;
-                        gridW = clientApp.displayItems.studio.canX + item.initLoc.W + 10;
+                        gridW = clientApp.displayItems.studio.canL + item.initLTWH.W + 10;
                         locateGridItem(item, newDiv, gridW, i);
                         break;
                     case "actor":
@@ -263,11 +265,11 @@ var clientApp = {
                 console.log("item.itemEl:", item.itemEl);
                 console.log("newDiv:", newDiv);
 
-                // == setupTarget initLoc is offset from setup item
-                newDiv.style.left = item.initLoc.L + displayItems.studio.canX + target.initLoc.L + 'px';
-                newDiv.style.top = item.initLoc.T + displayItems.studio.canY + target.initLoc.T + 'px';
-                newDiv.style.width = target.initLoc.W + 'px';
-                newDiv.style.height = target.initLoc.H + 'px';
+                // == setupTarget initLTWH is offset from setup item
+                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + target.initLTWH.L + 'px';
+                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + target.initLTWH.T + 'px';
+                newDiv.style.width = target.initLTWH.W + 'px';
+                newDiv.style.height = target.initLTWH.H + 'px';
                 newDiv.style.zIndex = 3;
                 $('body').append(newDiv);
             }
@@ -277,25 +279,25 @@ var clientApp = {
                 console.log("locateGridItem");
 
                 // == check vertical space for new item; move to right if not
-                if ((gridT + item.initLoc.H + 10) > (clientApp.displayItems.studio.canY + clientApp.displayItems.studio.canH)) {
-                    gridT = clientApp.displayItems.studio.canY + 10;
+                if ((gridT + item.initLTWH.H + 10) > (clientApp.displayItems.studio.canT + clientApp.displayItems.studio.canH)) {
+                    gridT = clientApp.displayItems.studio.canT + 10;
                     gridL = gridW;
-                    gridW = gridL + item.initLoc.W + 10;
+                    gridW = gridL + item.initLTWH.W + 10;
                 }
 
                 // == locate item on new grid values
                 newDiv.style.left = gridL + 'px';
                 newDiv.style.top = gridT + 'px';
-                newDiv.style.width = item.initLoc.W + 'px';
-                newDiv.style.height = item.initLoc.H + 'px';
+                newDiv.style.width = item.initLTWH.W + 'px';
+                newDiv.style.height = item.initLTWH.H + 'px';
                 newDiv.style.zIndex = 4;
-                item.initLoc.L = gridL;
-                item.initLoc.T = gridT;
+                item.initLTWH.L = gridL;
+                item.initLTWH.T = gridT;
                 console.log("gridL:", gridL);
                 console.log("gridT:", gridT);
 
                 // == set next item top location (based on prev item height)
-                gridT = gridT + item.initLoc.H + 10;
+                gridT = gridT + item.initLTWH.H + 10;
 
                 $('#grid').append(newDiv);
             }
@@ -303,10 +305,10 @@ var clientApp = {
             // ======= locateNewActor =======
             function locateNewActor(item, newDiv) {
                 console.log("locateNewActor");
-                newDiv.style.left = item.initLoc.L + displayItems.studio.canX + 'px';
-                newDiv.style.top = item.initLoc.T + displayItems.studio.canY + 'px';
-                newDiv.style.width = item.initLoc.W + 'px';
-                newDiv.style.height = item.initLoc.H + 'px';
+                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + 'px';
+                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + 'px';
+                newDiv.style.width = item.initLTWH.W + 'px';
+                newDiv.style.height = item.initLTWH.H + 'px';
                 newDiv.style.zIndex = 4;
                 $('#actors').append(newDiv);
             }
@@ -314,10 +316,10 @@ var clientApp = {
             // ======= locateNewSetup =======
             function locateNewSetup(item, newDiv) {
                 console.log("locateNewSetup");
-                newDiv.style.left = item.initLoc.L + displayItems.studio.canX + 'px';
-                newDiv.style.top = item.initLoc.T + displayItems.studio.canY + 'px';
-                newDiv.style.width = item.initLoc.W + 'px';
-                newDiv.style.height = item.initLoc.H + 'px';
+                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + 'px';
+                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + 'px';
+                newDiv.style.width = item.initLTWH.W + 'px';
+                newDiv.style.height = item.initLTWH.H + 'px';
                 newDiv.style.zIndex = 2;
                 $('#setup').append(newDiv);
             }
@@ -342,7 +344,7 @@ var clientApp = {
                 if (item.itemImage) {
                     urlString = "url('images/" + item.itemImage + ".png') 0 0";
                     newDiv.style.background = urlString;
-                    newDiv.style.backgroundSize =  item.initLoc.W + 'px ' + item.initLoc.H + 'px';
+                    newDiv.style.backgroundSize =  item.initLTWH.W + 'px ' + item.initLTWH.H + 'px';
                 }
                 return newDiv;
             }
@@ -377,8 +379,8 @@ var clientApp = {
                 // == make svg guide elements
                 var guidesEl = document.getElementById("guides");
                 guidesEl.style.position = "absolute";
-                guidesEl.style.left = (item.bounds.L + displayItems.studio.canX + 5) + 'px';
-                guidesEl.style.top = (item.bounds.T + displayItems.studio.canY + 25) + 'px';
+                guidesEl.style.left = (item.bounds.L + displayItems.studio.canL + 5) + 'px';
+                guidesEl.style.top = (item.bounds.T + displayItems.studio.canT + 25) + 'px';
                 guidesEl.style.width = item.bounds.W + 'px';
                 guidesEl.style.height = item.bounds.H + 'px';
                 guidesEl.style.zIndex = 1;
@@ -507,8 +509,8 @@ var clientApp = {
         var lessonHtml = $(lessonEl).parents().eq(0).html();
 
         // == make prevNext openClose buttons
-        navPanel += "<nav id='navPanel'><div id='prevBtn' class='panelBtn'><span>P</span></div>";
-        navPanel += "<div id='nextBtn' class='panelBtn'><span>N</span></div></nav>";
+        navPanel += "<nav id='navPanel'><div id='prevBtn' class='panelBtn'><span>prev</span></div>";
+        navPanel += "<div id='nextBtn' class='panelBtn'><span>next</span></div></nav>";
 
         // == get all lesson elements
         var lessonItems = $('.lessonItem:gt(1)');
@@ -519,6 +521,7 @@ var clientApp = {
         $(lessonBox).append(lessonHtml);
 
         // == change lesson container class to hold prevNext buttons
+        $('#' + lessonId).removeClass('active');
         $('#' + lessonId).removeClass('lessonItem');
         $('#' + lessonId).addClass('selectedLesson');
         $(lessonBox).append(navPanel);
@@ -832,7 +835,8 @@ var clientApp = {
         var actors = $('#actors').empty();
         var guides = $('#guides').empty();
         var actors = $('#grid').empty();
-        var actors = $('#setup').empty();
+        var setup = $('#setup').empty();
+        var setupTargets = $('.setupTarget').remove();
     },
 
     // ======= removeLessonItems =======

@@ -21,8 +21,8 @@ function initItems(targets) {
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
-        /* dropLoc */ { L:0, T:0, W:0, H:0 },
-        /* initLoc */ { L:0, T:0, W:100, H:100 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
         /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
     );
     items.scrim2_0 = new Item(
@@ -37,8 +37,8 @@ function initItems(targets) {
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
-        /* dropLoc */ { L:0, T:0, W:0, H:0 },
-        /* initLoc */ { L:0, T:0, W:100, H:100 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
         /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
     );
     items.scrim3_0 = new Item(
@@ -53,8 +53,8 @@ function initItems(targets) {
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
-        /* dropLoc */ { L:0, T:0, W:0, H:0 },
-        /* initLoc */ { L:0, T:0, W:100, H:100 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
         /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
     );
     items.f650_0_2 = new Item(
@@ -69,8 +69,8 @@ function initItems(targets) {
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
-        /* dropLoc */ { L:0, T:0, W:0, H:0 },
-        /* initLoc */ { L:400, T:80, W:350, H:270 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:400, T:80, W:350, H:270 },
         /* bounds */ { L:400, T:80, W:350, H:270 }
     );
     items.distance_0_1 = new Item(
@@ -85,14 +85,14 @@ function initItems(targets) {
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
-        /* dropLoc */ { L:0, T:0, W:0, H:0 },
-        /* initLoc */ { L:600, T:30, W:52, H:40 },      // relative
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:600, T:30, W:52, H:40 },      // relative
         /* bounds */ { L:290, T:20, W:340, H:110 }      // relative
     );
     return items;
 }
 
-function Item(itemId, itemEl, itemName, itemType, itemMove, itemText, itemImage, itemTargets, itemControls, startXY, minMaxLT, dropLoc, initLoc, bounds) {
+function Item(itemId, itemEl, itemName, itemType, itemMove, itemText, itemImage, itemTargets, itemControls, startXY, minMaxLT, dropLTWH, initLTWH, bounds) {
     this.itemId = itemId;
     this.itemEl = itemEl;
     this.itemName = itemName;
@@ -104,7 +104,7 @@ function Item(itemId, itemEl, itemName, itemType, itemMove, itemText, itemImage,
     this.itemControls = itemControls;
     this.startXY = startXY;
     this.minMaxLT = minMaxLT;
-    this.initLoc = initLoc;
-    this.dropLoc = dropLoc;
+    this.initLTWH = initLTWH;
+    this.dropLTWH = dropLTWH;
     this.bounds = bounds;
 }

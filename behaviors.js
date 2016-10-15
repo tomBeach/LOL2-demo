@@ -20,13 +20,13 @@ Item.prototype.initMove = function(e) {
     $('#locXYWH').html("<p class='info-text'>left: " + locL + "</p><p class='info-text'>top: " + locT + "</p>");
 
     // == limit moves to max canvas boundaries
-    if (item.bounds.W > (displayItems.studio.canW - item.initLoc.W)) {
-        var itemBoundsW = displayItems.studio.canW - item.initLoc.W;
+    if (item.bounds.W > (displayItems.studio.canW - item.initLTWH.W)) {
+        var itemBoundsW = displayItems.studio.canW - item.initLTWH.W;
     } else {
         var itemBoundsW = item.bounds.W;
     }
-    if (item.bounds.H > (displayItems.studio.canH - item.initLoc.H)) {
-        var itemBoundsH = displayItems.studio.canH - item.initLoc.H;
+    if (item.bounds.H > (displayItems.studio.canH - item.initLTWH.H)) {
+        var itemBoundsH = displayItems.studio.canH - item.initLTWH.H;
     } else {
         var itemBoundsH = item.bounds.H;
     }
@@ -38,10 +38,10 @@ Item.prototype.initMove = function(e) {
     item.startXY.mouseY = e.clientY;
     item.startXY.diffX = e.clientX - locL;
     item.startXY.diffY = e.clientY - locT;
-    item.minMaxLT.minL = displayItems.studio.canX + item.bounds.L;      // absolute
-    item.minMaxLT.minT = displayItems.studio.canY + item.bounds.T;      // absolute
-    item.minMaxLT.maxL = displayItems.studio.canX + item.bounds.L + itemBoundsW;      //  - item.initLoc.W;
-    item.minMaxLT.maxT = displayItems.studio.canY + item.bounds.T + itemBoundsH;      //  - item.initLoc.H;
+    item.minMaxLT.minL = displayItems.studio.canL + item.bounds.L;      // absolute
+    item.minMaxLT.minT = displayItems.studio.canT + item.bounds.T;      // absolute
+    item.minMaxLT.maxL = displayItems.studio.canL + item.bounds.L + itemBoundsW;      //  - item.initLTWH.W;
+    item.minMaxLT.maxT = displayItems.studio.canT + item.bounds.T + itemBoundsH;      //  - item.initLTWH.H;
 
     // == set relative bounds to absolute bounds
     var target, setup;
@@ -49,10 +49,10 @@ Item.prototype.initMove = function(e) {
         setup = page.SetupItems[0];
         for (var i = 0; i < item.itemTargets.length; i++) {
             target = item.itemTargets[i];
-            target.absLoc.L = target.initLoc.L + setup.initLoc.L + displayItems.studio.canX;
-            target.absLoc.T = target.initLoc.T + setup.initLoc.T + displayItems.studio.canY;
-            target.absLoc.W = target.initLoc.L + setup.initLoc.L + displayItems.studio.canX + target.initLoc.W;
-            target.absLoc.H = target.initLoc.T + setup.initLoc.T + displayItems.studio.canY + target.initLoc.H;
+            target.absLoc.L = target.initLTWH.L + setup.initLTWH.L + displayItems.studio.canL;
+            target.absLoc.T = target.initLTWH.T + setup.initLTWH.T + displayItems.studio.canT;
+            target.absLoc.W = target.initLTWH.L + setup.initLTWH.L + displayItems.studio.canL + target.initLTWH.W;
+            target.absLoc.H = target.initLTWH.T + setup.initLTWH.T + displayItems.studio.canT + target.initLTWH.H;
         }
     }
 
@@ -70,8 +70,8 @@ Item.prototype.moveItem = function(e) {
     // == calculate change in mouse X/Y location in pixels
     var dX = parseInt(e.clientX - item.startXY.mouseX);
     var dY = parseInt(e.clientY - item.startXY.mouseY);
-    var deltaX = ((dX + item.dropLoc.L)/item.bounds.W).toFixed(2);
-    var deltaY = ((dY + item.dropLoc.T)/item.bounds.H).toFixed(2);
+    var deltaX = ((dX + item.dropLTWH.L)/item.bounds.W).toFixed(2);
+    var deltaY = ((dY + item.dropLTWH.T)/item.bounds.H).toFixed(2);
 
     // ======= getMoveBoundaries =======
     function getMoveBoundaries(left, top) {
@@ -94,7 +94,7 @@ Item.prototype.moveItem = function(e) {
     switch(itemMove) {
         case "slider":
             var left = parseInt(item.startXY.itemL + dX);
-            var top = parseInt(item.startXY.itemT - item.dropLoc.T - (item.bounds.H * deltaX));
+            var top = parseInt(item.startXY.itemT - item.dropLTWH.T - (item.bounds.H * deltaX));
             var itemLT = getMoveBoundaries(left, top);
             updateItemLoc(itemLT[0], itemLT[1]);
             break;
@@ -139,15 +139,15 @@ Item.prototype.moveItem = function(e) {
     function swapTargetOccupiers(target, newOccupier) {
         console.log("swapTargetOccupiers");
         console.log("newOccupier.itemId:", newOccupier.itemId);
-        console.log("newOccupier.initLoc:", newOccupier.initLoc);
+        console.log("newOccupier.initLTWH:", newOccupier.initLTWH);
 
         // == return target occupier to original location
         var occupier = target.occupier;
         if (occupier) {
-            console.log("occupier.initLoc.L:", occupier.initLoc.L);
-            console.log("occupier.initLoc.T:", occupier.initLoc.T);
-            $(occupier.itemEl).css('left', occupier.initLoc.L);
-            $(occupier.itemEl).css('top', occupier.initLoc.T);
+            console.log("occupier.initLTWH.L:", occupier.initLTWH.L);
+            console.log("occupier.initLTWH.T:", occupier.initLTWH.T);
+            $(occupier.itemEl).css('left', occupier.initLTWH.L);
+            $(occupier.itemEl).css('top', occupier.initLTWH.T);
             $(occupier.itemEl).css('display', 'block');
         }
         target.occupier = newOccupier;
@@ -169,8 +169,8 @@ Item.prototype.moveItem = function(e) {
         // == collision detector for target
         var target;
         var overlap = 10;
-        var draggerL = left + item.initLoc.W/2;
-        var draggerT = top + item.initLoc.H/2;
+        var draggerL = left + item.initLTWH.W/2;
+        var draggerT = top + item.initLTWH.H/2;
 
         for (var i = 0; i < item.itemTargets.length; i++) {
             target = item.itemTargets[i];
@@ -205,11 +205,11 @@ Item.prototype.mouseUp = function(e) {
     window.removeEventListener('mousemove', item.moveItem, true);
 
     // == store relative loc where item was dropped
-    item.dropLoc.L = item.startXY.dragL - (clientApp.displayItems.studio.canX + item.bounds.L + item.bounds.W);
-    item.dropLoc.T = item.startXY.dragT - (clientApp.displayItems.studio.canY + item.bounds.T);
-    item.dropLoc.W = null;
-    item.dropLoc.H = null;
-    console.log("\n******* dropLoc:", item.dropLoc.L, item.dropLoc.T);
+    item.dropLTWH.L = item.startXY.dragL - (clientApp.displayItems.studio.canL + item.bounds.L + item.bounds.W);
+    item.dropLTWH.T = item.startXY.dragT - (clientApp.displayItems.studio.canT + item.bounds.T);
+    item.dropLTWH.W = null;
+    item.dropLTWH.H = null;
+    console.log("\n******* dropLTWH:", item.dropLTWH.L, item.dropLTWH.T);
 
     // == reactivate item
     clientApp.activateLessonItems();
