@@ -73,25 +73,13 @@ Item.prototype.moveItem = function(e) {
     var deltaX = ((dX + item.dropLTWH.L)/item.bounds.W).toFixed(2);
     var deltaY = ((dY + item.dropLTWH.T)/item.bounds.H).toFixed(2);
 
-    // ======= getMoveBoundaries =======
-    function getMoveBoundaries(left, top) {
-        // console.log("getMoveBoundaries");
-        if (left < item.minMaxLT.minL) {
-            left = item.minMaxLT.minL;
-        }
-        if (left > item.minMaxLT.maxL) {
-            left = item.minMaxLT.maxL;
-        }
-        if (top < item.minMaxLT.minT) {
-            top = item.minMaxLT.minT;
-        }
-        if (top > item.minMaxLT.maxT) {
-            top = item.minMaxLT.maxT;
-        }
-        return [left, top];
-    }
-
     switch(itemMove) {
+        case "matrixAB":
+            var left = parseInt(item.startXY.itemL + dX);
+            var top = parseInt(item.startXY.itemT + dY);
+            var itemLT = getMoveBoundaries(left, top);
+            updateMatrixAB(itemLT[0], itemLT[1]);
+            break;
         case "slider":
             var left = parseInt(item.startXY.itemL + dX);
             var top = parseInt(item.startXY.itemT - item.dropLTWH.T - (item.bounds.H * deltaX));
@@ -110,9 +98,9 @@ Item.prototype.moveItem = function(e) {
         break;
     }
 
-    // ======= updateItemLoc =======
-    function updateItemLoc(left, top) {
-        // console.log("updateItemLoc");
+    // ======= updateMatrixAB =======
+    function updateMatrixAB(left, top) {
+        // console.log("updateMatrixAB");
 
         var item = clientApp.activeActor;
 
@@ -124,6 +112,13 @@ Item.prototype.moveItem = function(e) {
         if (indexX > clientApp.activePage.studio.endFrame) {
             indexX = clientApp.activePage.studio.endFrame;
         }
+        indexY = Math.round(-deltaY * clientApp.activePage.studio.endFrame);
+        if (indexY < 0) {
+            indexY = 0;
+        }
+        if (indexY > clientApp.activePage.studio.endFrame) {
+            indexY = clientApp.activePage.studio.endFrame;
+        }
 
         // == set real-time item loc and canvas frame based on slider position
         $(item.itemEl).css('z-index', '10');
@@ -131,7 +126,7 @@ Item.prototype.moveItem = function(e) {
         $(item.itemEl).css('left', left + 'px');
         item.startXY.dragL = left;
         item.startXY.dragT = top;
-        clientApp.updateCanvasFrame(left, top, indexX);
+        clientApp.updateCanvasFrame(indexX, indexY);
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
     }
 
@@ -139,13 +134,10 @@ Item.prototype.moveItem = function(e) {
     function swapTargetOccupiers(target, newOccupier) {
         console.log("swapTargetOccupiers");
         console.log("newOccupier.itemId:", newOccupier.itemId);
-        console.log("newOccupier.initLTWH:", newOccupier.initLTWH);
 
         // == return target occupier to original location
         var occupier = target.occupier;
         if (occupier) {
-            console.log("occupier.initLTWH.L:", occupier.initLTWH.L);
-            console.log("occupier.initLTWH.T:", occupier.initLTWH.T);
             $(occupier.itemEl).css('left', occupier.initLTWH.L);
             $(occupier.itemEl).css('top', occupier.initLTWH.T);
             $(occupier.itemEl).css('display', 'block');
@@ -187,14 +179,65 @@ Item.prototype.moveItem = function(e) {
                 $(clientApp.activeActor.itemEl).css('z-index', '2');
                 $(clientApp.activeActor.itemEl).css('display', 'none');
                 window.removeEventListener('mousemove', item.moveItem, true);
-                clientApp.updateCanvasFrame(left, top, item.indexedFrame);
+                clientApp.updateCanvasFrame(item.indexedFrame, null);
                 swapTargetOccupiers(target, item);
                 toggleHoverText(target, "target");
             }
         }
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
     }
+
+    // ======= updateItemLoc =======
+    function updateItemLoc(left, top) {
+        // console.log("updateItemLoc");
+
+        var item = clientApp.activeActor;
+
+        // == calculate percent movement through frameset/limit frames to start/end
+        indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
+        if (indexX < 0) {
+            indexX = 0;
+        }
+        if (indexX > clientApp.activePage.studio.endFrame) {
+            indexX = clientApp.activePage.studio.endFrame;
+        }
+
+        // == set real-time item loc and canvas frame based on slider position
+        $(item.itemEl).css('z-index', '10');
+        $(item.itemEl).css('top', top + 'px');
+        $(item.itemEl).css('left', left + 'px');
+        item.startXY.dragL = left;
+        item.startXY.dragT = top;
+        clientApp.updateCanvasFrame(indexX, null);
+        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+    }
+
+    // ======= ======= ======= MATH ======= ======= =======
+    // ======= ======= ======= MATH ======= ======= =======
+    // ======= ======= ======= MATH ======= ======= =======
+
+    // ======= getMoveBoundaries =======
+    function getMoveBoundaries(left, top) {
+        // console.log("getMoveBoundaries");
+        if (left < item.minMaxLT.minL) {
+            left = item.minMaxLT.minL;
+        }
+        if (left > item.minMaxLT.maxL) {
+            left = item.minMaxLT.maxL;
+        }
+        if (top < item.minMaxLT.minT) {
+            top = item.minMaxLT.minT;
+        }
+        if (top > item.minMaxLT.maxT) {
+            top = item.minMaxLT.maxT;
+        }
+        return [left, top];
+    }
 }
+
+// ======= ======= ======= MOUSEUP ======= ======= =======
+// ======= ======= ======= MOUSEUP ======= ======= =======
+// ======= ======= ======= MOUSEUP ======= ======= =======
 
 // ======= mouseUp =======
 Item.prototype.mouseUp = function(e) {

@@ -724,10 +724,10 @@ var clientApp = {
                     clientApp.activePage = clientApp.pages[nextPageName];
                     clientApp.makeLessonPage(e.currentTarget);
                 } else {
-                    clientApp.updateLessonText("Sorry... requested page is missing.  Please return to home page");
+                    clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
                 }
             } else {
-                clientApp.updateLessonText("Sorry... requested page is missing.  Please return to home page");
+                clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
             }
         });
         $('#navPanel').children('div').on('mouseenter', function(e) {
@@ -736,7 +736,7 @@ var clientApp = {
         });
         $('#navPanel').children('div').on('mouseleave', function(e) {
             // console.log("-- mouseleave");
-            clientApp.toggleHoverText(e.currentTarget, null);
+            clientApp.toggleHoverText(null, null);
         });
     },
 
@@ -798,24 +798,30 @@ var clientApp = {
     // ======= ======= ======= UTILITIES ======= ======= =======
 
     // ======= updateCanvasFrame =======
-    updateCanvasFrame: function(left, top, frameIndex) {
+    updateCanvasFrame: function(frameIndexX, frameIndexY) {
         // console.log("updateCanvasFrame");
 
         // == canvas parameters
-        var studioImage = clientApp.studioImages[frameIndex];
-        var studioString = ('images/' + studioImage + '_' + frameIndex + '.png');
+        var studioImage = clientApp.studioImages[frameIndexX];
+        if (frameIndexY) {
+            var studioString = ('images/' + studioImage + '_' + frameIndexX + frameIndexY + '.png');
+        } else {
+            var studioString = ('images/' + studioImage + '_' + frameIndexX + '.png');
+        }
         var studioCan = document.getElementById("studioCanvas");
         var studioCtx = studioCan.getContext("2d");
         studioCtx.clearRect(0, 0, 720, 405);
-        // studioCtx.drawImage(studioImage, 0, 0, 720, 405, 0, 0, 280, 140);
         studioCtx.drawImage(studioImage, 0, 0, 720, 405, 0, 0, 300, 150);
 
-        var monitorImage = clientApp.monitorImages[frameIndex];
-        var monitorString = ('images/' + monitorImage + '_' + frameIndex + '.png');
+        var monitorImage = clientApp.monitorImages[frameIndexX];
+        if (frameIndexY) {
+            var monitorString = ('images/' + monitorImage + '_' + frameIndexX + frameIndexY + '.png');
+        } else {
+            var monitorString = ('images/' + monitorImage + '_' + frameIndexX + '.png');
+        }
         var monitorCan = document.getElementById("monitorCanvas");
         var monitorCtx = monitorCan.getContext("2d");
         monitorCtx.clearRect(0, 0, 384, 180);
-        // monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, 280, 140);
         monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, 300, 150);
     },
 

@@ -22,8 +22,8 @@ function initPages(items, targets) {
         /* studio */ { text:null, image:null, startFrame:0, endFrame:6, initFrame:0 },
         /* monitor */ { text:null, image:null, startFrame:0, endFrame:6, initFrame:0 }
 	);
-	pages.page_0_1 = new Page (
-        /* pageKey */ "0_1",
+	pages.page_1_0 = new Page (
+        /* pageKey */ "1_0",
         /* pageText */ "The first thing to know is intensity: how bright the light is.  There are many ways to control intensity.  Number 1: distance.  The closer your light is to the subject, the brighter it is.  Drag the light icon to see how brightness changes with distance.  What else happens as you move the light in and out?",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -34,8 +34,8 @@ function initPages(items, targets) {
         /* studio */ { text:null, image:"st_int_distance", startFrame:0, endFrame:6, initFrame:0 },
         /* monitor */ { text:null, image:"mn_int_distance", startFrame:0, endFrame:6, initFrame:0 }
 	);
-    pages.page_0_2 = new Page (
-        /* pageKey */ "0_2",
+    pages.page_1_1 = new Page (
+        /* pageKey */ "1_1",
         /* pageText */ "Often, moving lights is not easy --  especially when its a 20k HMI lighting up a city block.  But if it's too bright you can drop a scrim into the barn door frame and cut it down a bit.  Drag some scrims towards the light and drop them into the barndoor frame.  Easy!",
         /* SetupItems */ [items.f650_0_2],
         /* GroupItems */ [],
@@ -46,17 +46,17 @@ function initPages(items, targets) {
         /* studio */ { text:null, image:"st_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] },
         /* monitor */ { text:null, image:"mn_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] }
 	);
-	pages.page_1_0 = new Page (
-        /* pageKey */ "1_0",
-        /* pageText */ "s;roh sdofh sdofuhzs lfhlkxdjhfL SouhlSIDugf ?",
+	pages.page_2_0 = new Page (
+        /* pageKey */ "2_0",
+        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the flag around to see how shadows work with soft light.",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
-        /* ActorItems */ [],
+        /* ActorItems */ [items.softNear2_0],
         /* TargetItems */ [],
         /* guides */ [],
-        /* studio */ { text:null, image:"st_int_distance", startFrame:0, endFrame:6, initFrame:0 },
-        /* monitor */ { text:null, image:"mn_int_distance", startFrame:0, endFrame:6, initFrame:0 }
+        /* studio */ { text:null, image:"st_shadow_soft_near/st_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
+        /* monitor */ { text:null, image:"st_shadow_soft_near/mn_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
     return pages;
 }

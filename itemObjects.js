@@ -9,13 +9,29 @@ function initItems(targets) {
     var items = {};
     var canvasS = clientApp.displayItems.studio;
 
+    items.softNear2_0 = new Item(
+        /* itemId */ "softNear2_0",
+        /* itemEl */ null,
+        /* itemName */ "softNear2_0",
+        /* itemText */ "click and drag flag icon to change position",
+        /* itemType */ "actor",
+        /* itemMove */ "matrixAB",
+        /* itemImage */ "dragger1_0",
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:600, T:30, W:52, H:40 },      // relative
+        /* bounds */ { L:290, T:20, W:340, H:110 }      // relative
+    );
     items.scrim1_0 = new Item(
         /* itemId */ "scrim1_0",
         /* itemEl */ null,
         /* itemName */ "half stop",
+        /* itemText */ "half-stop scrim (minor brightness tweak)",
         /* itemType */ "grid",
         /* itemMove */ "dragger",
-        /* itemText */ "half-stop scrim (minor brightness tweak)",
         /* itemImage */ "scrim1_0",
         /* itemTargets */ [targets.barndoorFrame],
         /* itemControls */ [],
@@ -29,9 +45,9 @@ function initItems(targets) {
         /* itemId */ "scrim2_0",
         /* itemEl */ null,
         /* itemName */ "full stop",
+        /* itemText */ "full-stop scrim (reduces brightness more)",
         /* itemType */ "grid",
         /* itemMove */ "dragger",
-        /* itemText */ "full-stop scrim (reduces brightness more)",
         /* itemImage */ "scrim2_0",
         /* itemTargets */ [targets.barndoorFrame],
         /* itemControls */ [],
@@ -45,9 +61,9 @@ function initItems(targets) {
         /* itemId */ "scrim3_0",
         /* itemEl */ null,
         /* itemName */ "gradiated",
+        /* itemText */ "gradiated scrim -- cuts light more at bottom of beam",
         /* itemType */ "grid",
         /* itemMove */ "dragger",
-        /* itemText */ "gradiated scrim -- cuts light more at bottom of beam",
         /* itemImage */ "scrim3_0",
         /* itemTargets */ [targets.barndoorFrame],
         /* itemControls */ [],
@@ -61,9 +77,9 @@ function initItems(targets) {
         /* itemId */ "f650_0_2",
         /* itemEl */ null,
         /* itemName */ "scrims_650",
+        /* itemText */ "",
         /* itemType */ "setup",
         /* itemMove */ "none",
-        /* itemText */ "",
         /* itemImage */ "f650_0",
         /* itemTargets */ [targets.barndoorFrame],
         /* itemControls */ [],
@@ -77,9 +93,9 @@ function initItems(targets) {
         /* itemId */ "distance_0_1",
         /* itemEl */ null,
         /* itemName */ "distance_650",
+        /* itemText */ "click and drag light icon to change position",
         /* itemType */ "actor",
         /* itemMove */ "slider",
-        /* itemText */ "click and drag light icon to change position",
         /* itemImage */ "f650_0",
         /* itemTargets */ [],
         /* itemControls */ [],
@@ -92,13 +108,13 @@ function initItems(targets) {
     return items;
 }
 
-function Item(itemId, itemEl, itemName, itemType, itemMove, itemText, itemImage, itemTargets, itemControls, startXY, minMaxLT, dropLTWH, initLTWH, bounds) {
+function Item(itemId, itemEl, itemName, itemText, itemType, itemMove, itemImage, itemTargets, itemControls, startXY, minMaxLT, dropLTWH, initLTWH, bounds) {
     this.itemId = itemId;
     this.itemEl = itemEl;
     this.itemName = itemName;
+    this.itemText = itemText;
     this.itemType = itemType;
     this.itemMove = itemMove;
-    this.itemText = itemText;
     this.itemImage = itemImage;
     this.itemTargets = itemTargets;
     this.itemControls = itemControls;
