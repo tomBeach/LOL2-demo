@@ -33,7 +33,7 @@ function initLessons() {
         /* lessonIndex */    2,
         /* lessonTitle */    "Qualtity",
         /* lessonSubtitle */ "soft light / hard light",
-        /* pageKeys */       ["2_0"]
+        /* pageKeys */       ["2_0", "2_1"]
 	);
     lessons.lesson_3 = new Lesson ( 3, "Color", "warm, cool, effects", ["0_0"] );
     lessons.lesson_4 = new Lesson ( 4, "Position", "location, location, location", ["0_0"] );

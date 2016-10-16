@@ -9,10 +9,10 @@ function initItems(targets) {
     var items = {};
     var canvasS = clientApp.displayItems.studio;
 
-    items.softNear2_0 = new Item(
-        /* itemId */ "softNear2_0",
+    items.flagMover = new Item(
+        /* itemId */ "flagMover",
         /* itemEl */ null,
-        /* itemName */ "softNear2_0",
+        /* itemName */ "flagMover",
         /* itemText */ "click and drag flag icon to change position",
         /* itemType */ "actor",
         /* itemMove */ "matrixAB",
@@ -22,8 +22,8 @@ function initItems(targets) {
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
         /* dropLTWH */ { L:0, T:0, W:0, H:0 },
-        /* initLTWH */ { L:600, T:30, W:52, H:40 },      // relative
-        /* bounds */ { L:290, T:20, W:340, H:110 }      // relative
+        /* initLTWH */ { L:620, T:30, W:60, H:60 },      // relative
+        /* bounds */ { L:560, T:20, W:80, H:80 }      // relative
     );
     items.scrim1_0 = new Item(
         /* itemId */ "scrim1_0",

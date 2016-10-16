@@ -117,10 +117,10 @@ var clientApp = {
         clientApp.monitorImages = [];
         var page = clientApp.activePage;
 
-        if (this.activePage.studio.image) {
+        if (page.studio.image) {
             loadCanvasImages("studio");
         }
-        if (this.activePage.monitor.image) {
+        if (page.monitor.image) {
             loadCanvasImages("monitor");
         }
 
@@ -143,38 +143,33 @@ var clientApp = {
             }
 
             // == get frameset and canvas params
+            var folder = page[canvas].folder;
             var imageName = page[canvas].image;
             var initFrame = page[canvas].initFrame;
             var can = clientApp.displayItems[canvas].can;
             var ctx = clientApp.displayItems[canvas].ctx;
             var canW = clientApp.displayItems[canvas].canW;
             var canH = clientApp.displayItems[canvas].canH;
-            console.log("imageName:", imageName);
 
             // == start image load self-invoking iterative function
             loadNextImage(0, 0);
 
             // ======= loadNextImage =======
             function loadNextImage(Xindex, Yindex) {
-                console.log("\n +++++++ loadNextImage");
-                console.log("endFrameX:", endFrameX);
-                console.log("Xindex:", Xindex);
-                console.log("matrix:", matrix);
+                console.log("loadNextImage");
 
                 // == make image elements; assure image loading via timeout
                 if (Xindex < endFrameX) {
                     if (matrix) {
-                        console.log("MATRIX:");
                         if (Yindex < endFrameY) {
                             var canvasImage = new Image();
                             canvasImage.id = imageName + "_" + Xindex + Yindex;
-                            canvasImage.src = "images/" + imageName + "_" + Xindex + Yindex + ".png";
+                            canvasImage.src = "images/" + folder + "/" + imageName + "_" + Xindex + Yindex + ".png";
                             canvasImage.onload = function() {
                                 setTimeout(function(){
                                     YfilesArray.push(canvasImage);
                                     Yindex++;
-                                    console.log("Yindex2:", Yindex);
-                                    // loadNextImage(Xindex, Yindex);
+                                    loadNextImage(Xindex, Yindex);
                                 }, 10);
                             }
                         } else {
@@ -186,9 +181,7 @@ var clientApp = {
                             Xindex++;
                             Yindex = 0;
                             YfilesArray = [];
-                            console.log("Xindex3:", Xindex);
-                            console.log("Yindex3:", Yindex);
-                            // loadNextImage(Xindex, Yindex);
+                            loadNextImage(Xindex, Yindex);
                         }
                     } else {
                         var canvasImage = new Image();
@@ -202,7 +195,6 @@ var clientApp = {
                                     clientApp.monitorImages.push(canvasImage);
                                 }
                                 Xindex++;
-                                console.log("Xindex4:", Xindex);
                                 loadNextImage(Xindex, Yindex);
                             }, 10);
                         }
@@ -211,18 +203,29 @@ var clientApp = {
                 // == display init image (usually first in frameset)
                 } else {
 
-                    if (canvas == "studio") {
-                        var initImage = clientApp.studioImages[initFrame];
-                        // var initImage = clientApp.studioImages[initFrame];
+                    if (matrix) {
+                        if (canvas == "studio") {
+                            var initImage = clientApp.studioImages[initFrame][initFrame];
+                        } else {
+                            if (page.monitor.image) {
+                                var initImage = clientApp.monitorImages[initFrame][initFrame];
+                            }
+                        }
                     } else {
-                        var initImage = clientApp.monitorImages[initFrame];
-                        // var initImage = clientApp.monitorImages[initFrame];
+                        if (canvas == "studio") {
+                            var initImage = clientApp.studioImages[initFrame];
+                        } else {
+                            var initImage = clientApp.monitorImages[initFrame];
+                        }
                     }
                     ctx.clearRect(0, 0, 720, 405);
 
                     // == context.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
-                    ctx.drawImage(initImage, 0, 0, 720, 405, 0, 0, 300, 150);
-                    ctx.save();
+                    // console.log("clientApp.studioImages:", clientApp.studioImages);
+                    if (initImage) {
+                        ctx.drawImage(initImage, 0, 0, 720, 405, 0, 0, 300, 150);
+                        ctx.save();
+                    }
                 }
             }
         }
@@ -632,9 +635,6 @@ var clientApp = {
         var targets = page.TargetItems;
         var guides = page.guides;
         var setupItem, setupTargets, setupControls;
-        console.log("setups:", setups);
-        console.log("actors:", actors);
-        console.log("gridders:", gridders);
         var lessonItemsArray = [groups, gridders, actors, targets];
 
         // == activate page level items
@@ -660,7 +660,6 @@ var clientApp = {
         // == match grid items (gridders) to frame indexes
         for (var i = 0; i < gridders.length; i++) {
             gridders[i].indexedFrame = page.studio.indexedFrames[i];
-            console.log("gridders[i]:", gridders[i]);
         }
 
         // ======= activatePageItems =======
@@ -682,7 +681,7 @@ var clientApp = {
 
                 // ======= MOUSEENTER/LEAVE =======
                 $('#' + item.itemId).on('mouseenter', function(e) {
-                    console.log("\nmouseenter");
+                    // console.log("\nmouseenter");
                     clientApp.toggleHoverText(e.currentTarget, item.itemType);
                 });
                 $('#' + item.itemId).on('mouseleave', function(e) {
@@ -849,28 +848,31 @@ var clientApp = {
 
     // ======= updateCanvasFrame =======
     updateCanvasFrame: function(frameIndexX, frameIndexY) {
-        // console.log("updateCanvasFrame");
+        console.log("updateCanvasFrame");
+        console.log("frameIndexX/Y:", frameIndexX, frameIndexY);
 
-        // == canvas parameters
-        if (frameIndexY) {
-            var studioImage = clientApp.studioImages[frameIndexX, frameIndexY];
+        console.log("clientApp.activePage.studio.matrix:", clientApp.activePage.studio.matrix);
+        if (clientApp.activePage.studio.matrix) {
+            var studioImage = clientApp.studioImages[frameIndexX][frameIndexY];
+            console.log("studioImage:", studioImage);
         } else {
             var studioImage = clientApp.studioImages[frameIndexX];
         }
+
         var studioCan = document.getElementById("studioCanvas");
         var studioCtx = studioCan.getContext("2d");
         studioCtx.clearRect(0, 0, 720, 405);
         studioCtx.drawImage(studioImage, 0, 0, 720, 405, 0, 0, 300, 150);
 
-        if (frameIndexY) {
+        if (clientApp.activePage.studio.matrix) {
             var monitorImage = clientApp.monitorImages[frameIndexX, frameIndexY];
         } else {
             var monitorImage = clientApp.monitorImages[frameIndexX];
+            var monitorCan = document.getElementById("monitorCanvas");
+            var monitorCtx = monitorCan.getContext("2d");
+            monitorCtx.clearRect(0, 0, 384, 180);
+            monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, 300, 150);
         }
-        var monitorCan = document.getElementById("monitorCanvas");
-        var monitorCtx = monitorCan.getContext("2d");
-        monitorCtx.clearRect(0, 0, 384, 180);
-        monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, 300, 150);
     },
 
     // ======= clearLessonCanvases =======
@@ -907,8 +909,7 @@ var clientApp = {
 
     // ======= toggleHoverText =======
     toggleHoverText: function(item, itemType) {
-        console.log("toggleHoverText");
-        console.log("itemType:", itemType);
+        // console.log("toggleHoverText");
         if ($(item).attr('id')) {
             if (itemType == "display") {
                 var itemText = clientApp.displayItems[$(item).attr('id')].itemText;

@@ -101,25 +101,28 @@ Item.prototype.moveItem = function(e) {
 
     // ======= updateMatrixAB =======
     function updateMatrixAB(left, top) {
-        // console.log("updateMatrixAB");
+        console.log("updateMatrixAB");
 
+        var page = clientApp.activePage;
         var item = clientApp.activeActor;
 
         // == calculate percent movement through frameset/limit frames to start/end
-        var indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
+        var indexX = Math.round(-deltaX * page.studio.endFrame);
         if (indexX < 0) {
             indexX = 0;
         }
-        if (indexX > clientApp.activePage.studio.endFrame) {
-            indexX = clientApp.activePage.studio.endFrame;
+        if (indexX > page.studio.endFrame) {
+            indexX = page.studio.endFrame;
         }
-        var indexY = Math.round(-deltaY * clientApp.activePage.studio.endFrame);
+        var indexY = Math.round(deltaY * page.studio.endFrame);
         if (indexY < 0) {
             indexY = 0;
         }
-        if (indexY > clientApp.activePage.studio.endFrame) {
-            indexY = clientApp.activePage.studio.endFrame;
+        if (indexY > page.studio.endFrame) {
+            indexY = page.studio.endFrame;
         }
+        console.log("indexX:", indexX);
+        console.log("indexY:", indexY);
 
         // == set real-time item loc based on slider position
         $(item.itemEl).css('z-index', '10');
@@ -178,9 +181,9 @@ Item.prototype.moveItem = function(e) {
 
             if ((draggerL < target.absLoc.W) && (draggerT > target.absLoc.T) && (draggerL > target.absLoc.L) && (draggerT < target.absLoc.H)) {
                 console.log("-- HIT -- HIT -- HIT --");
-                $(clientApp.activeActor.itemEl).off();
-                $(clientApp.activeActor.itemEl).css('z-index', '2');
-                $(clientApp.activeActor.itemEl).css('display', 'none');
+                $(item.itemEl).off();
+                $(item.itemEl).css('z-index', '2');
+                $(item.itemEl).css('display', 'none');
                 window.removeEventListener('mousemove', item.moveItem, true);
                 clientApp.updateCanvasFrame(item.indexedFrame, null);
                 swapTargetOccupiers(target, item);

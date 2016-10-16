@@ -19,8 +19,8 @@ function initPages(items, targets) {
         /* ActorItems */ [],
         /* TargetItems */ [],
         /* guides */ [],
-        /* studio */ { text:null, image:null, startFrame:0, endFrame:6, initFrame:0 },
-        /* monitor */ { text:null, image:null, startFrame:0, endFrame:6, initFrame:0 }
+        /* studio */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0 },
+        /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0 }
 	);
 	pages.page_1_0 = new Page (
         /* pageKey */ "1_0",
@@ -31,8 +31,8 @@ function initPages(items, targets) {
         /* ActorItems */ [items.distance_0_1],
         /* TargetItems */ [],
         /* guides */ [{ itemId:"distance_0_1", L:260, T:20, W:300, H:100 }],
-        /* studio */ { text:null, image:"st_int_distance", startFrame:0, endFrame:6, initFrame:0 },
-        /* monitor */ { text:null, image:"mn_int_distance", startFrame:0, endFrame:6, initFrame:0 }
+        /* studio */ { folder:null, image:"st_int_distance", startFrame:0, endFrame:6, initFrame:0 },
+        /* monitor */ { folder:null, image:"mn_int_distance", startFrame:0, endFrame:6, initFrame:0 }
 	);
     pages.page_1_1 = new Page (
         /* pageKey */ "1_1",
@@ -43,8 +43,8 @@ function initPages(items, targets) {
         /* ActorItems */ [],
         /* TargetItems */ [],
         /* guides */ [],
-        /* studio */ { text:null, image:"st_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] },
-        /* monitor */ { text:null, image:"mn_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] }
+        /* studio */ { folder:null, image:"st_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] },
+        /* monitor */ { folder:null, image:"mn_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] }
 	);
 	pages.page_2_0 = new Page (
         /* pageKey */ "2_0",
@@ -52,11 +52,23 @@ function initPages(items, targets) {
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
-        /* ActorItems */ [items.softNear2_0],
+        /* ActorItems */ [items.flagMover],
         /* TargetItems */ [],
         /* guides */ [],
-        /* studio */ { text:null, image:"st_shadow_soft_near/st_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
-        /* monitor */ { text:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
+        /* studio */ { folder:"st_shadow_soft_near", image:"st_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
+        /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
+	);
+    pages.page_2_1 = new Page (
+        /* pageKey */ "2_1",
+        /* pageText */ "Now try moving the flag with hard light.  Compare these hard shadows to the previous soft ones.  But it's not just shadow qualities that make a difference.  The distance of the flag to the light source also has an effect.  Check that out on the next page...",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [],
+        /* ActorItems */ [items.flagMover],
+        /* TargetItems */ [],
+        /* guides */ [],
+        /* studio */ { folder:"st_shadow_hard_near", image:"st_shadow_hard_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
+        /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
     return pages;
 }
