@@ -70,6 +70,30 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_hard_near", image:"st_shadow_hard_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
+    pages.page_2_2 = new Page (
+        /* pageKey */ "2_2",
+        /* pageText */ "Softlight shadows can be placed more accurately when the flag is farther from the light.  But now the flag is probably in the shot!  Check out similar positioning with hard light...",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [],
+        /* ActorItems */ [items.flagMover],
+        /* TargetItems */ [],
+        /* guides */ [],
+        /* studio */ { folder:"st_shadow_soft_far", image:"st_shadow_soft_far", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
+        /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
+	);
+    pages.page_2_3 = new Page (
+        /* pageKey */ "2_3",
+        /* pageText */ "A hard light shadow gets even harder when the flag is farther from the light source -- but it's still too close to the subject.  How would you position a flag like this without blocking the subjecy or camera?  Stay tuned...",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [],
+        /* ActorItems */ [items.flagMover],
+        /* TargetItems */ [],
+        /* guides */ [],
+        /* studio */ { folder:"st_shadow_hard_far", image:"st_shadow_hard_far", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
+        /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
+	);
     return pages;
 }
 
