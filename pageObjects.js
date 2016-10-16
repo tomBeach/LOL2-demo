@@ -56,7 +56,7 @@ function initPages(items, targets) {
         /* TargetItems */ [],
         /* guides */ [],
         /* studio */ { text:null, image:"st_shadow_soft_near/st_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
-        /* monitor */ { text:null, image:"st_shadow_soft_near/mn_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
+        /* monitor */ { text:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
     return pages;
 }

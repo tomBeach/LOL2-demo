@@ -12,14 +12,15 @@ Item.prototype.initMove = function(e) {
     var item = clientApp.activeActor;
     var itemType = item.itemType;
     item.itemEl = $("#" + item.itemId).eq(0);
-    console.log("item.itemTargets:", item.itemTargets);
 
     // == strip "px" suffix from left and top properties
     var locL = parseInt($(item.itemEl).css('left').substring(0, $(item.itemEl).css('left').length - 2));
     var locT = parseInt($(item.itemEl).css('top').substring(0, $(item.itemEl).css('top').length - 2));
+
+    // == update locXY indicator
     $('#locXYWH').html("<p class='info-text'>left: " + locL + "</p><p class='info-text'>top: " + locT + "</p>");
 
-    // == limit moves to max canvas boundaries
+    // == limit moves to LTWH (left/top/width/height) boundaries
     if (item.bounds.W > (displayItems.studio.canW - item.initLTWH.W)) {
         var itemBoundsW = displayItems.studio.canW - item.initLTWH.W;
     } else {
@@ -38,12 +39,12 @@ Item.prototype.initMove = function(e) {
     item.startXY.mouseY = e.clientY;
     item.startXY.diffX = e.clientX - locL;
     item.startXY.diffY = e.clientY - locT;
-    item.minMaxLT.minL = displayItems.studio.canL + item.bounds.L;      // absolute
-    item.minMaxLT.minT = displayItems.studio.canT + item.bounds.T;      // absolute
-    item.minMaxLT.maxL = displayItems.studio.canL + item.bounds.L + itemBoundsW;      //  - item.initLTWH.W;
-    item.minMaxLT.maxT = displayItems.studio.canT + item.bounds.T + itemBoundsH;      //  - item.initLTWH.H;
+    item.minMaxLT.minL = displayItems.studio.canL + item.bounds.L;
+    item.minMaxLT.minT = displayItems.studio.canT + item.bounds.T;
+    item.minMaxLT.maxL = displayItems.studio.canL + item.bounds.L + itemBoundsW;
+    item.minMaxLT.maxT = displayItems.studio.canT + item.bounds.T + itemBoundsH;
 
-    // == set relative bounds to absolute bounds
+    // == change relative LTWH to absolute LTWH for setup targets (which are 'children' of setup objects)
     var target, setup;
     if ((item.itemTargets.length > 0) && (page.SetupItems.length > 0)) {
         setup = page.SetupItems[0];
@@ -80,12 +81,6 @@ Item.prototype.moveItem = function(e) {
             var itemLT = getMoveBoundaries(left, top);
             updateMatrixAB(itemLT[0], itemLT[1]);
             break;
-        case "slider":
-            var left = parseInt(item.startXY.itemL + dX);
-            var top = parseInt(item.startXY.itemT - item.dropLTWH.T - (item.bounds.H * deltaX));
-            var itemLT = getMoveBoundaries(left, top);
-            updateItemLoc(itemLT[0], itemLT[1]);
-            break;
         case "dragger":
             var left = parseInt(item.startXY.itemL + dX);
             var top = parseInt(item.startXY.itemT + dY);
@@ -95,7 +90,13 @@ Item.prototype.moveItem = function(e) {
             } else {
                 updateItemLoc(itemLT[0], itemLT[1]);
             }
-        break;
+            break;
+        case "slider":
+            var left = parseInt(item.startXY.itemL + dX);
+            var top = parseInt(item.startXY.itemT - item.dropLTWH.T - (item.bounds.H * deltaX));
+            var itemLT = getMoveBoundaries(left, top);
+            updateItemLoc(itemLT[0], itemLT[1]);
+            break;
     }
 
     // ======= updateMatrixAB =======
@@ -105,14 +106,14 @@ Item.prototype.moveItem = function(e) {
         var item = clientApp.activeActor;
 
         // == calculate percent movement through frameset/limit frames to start/end
-        indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
+        var indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
         if (indexX < 0) {
             indexX = 0;
         }
         if (indexX > clientApp.activePage.studio.endFrame) {
             indexX = clientApp.activePage.studio.endFrame;
         }
-        indexY = Math.round(-deltaY * clientApp.activePage.studio.endFrame);
+        var indexY = Math.round(-deltaY * clientApp.activePage.studio.endFrame);
         if (indexY < 0) {
             indexY = 0;
         }
@@ -120,14 +121,16 @@ Item.prototype.moveItem = function(e) {
             indexY = clientApp.activePage.studio.endFrame;
         }
 
-        // == set real-time item loc and canvas frame based on slider position
+        // == set real-time item loc based on slider position
         $(item.itemEl).css('z-index', '10');
         $(item.itemEl).css('top', top + 'px');
         $(item.itemEl).css('left', left + 'px');
         item.startXY.dragL = left;
         item.startXY.dragT = top;
-        clientApp.updateCanvasFrame(indexX, indexY);
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+
+        // == set real-time canvas frame based on slider position
+        clientApp.updateCanvasFrame(indexX, indexY);
     }
 
     // ======= swapTargetOccupiers =======
@@ -194,7 +197,7 @@ Item.prototype.moveItem = function(e) {
         var item = clientApp.activeActor;
 
         // == calculate percent movement through frameset/limit frames to start/end
-        indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
+        var indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
         if (indexX < 0) {
             indexX = 0;
         }
@@ -202,14 +205,16 @@ Item.prototype.moveItem = function(e) {
             indexX = clientApp.activePage.studio.endFrame;
         }
 
-        // == set real-time item loc and canvas frame based on slider position
+        // == set real-time item loc based on slider position
         $(item.itemEl).css('z-index', '10');
         $(item.itemEl).css('top', top + 'px');
         $(item.itemEl).css('left', left + 'px');
         item.startXY.dragL = left;
         item.startXY.dragT = top;
-        clientApp.updateCanvasFrame(indexX, null);
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+
+        // == set real-time canvas frame based on slider position
+        clientApp.updateCanvasFrame(indexX, null);
     }
 
     // ======= ======= ======= MATH ======= ======= =======

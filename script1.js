@@ -113,99 +113,73 @@ var clientApp = {
     makeLessonCanvases: function(lesson) {
         console.log("makeLessonCanvases");
 
+        if (this.activePage.studio.matrix) {
+            var matrix = this.activePage.studio.matrix;
+            console.log("matrix:", matrix);
+            var XfilesArray = [];
+            var YfilesArray = [];
+            var startFrameX = clientApp.activePage[canvas].startFrame;
+            var endFrameX = clientApp.activePage[canvas].endFrame + 1;
+            var startFrameY = startFrameX;
+            var endFrameY = endFrameX;
+        } else {
+            var XfilesArray = [];
+            var startFrameX = clientApp.activePage[canvas].startFrame;
+            var endFrameX = clientApp.activePage[canvas].endFrame + 1;
+        }
         clientApp.studioImages = [];
         clientApp.monitorImages = [];
-        var page = clientApp.activePage;
 
         if (this.activePage.studio.image) {
             loadCanvasImages("studio");
-        }
-        if (this.activePage.monitor.image) {
             loadCanvasImages("monitor");
         }
+
+        // var studioString = ('images/' + studioImage + '_' + frameIndexX + frameIndexY + '.png');
+        // var studioString = ('images/' + studioImage + '_' + frameIndexX + '.png');
+        // var monitorString = ('images/' + monitorImage + '_' + frameIndexX + frameIndexY + '.png');
+        // var monitorString = ('images/' + monitorImage + '_' + frameIndexX + '.png');
 
         // ======= loadCanvasImages =======
         function loadCanvasImages(canvas) {
             console.log("loadCanvasImages");
 
-            // == set start/end frame indexes
-            if (page.studio.matrix) {
-                var matrix = page.studio.matrix;
-                var YfilesArray = [];
-                var startFrameX = page[canvas].startFrame;
-                var endFrameX = page[canvas].endFrame + 1;
-                var startFrameY = page[canvas].startFrame;
-                var endFrameY = page[canvas].endFrame + 1;
-            } else {
-                var matrix = null;
-                var startFrameX = page[canvas].startFrame;
-                var endFrameX = page[canvas].endFrame + 1;
+            // == get frameset params
+            var imageName = clientApp.activePage[canvas].image;
+            var initFrame = clientApp.activePage[canvas].initFrame;
+
+            // == make list of image files for active page canvases
+            for (var x = startFrame; x < endFrame; x++) {
+                var imageFileName = (imageName + '_' + x + '.png');
+                XfilesArray.push(imageFileName);
             }
 
-            // == get frameset and canvas params
-            var imageName = page[canvas].image;
-            var initFrame = page[canvas].initFrame;
             var can = clientApp.displayItems[canvas].can;
-            var ctx = clientApp.displayItems[canvas].ctx;
             var canW = clientApp.displayItems[canvas].canW;
             var canH = clientApp.displayItems[canvas].canH;
-            console.log("imageName:", imageName);
-
-            // == start image load self-invoking iterative function
-            loadNextImage(0, 0);
+            var ctx = clientApp.displayItems[canvas].ctx;
+            loadNextImage(null, 0);
 
             // ======= loadNextImage =======
-            function loadNextImage(Xindex, Yindex) {
-                console.log("\n +++++++ loadNextImage");
-                console.log("endFrameX:", endFrameX);
-                console.log("Xindex:", Xindex);
-                console.log("matrix:", matrix);
+            function loadNextImage(image, imageIndex) {
+                console.log("loadNextImage");
+                console.log("image:", image);
 
                 // == make image elements; assure image loading via timeout
-                if (Xindex < endFrameX) {
-                    if (matrix) {
-                        console.log("MATRIX:");
-                        if (Yindex < endFrameY) {
-                            var canvasImage = new Image();
-                            canvasImage.id = imageName + "_" + Xindex + Yindex;
-                            canvasImage.src = "images/" + imageName + "_" + Xindex + Yindex + ".png";
-                            canvasImage.onload = function() {
-                                setTimeout(function(){
-                                    YfilesArray.push(canvasImage);
-                                    Yindex++;
-                                    console.log("Yindex2:", Yindex);
-                                    // loadNextImage(Xindex, Yindex);
-                                }, 10);
-                            }
-                        } else {
+                var imageString = "images/" + XfilesArray[imageIndex];
+                if (imageIndex < XfilesArray.length) {
+                    var canvasImage = new Image();
+                    canvasImage.id = imageName + "_" + imageIndex;
+                    canvasImage.src = imageString;
+                    canvasImage.onload = function() {
+                        setTimeout(function(){
                             if (canvas == "studio") {
-                                clientApp.studioImages.push(YfilesArray);
+                                clientApp.studioImages.push(canvasImage);
                             } else {
-                                clientApp.monitorImages.push(YfilesArray);
+                                clientApp.monitorImages.push(canvasImage);
                             }
-                            Xindex++;
-                            Yindex = 0;
-                            YfilesArray = [];
-                            console.log("Xindex3:", Xindex);
-                            console.log("Yindex3:", Yindex);
-                            // loadNextImage(Xindex, Yindex);
-                        }
-                    } else {
-                        var canvasImage = new Image();
-                        canvasImage.id = imageName + "_" + Xindex;
-                        canvasImage.src = "images/" + imageName + "_" + Xindex + ".png";
-                        canvasImage.onload = function() {
-                            setTimeout(function(){
-                                if (canvas == "studio") {
-                                    clientApp.studioImages.push(canvasImage);
-                                } else {
-                                    clientApp.monitorImages.push(canvasImage);
-                                }
-                                Xindex++;
-                                console.log("Xindex4:", Xindex);
-                                loadNextImage(Xindex, Yindex);
-                            }, 10);
-                        }
+                            loadNextImage(XfilesArray[imageIndex++], imageIndex);
+                        }, 10);
                     }
 
                 // == display init image (usually first in frameset)
@@ -213,10 +187,8 @@ var clientApp = {
 
                     if (canvas == "studio") {
                         var initImage = clientApp.studioImages[initFrame];
-                        // var initImage = clientApp.studioImages[initFrame];
                     } else {
                         var initImage = clientApp.monitorImages[initFrame];
-                        // var initImage = clientApp.monitorImages[initFrame];
                     }
                     ctx.clearRect(0, 0, 720, 405);
 
@@ -768,10 +740,6 @@ var clientApp = {
                 if (clientApp.lessons[nextLessonName] && clientApp.pages[nextPageName]) {
                     clientApp.activeLesson = clientApp.lessons[nextLessonName];
                     clientApp.activePage = clientApp.pages[nextPageName];
-                    if (clientApp.activeActor) {
-                        clientApp.activeActor.dropLTWH = { L:0, T:0, W:0, H:0 };
-                        clientApp.activeActor = null;
-                    }
                     clientApp.makeLessonPage(e.currentTarget);
                 } else {
                     clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
