@@ -155,27 +155,35 @@ Item.prototype.moveItem = function(e) {
     // ======= swapTargetOccupiers =======
     function swapTargetOccupiers(target, newOccupier) {
         console.log("swapTargetOccupiers");
-        console.log("newOccupier.itemId:", newOccupier.itemId);
+        console.log("target:", target);
+        console.log("target.occupier:", target.occupier);
 
-        // == return target occupier to original location
-        var occupier = target.occupier;
-        if (occupier) {
-            $(occupier.itemEl).css('display', 'block');
-            $(occupier.itemEl).animate({
-              left: occupier.initLTWH.L,
-              top: occupier.initLTWH.T
-          }, 500, function() {
-                console.log("itemReturned");
-            });
-            // $(occupier.itemEl).css('left', occupier.initLTWH.L);
-            // $(occupier.itemEl).css('top', occupier.initLTWH.T);
-        }
-        target.occupier = newOccupier;
+        $(newOccupier.itemEl).fadeOut(1000, function() {
+
+            // == return target occupier to original location
+            var occupier = target.occupier;
+            if (occupier) {
+                $(occupier.itemEl).css('visibility', 'visible');
+                $(occupier.itemEl).css('display', 'block');
+                $(occupier.itemEl).css('width', target.occupier.initLTWH.W * 0.4);
+                $(occupier.itemEl).css('height', target.occupier.initLTWH.H * 0.4);
+                $(occupier.itemEl).css('z-index', '10');
+                $(occupier.itemEl).animate({
+                    width: occupier.initLTWH.W,
+                    height: occupier.initLTWH.H,
+                    left: occupier.initLTWH.L,
+                    top: occupier.initLTWH.T
+                }, 500, function() {
+                    console.log("itemReturned");
+                });
+            }
+            target.occupier = newOccupier;
+        });
     }
 
     // ======= checkItemTargets =======
     function checkItemTargets(left, top, targetType) {
-        console.log("checkItemTargets");
+        // console.log("checkItemTargets");
 
         var page = clientApp.activePage;
         var item = clientApp.activeActor;
@@ -211,8 +219,13 @@ Item.prototype.moveItem = function(e) {
             if ((draggerL < target.absLoc.W) && (draggerT > target.absLoc.T) && (draggerL > target.absLoc.L) && (draggerT < target.absLoc.H)) {
                 console.log("-- HIT -- HIT -- HIT --");
                 $(item.itemEl).off();
-                $(item.itemEl).css('z-index', '2');
-                $(item.itemEl).css('display', 'none');
+                // $(item.itemEl).css('display', 'none');
+                $(item.itemEl).css('top', target.absLoc.T + 'px');
+                $(item.itemEl).css('left', target.absLoc.L + 'px');
+                $(item.itemEl).css('max-width', '100%');
+                $(item.itemEl).css('max-widtheight', target.initLTWH.H + 'px');
+
+                // $(target.itemEl).css('background-color', rgba(255, 200, 200, 0.5));
                 window.removeEventListener('mousemove', item.moveItem, true);
                 clientApp.updateCanvasFrame(item.indexedFrame, null);
                 swapTargetOccupiers(target, item);
@@ -281,7 +294,7 @@ Item.prototype.mouseUp = function(e) {
     console.log("mouseUp");
     var item = clientApp.activeActor;
     $(clientApp.activeActor.itemEl).off();
-    $(clientApp.activeActor.itemEl).css('z-index', '2');
+    // $(clientApp.activeActor.itemEl).css('z-index', '2');
     window.removeEventListener('mousemove', item.moveItem, true);
 
     // == store relative loc where item was dropped

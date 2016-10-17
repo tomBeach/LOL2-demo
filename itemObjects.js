@@ -9,6 +9,86 @@ function initItems(targets) {
     var items = {};
     var canvasS = clientApp.displayItems.studio;
 
+    items.opal = new Item(
+        /* itemId */ "opal",
+        /* itemEl */ null,
+        /* itemName */ "opal",
+        /* itemText */ "opal -- lighter diffusion material",
+        /* itemType */ "gridItem",
+        /* itemMove */ "dragger",
+        /* itemImage */ "diff1_0",
+        /* itemTargets */ [targets.barndoorFrame],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
+    );
+    items.halfWhite = new Item(
+        /* itemId */ "halfWhite",
+        /* itemEl */ null,
+        /* itemName */ "halfWhite",
+        /* itemText */ "halfWhite -- partial diffusion",
+        /* itemType */ "gridItem",
+        /* itemMove */ "dragger",
+        /* itemImage */ "diff2_0",
+        /* itemTargets */ [targets.barndoorFrame],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
+    );
+    items.rolux = new Item(
+        /* itemId */ "rolux",
+        /* itemEl */ null,
+        /* itemName */ "rolux",
+        /* itemText */ "rolux -- moderate diffusion",
+        /* itemType */ "gridItem",
+        /* itemMove */ "dragger",
+        /* itemImage */ "diff3_0",
+        /* itemTargets */ [targets.barndoorFrame],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
+    );
+    items.toughWhite = new Item(
+        /* itemId */ "toughWhite",
+        /* itemEl */ null,
+        /* itemName */ "toughWhite",
+        /* itemText */ "toughWhite -- heavy diffuser",
+        /* itemType */ "gridItem",
+        /* itemMove */ "dragger",
+        /* itemImage */ "diff4_0",
+        /* itemTargets */ [targets.barndoorFrame],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
+    );
+    items.toughspun = new Item(
+        /* itemId */ "toughspun",
+        /* itemEl */ null,
+        /* itemName */ "toughspun",
+        /* itemText */ "toughWhite -- a common multi-purpose diffuser",
+        /* itemType */ "gridItem",
+        /* itemMove */ "dragger",
+        /* itemImage */ "diff5_0",
+        /* itemTargets */ [targets.barndoorFrame],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:0, T:0, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:canvasS.canW, H:canvasS.canH }      // relative
+    );
     items.f150 = new Item(
         /* itemId */ "f150",
         /* itemEl */ null,

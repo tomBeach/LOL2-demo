@@ -13,7 +13,8 @@ var displayItems = {
     studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
     shop: { itemName: "shop", itemText: "Shop Menu" },
     lessons: { itemName: "lessons", itemText: "Lesson Menu" },
-    activeLesson: null
+    gridTop: 0,
+    gridLeft: 0
 }
 
 // ======= ======= ======= ======= ======= initialize ======= ======= ======= ======= =======
@@ -262,12 +263,13 @@ var clientApp = {
         function makeItemEls(items) {
             console.log("makeItemEls");
             console.log("items:", items);
-            var item, itemType, urlString, newDiv, target, gridW;
-            var gridL = clientApp.displayItems.studio.canL + 10;
-            var gridT = clientApp.displayItems.studio.canT + 10;
-            var gridStartL = null;
-            $('#grid').css('left', gridL + 'px');
-            $('#grid').css('top', gridT + 'px');
+            var item, itemType, urlString, newDiv, target, gridStartL;
+            clientApp.displayItems.gridLeft = clientApp.displayItems.studio.canL + 10;
+            clientApp.displayItems.gridTop = clientApp.displayItems.studio.canT + 10;
+            // var gridL = clientApp.displayItems.studio.canL + 10;
+            // var gridT = clientApp.displayItems.studio.canT + 10;
+            $('#grid').css('left', clientApp.displayItems.gridLeft + 'px');
+            $('#grid').css('top', clientApp.displayItems.gridTop + 'px');
 
             for (var i = 0; i < items.length; i++) {
                 item = items[i];
@@ -283,11 +285,7 @@ var clientApp = {
                     case "gridItem":
                         newDiv = makeItemHtml(item);
                         item.itemEl = newDiv;
-                        console.log("gridStartL:", gridStartL);
-                        if (!gridStartL) {
-                            gridStartL = clientApp.displayItems.studio.canL + item.initLTWH.L + 10;
-                        }
-                        locateGridItem(item, newDiv, gridStartL, i);
+                        locateGridItem(item, newDiv, i);
                         break;
                     case "actor":
                         newDiv = makeItemHtml(item);
@@ -317,15 +315,27 @@ var clientApp = {
             }
 
             // ======= locateGridItem =======
-            function locateGridItem(item, newDiv, gridL, itemIndex) {
+            function locateGridItem(item, newDiv, itemIndex) {
                 console.log("locateGridItem");
-                console.log("gridL:", gridL);
 
                 // == check vertical space for new item; move to right if not
-                if ((gridT + item.initLTWH.H + 10) > (clientApp.displayItems.studio.canT + clientApp.displayItems.studio.canH)) {
-                    gridT = clientApp.displayItems.studio.canT + 10;
-                    gridL = gridL + item.initLTWH.W + 10;
+                if (itemIndex == 0) {
+                    var gridL = clientApp.displayItems.gridLeft;
+                    var gridT = clientApp.displayItems.gridTop;
+                } else {
+                    var gridL = clientApp.displayItems.gridLeft;
+                    var gridT = clientApp.displayItems.gridTop + item.initLTWH.H + 10;
+                    clientApp.displayItems.gridTop = gridT;
+                    if ((gridT + item.initLTWH.H + 10) > (clientApp.displayItems.studio.canT + clientApp.displayItems.studio.canH)) {
+                        var gridL = clientApp.displayItems.gridLeft + item.initLTWH.W + 10;
+                        var gridT = clientApp.displayItems.studio.canT + 10;
+                        clientApp.displayItems.gridLeft = gridL;
+                        clientApp.displayItems.gridTop = gridT;
+                    }
                 }
+                console.log("gridT:", gridT);
+                console.log("...gridLeft:", clientApp.displayItems.gridLeft);
+                console.log("...gridTop:", clientApp.displayItems.gridTop);
 
                 // == locate item on new grid values
                 newDiv.style.left = gridL + 'px';
@@ -335,11 +345,6 @@ var clientApp = {
                 newDiv.style.zIndex = 4;
                 item.initLTWH.L = gridL;
                 item.initLTWH.T = gridT;
-                console.log("gridL:", gridL);
-                console.log("gridT:", gridT);
-
-                // == set next item top location (based on prev item height)
-                gridT = gridT + item.initLTWH.H + 10;
 
                 $('#grid').append(newDiv);
             }
@@ -658,10 +663,10 @@ var clientApp = {
                     }
                     clientApp.makeLessonPage(e.currentTarget);
                 } else {
-                    clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
+                    clientApp.updateLessonText("Sorry... requested page is missing.  Click the <span class='hilight'>Lessons</span> tab to try again.");
                 }
             } else {
-                clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
+                clientApp.updateLessonText("Sorry... requested page is missing.  Click the <span class='hilight'>Lessons</span> tab to try again.");
             }
         });
         $('#navPanel').children('div').on('mouseenter', function(e) {
