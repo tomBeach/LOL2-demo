@@ -56,6 +56,16 @@ Item.prototype.initMove = function(e) {
             target.absLoc.H = target.initLTWH.T + setup.initLTWH.T + displayItems.studio.canT + target.initLTWH.H;
         }
     }
+    if (page.TargetItems.length > 0) {
+        var pageTargets = page.TargetItems;
+        for (var i = 0; i < pageTargets.length; i++) {
+            target = pageTargets[i];
+            target.absLoc.L = target.initLTWH.L + displayItems.studio.canL;
+            target.absLoc.T = target.initLTWH.T + displayItems.studio.canT;
+            target.absLoc.W = target.initLTWH.L + displayItems.studio.canL + target.initLTWH.W;
+            target.absLoc.H = target.initLTWH.T + displayItems.studio.canT + target.initLTWH.H;
+        }
+    }
 
     window.addEventListener('mousemove', item.moveItem, true);
     window.addEventListener('mouseup', item.mouseUp, true);
@@ -65,6 +75,7 @@ Item.prototype.initMove = function(e) {
 Item.prototype.moveItem = function(e) {
     // console.log("moveItem");
 
+    var page = clientApp.activePage;
     var item = clientApp.activeActor;
     var itemMove = item.itemMove;
 
@@ -85,8 +96,13 @@ Item.prototype.moveItem = function(e) {
             var left = parseInt(item.startXY.itemL + dX);
             var top = parseInt(item.startXY.itemT + dY);
             var itemLT = getMoveBoundaries(left, top);
-            if (item.itemTargets.length > 0) {
-                checkItemTargets(itemLT[0], itemLT[1]);
+            if ((item.itemTargets.length > 0) || (page.TargetItems.length > 0)) {
+                if (item.itemTargets.length > 0) {
+                    checkItemTargets(itemLT[0], itemLT[1], "setup");
+                }
+                if (page.TargetItems.length > 0) {
+                    checkItemTargets(itemLT[0], itemLT[1], "page");
+                }
             } else {
                 updateItemLoc(itemLT[0], itemLT[1]);
             }
@@ -144,18 +160,31 @@ Item.prototype.moveItem = function(e) {
         // == return target occupier to original location
         var occupier = target.occupier;
         if (occupier) {
-            $(occupier.itemEl).css('left', occupier.initLTWH.L);
-            $(occupier.itemEl).css('top', occupier.initLTWH.T);
             $(occupier.itemEl).css('display', 'block');
+            $(occupier.itemEl).animate({
+              left: occupier.initLTWH.L,
+              top: occupier.initLTWH.T
+          }, 500, function() {
+                console.log("itemReturned");
+            });
+            // $(occupier.itemEl).css('left', occupier.initLTWH.L);
+            // $(occupier.itemEl).css('top', occupier.initLTWH.T);
         }
         target.occupier = newOccupier;
     }
 
     // ======= checkItemTargets =======
-    function checkItemTargets(left, top) {
-        // console.log("checkItemTargets");
+    function checkItemTargets(left, top, targetType) {
+        console.log("checkItemTargets");
 
+        var page = clientApp.activePage;
         var item = clientApp.activeActor;
+
+        if (targetType == "page") {
+            var targetList = page.TargetItems;
+        } else if (targetType == "setup") {
+            var targetList = item.itemTargets;
+        }
 
         // == set real-time item loc and canvas frame based on slider position
         $(item.itemEl).css('z-index', '10');
@@ -170,8 +199,8 @@ Item.prototype.moveItem = function(e) {
         var draggerL = left + item.initLTWH.W/2;
         var draggerT = top + item.initLTWH.H/2;
 
-        for (var i = 0; i < item.itemTargets.length; i++) {
-            target = item.itemTargets[i];
+        for (var i = 0; i < targetList.length; i++) {
+            target = targetList[i];
 
             // == set real-time item loc and canvas frame based on slider position
             $(item.itemEl).css('top', top + 'px');

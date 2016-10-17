@@ -14,7 +14,7 @@ function initItems(targets) {
         /* itemEl */ null,
         /* itemName */ "f150",
         /* itemText */ "",
-        /* itemType */ "grid",
+        /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "f150_0",
         /* itemTargets */ [],
@@ -22,15 +22,15 @@ function initItems(targets) {
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
         /* dropLTWH */ { L:0, T:0, W:0, H:0 },
-        /* initLTWH */ { L:400, T:80, W:100, H:100 },
-        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+        /* initLTWH */ { L:20, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
     );
     items.f300 = new Item(
         /* itemId */ "f300",
         /* itemEl */ null,
         /* itemName */ "f300",
         /* itemText */ "",
-        /* itemType */ "grid",
+        /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "f300_0",
         /* itemTargets */ [],
@@ -38,15 +38,15 @@ function initItems(targets) {
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
         /* dropLTWH */ { L:0, T:0, W:0, H:0 },
-        /* initLTWH */ { L:400, T:80, W:100, H:100 },
-        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+        /* initLTWH */ { L:20, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
     );
     items.f650 = new Item(
         /* itemId */ "f650",
         /* itemEl */ null,
         /* itemName */ "f650",
         /* itemText */ "",
-        /* itemType */ "grid",
+        /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "f650_0",
         /* itemTargets */ [],
@@ -54,15 +54,15 @@ function initItems(targets) {
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
         /* dropLTWH */ { L:0, T:0, W:0, H:0 },
-        /* initLTWH */ { L:400, T:80, W:100, H:100 },
-        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+        /* initLTWH */ { L:20, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
     );
     items.f1000 = new Item(
         /* itemId */ "f1000",
         /* itemEl */ null,
         /* itemName */ "f1000",
         /* itemText */ "",
-        /* itemType */ "grid",
+        /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "f1000_0",
         /* itemTargets */ [],
@@ -70,8 +70,8 @@ function initItems(targets) {
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
         /* dropLTWH */ { L:0, T:0, W:0, H:0 },
-        /* initLTWH */ { L:400, T:80, W:100, H:100 },
-        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+        /* initLTWH */ { L:20, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
     );
     items.flagMover = new Item(
         /* itemId */ "flagMover",
@@ -94,7 +94,7 @@ function initItems(targets) {
         /* itemEl */ null,
         /* itemName */ "half stop",
         /* itemText */ "half-stop scrim (minor brightness tweak)",
-        /* itemType */ "grid",
+        /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "scrim1_0",
         /* itemTargets */ [targets.barndoorFrame],
@@ -110,7 +110,7 @@ function initItems(targets) {
         /* itemEl */ null,
         /* itemName */ "full stop",
         /* itemText */ "full-stop scrim (reduces brightness more)",
-        /* itemType */ "grid",
+        /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "scrim2_0",
         /* itemTargets */ [targets.barndoorFrame],
@@ -126,7 +126,7 @@ function initItems(targets) {
         /* itemEl */ null,
         /* itemName */ "gradiated",
         /* itemText */ "gradiated scrim -- cuts light more at bottom of beam",
-        /* itemType */ "grid",
+        /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "scrim3_0",
         /* itemTargets */ [targets.barndoorFrame],

@@ -41,7 +41,7 @@ var clientApp = {
         this.activeLesson = this.lessons.lesson_0;
         this.activeActor = null;
         this.makeLessonMenu(2);
-        this.makeMenuGrid();
+        // this.makeMenuGrid();
         this.activatePrevNext();
         this.activateMenuItems("lessonMenu");
         this.activateDisplayItems();
@@ -56,7 +56,7 @@ var clientApp = {
 
         this.initLessonCanvases();
         this.clearLessonCanvases();
-        this.removeActorsGuides();
+        this.clearPageElements();
         this.makeLessonCanvases();
         this.makeLessonItems();
         this.activateLessonItems();
@@ -265,6 +265,7 @@ var clientApp = {
             var item, itemType, urlString, newDiv, target, gridW;
             var gridL = clientApp.displayItems.studio.canL + 10;
             var gridT = clientApp.displayItems.studio.canT + 10;
+            var gridStartL = null;
             $('#grid').css('left', gridL + 'px');
             $('#grid').css('top', gridT + 'px');
 
@@ -279,11 +280,14 @@ var clientApp = {
                         item.itemEl = newDiv;
                         locatePageTarget(item, newDiv);
                         break;
-                    case "grid":
+                    case "gridItem":
                         newDiv = makeItemHtml(item);
                         item.itemEl = newDiv;
-                        gridW = clientApp.displayItems.studio.canL + item.initLTWH.W + 10;
-                        locateGridItem(item, newDiv, gridW, i);
+                        console.log("gridStartL:", gridStartL);
+                        if (!gridStartL) {
+                            gridStartL = clientApp.displayItems.studio.canL + item.initLTWH.L + 10;
+                        }
+                        locateGridItem(item, newDiv, gridStartL, i);
                         break;
                     case "actor":
                         newDiv = makeItemHtml(item);
@@ -313,14 +317,14 @@ var clientApp = {
             }
 
             // ======= locateGridItem =======
-            function locateGridItem(item, newDiv, gridW, itemIndex) {
+            function locateGridItem(item, newDiv, gridL, itemIndex) {
                 console.log("locateGridItem");
+                console.log("gridL:", gridL);
 
                 // == check vertical space for new item; move to right if not
                 if ((gridT + item.initLTWH.H + 10) > (clientApp.displayItems.studio.canT + clientApp.displayItems.studio.canH)) {
                     gridT = clientApp.displayItems.studio.canT + 10;
-                    gridL = gridW;
-                    gridW = gridL + item.initLTWH.W + 10;
+                    gridL = gridL + item.initLTWH.W + 10;
                 }
 
                 // == locate item on new grid values
@@ -346,9 +350,9 @@ var clientApp = {
                 console.log("target:", target);
                 console.log("newDiv:", newDiv);
 
-                // == setupTarget initLTWH is offset from setup item
-                newDiv.style.left = target.initLTWH.L + displayItems.studio.canL + target.initLTWH.L + 'px';
-                newDiv.style.top = target.initLTWH.T + displayItems.studio.canT + target.initLTWH.T + 'px';
+                // == pageTarget initLTWH is absolute (page)
+                newDiv.style.left = displayItems.studio.canL + target.initLTWH.L + 'px';
+                newDiv.style.top = displayItems.studio.canT + target.initLTWH.T + 'px';
                 newDiv.style.width = target.initLTWH.W + 'px';
                 newDiv.style.height = target.initLTWH.H + 'px';
                 newDiv.style.zIndex = 3;
@@ -400,6 +404,7 @@ var clientApp = {
                 newDiv = document.createElement('div');
                 newDiv.id = item.itemId;
                 newDiv.classList.add(item.itemType);
+                // newDiv.style.position = "relative";
                 newDiv.style.position = "absolute";
                 return newDiv;
             }
@@ -501,7 +506,7 @@ var clientApp = {
     makeMenuGrid: function(item) {
         console.log("makeMenuGrid");
         var menuHtml = "";
-        menuHtml += "<div class='grid_item'>";
+        menuHtml += "<div class='gridItem'>";
         menuHtml += "<img class='grid_image' src='images/f150_0.png' alt='f150'>";
         menuHtml += "<span class='grid_text'>150W</span>";
         menuHtml += "</div>";
@@ -680,8 +685,10 @@ var clientApp = {
         var actors = page.ActorItems;
         var targets = page.TargetItems;
         var guides = page.guides;
+
         var setupItem, setupTargets, setupControls;
         var lessonItemsArray = [groups, gridders, actors, targets];
+        console.log("gridders: ", gridders);
 
         // == activate page level items
         for (var i = 0; i < lessonItemsArray.length; i++) {
@@ -727,11 +734,12 @@ var clientApp = {
 
                 // ======= MOUSEENTER/LEAVE =======
                 $('#' + item.itemId).on('mouseenter', function(e) {
-                    // console.log("\nmouseenter");
+                    console.log("\nmouseenter");
+                    console.log("e.currentTarget:", e.currentTarget);
                     clientApp.toggleHoverText(e.currentTarget, item.itemType);
                 });
                 $('#' + item.itemId).on('mouseleave', function(e) {
-                    // console.log("\nmouseleave");
+                    console.log("\nmouseleave");
                     clientApp.toggleHoverText(null, null);
                 });
             }
@@ -886,6 +894,33 @@ var clientApp = {
         }
     },
 
+    // ======= clearPageElements =======
+    clearPageElements: function() {
+        console.log("clearPageElements");
+
+        // <div id="grid"></div>
+    	// <div id="group"></div>
+    	// <div id="actors"></div>
+        // <div id="guides"></div>
+    	// <div id="setup"></div>
+    	// <div id="targets"></div>
+    	// <div id="controls"></div>
+    	// <div id="trackpad"></div>
+    	// <div id="tooltips"></div>
+    	// <div id="titleText"></div>
+    	// <div id="occupier"></div>
+
+        // == removeActorsGuides
+        $('#grid').empty();
+        $('#actors').empty();
+        $('#guides').empty();
+        $('#setup').empty();
+        $('#targets').empty();
+        $('.gridItem').remove();
+        $('.target').remove();
+        $('.setupTarget').remove();
+    },
+
     // ======= clearLessonCanvases =======
     clearLessonCanvases: function() {
         console.log("clearLessonCanvases");
@@ -896,38 +931,47 @@ var clientApp = {
         }
     },
 
-    // ======= removeActorsGuides =======
-    removeActorsGuides: function() {
-        console.log("removeActorsGuides");
-        var actors = $('#actors').empty();
-        var guides = $('#guides').empty();
-        var actors = $('#grid').empty();
-        var setup = $('#setup').empty();
-        var setupTargets = $('.setupTarget').remove();
-    },
-
-    // ======= removeLessonItems =======
-    removeLessonItems: function() {
-        console.log("removeLessonItems");
-        var lessonItems = $('#lessonMenu').remove();
-    },
-
-    // ======= removeGridItems =======
-    removeGridItems: function(menu) {
-        console.log("removeGridItems");
-        var gridItems = $('.grid_item').remove();
-    },
+    // // ======= removeActorsGuides =======
+    // removeActorsGuides: function() {
+    //     console.log("clearPageElements");
+    //     var actors = $('#actors').empty();
+    //     var guides = $('#guides').empty();
+    //     var actors = $('#grid').empty();
+    //     var setup = $('#setup').empty();
+    //     var setupTargets = $('.setupTarget').remove();
+    // },
+    //
+    // // ======= removeLessonItems =======
+    // removeLessonItems: function() {
+    //     console.log("removeLessonItems");
+    //     var lessonItems = $('#lessonMenu').remove();
+    // },
+    //
+    // // ======= removeGridItems =======
+    // removeGridItems: function(menu) {
+    //     console.log("removeGridItems");
+    //     var gridItems = $('.gridItem').remove();
+    // },
+    //
+    // // ======= removeTargets =======
+    // removeTargets: function(menu) {
+    //     console.log("removeTargets");
+    //     var targets = $('.target').remove();
+    // },
 
     // ======= toggleHoverText =======
     toggleHoverText: function(item, itemType) {
-        // console.log("toggleHoverText");
+        console.log("toggleHoverText");
+        console.log("itemType:", itemType);
         if ($(item).attr('id')) {
             if (itemType == "display") {
                 var itemText = clientApp.displayItems[$(item).attr('id')].itemText;
             } else if (itemType == "lesson") {
                 var itemText = clientApp.lessons[$(item).attr('id')].itemText;
-            } else if ((itemType == "actor") || (itemType == "target")) {
+            } else if ((itemType == "actor") || (itemType == "gridItem")) {
                 var itemText = clientApp.items[$(item).attr('id')].itemText;
+            } else if (itemType == "target") {
+                var itemText = clientApp.targets[$(item).attr('id')].itemText;
             } else {
                 var itemText = $(item).attr('id');
             }

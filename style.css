@@ -23,14 +23,6 @@ html {
     background: linear-gradient( to top, #777, #ccc);
 }
 
-/* ======= targets ======= */
-.target {
-	background-color: red;
-}
-.target:hover {
-	background-color: green;
-}
-
 /* ======= grid_image ======= */
 .grid_item {
     width: 86px;
@@ -348,6 +340,12 @@ canvas {
 }
 
 /* ======= targets ======= */
+.target {
+	border: solid 5px red;
+}
+.target:hover {
+	border: solid 5px green;
+}
 .setupTarget {
 	border: solid 5px red;
 }

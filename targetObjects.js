@@ -15,9 +15,9 @@ function initTargets() {
         /* itemName */ "stand",
         /* itemType */ "target",
         /* itemText */ "drag lights here",
-        /* itemImage */ "null",
-        /* initLTWH */ { L:110, T:10, W:80, H:200 },
-        /* absLoc */ { L:0, T:0, W:0, H:0 },
+        /* itemImage */ null,
+        /* initLTWH */ { L:560, T:45, W:75, H:80 },
+        /* absLoc */ { L:20, T:20, W:700, H:300 },
         /* occupier */ null
     );
     targets.barndoorFrame = new Target(
@@ -26,8 +26,8 @@ function initTargets() {
         /* itemName */ "barndoorFrame",
         /* itemType */ "setupTarget",
         /* itemText */ "drag items here",
-        /* itemImage */ "null",
-        /* initLTWH */ { L:110, T:10, W:80, H:200 },
+        /* itemImage */ null,
+        /* initLTWH */ { L:70, T:10, W:120, H:200 },
         /* absLoc */ { L:0, T:0, W:0, H:0 },
         /* occupier */ null
     );
