@@ -12,7 +12,7 @@ function initPages(items, targets) {
     // ======= demo items =======
     pages.page_0_0 = new Page (
         /* pageKey */ "0_0",
-        /* pageText */ "Welcome to Lighting on Location 2.0!</p><p><span class='hilight''>This is a work-in-progress</span>, but already demonstrates some interesting pseudo-3D animations and lots of drag-and-drop interactivity.</p><p>Note that canvas images can sometimes take a while to load.  (Progress bar in the works!)</p><p>The scenario begins like this: You've been hired as the grip for a big production, but the DP called in sick.  Now the job is yours and the crew is waiting.  Better know how to light up a set!  Keep reading.  If you don't know, you will soon!",
+        /* pageText */ "Welcome to Lighting on Location 2.0!</p><p><span class='hilight'>This is a work-in-progress</span>, but already demonstrates some interesting pseudo-3D animations and lots of drag-and-drop interactivity.</p><p>Note that canvas images can sometimes take a while to load.  (Progress bar in the works!)</p><p>The scenario begins like this: You've been hired as the grip for a big production, but the DP called in sick.  Now the job is yours and the crew is waiting.  Better know how to light up a set!  Keep reading.  If you don't know, you will soon!",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
@@ -70,8 +70,8 @@ function initPages(items, targets) {
         /* studio */ { folder:null, image:"st_qual_diff", startFrame:0, endFrame:6, initFrame:0, indexedFrames:[1, 2, 3, 4, 6] },
         /* monitor */ { folder:null, image:"mn_qual_diff", startFrame:0, endFrame:6, initFrame:0, indexedFrames:[1, 2, 3, 4, 6] }
 	);
-    pages.page_2_2 = new Page (
-        /* pageKey */ "2_2",
+    pages.page_2_1 = new Page (
+        /* pageKey */ "2_1",
         /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the flag around with the <span class='hilight'>orange flag mover</span> to see how shadows work with <span class='hilight'>soft light</span>.",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -82,8 +82,8 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_soft_near", image:"st_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
-    pages.page_2_3 = new Page (
-        /* pageKey */ "2_3",
+    pages.page_2_2 = new Page (
+        /* pageKey */ "2_2",
         /* pageText */ "Now try moving the flag with <span class='hilight'>hard light</span>.  Compare these hard shadows to the previous soft ones.  But it's not just shadow qualities that make a difference.  The distance of the flag to the light source also has an effect.  Check that out on the next page...",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -94,8 +94,8 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_hard_near", image:"st_shadow_hard_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
-    pages.page_2_4 = new Page (
-        /* pageKey */ "2_4",
+    pages.page_2_3 = new Page (
+        /* pageKey */ "2_3",
         /* pageText */ "Softlight shadows can be placed more accurately when the flag is farther from the light.  But now the flag is probably in the shot!  Check out similar positioning with hard light...",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -106,8 +106,8 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_soft_far", image:"st_shadow_soft_far", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
-    pages.page_2_5 = new Page (
-        /* pageKey */ "2_5",
+    pages.page_2_4 = new Page (
+        /* pageKey */ "2_4",
         /* pageText */ "A hard light shadow gets even harder when the flag is farther from the light source -- but it's still too close to the subject.  How would you position a flag like this without blocking the subjecy or camera?  Stay tuned...",
         /* SetupItems */ [],
         /* GroupItems */ [],
