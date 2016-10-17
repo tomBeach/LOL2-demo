@@ -12,7 +12,7 @@ function initPages(items, targets) {
     // ======= demo items =======
     pages.page_0_0 = new Page (
         /* pageKey */ "0_0",
-        /* pageText */ "You were hired as the grip for a big production but the DP called in.  Now the job is yours and the crew is waiting.  Better know how to light up a set!  Keep reading.  If you don't know, you will soon!",
+        /* pageText */ "Welcome to Lighting on Location 2.0.  <span class='hilight''>THIS IS A WORK-IN-PROGRESS</span>...an update of an older version.  Please note that canvas images can sometimes take a while to load.  (Progress bar to be added!)  Meanwhile, the scenario begins like this:</p><p>You were hired as the grip for a big production but the DP called in.  Now the job is yours and the crew is waiting.  Better know how to light up a set!  Keep reading.  If you don't know, you will soon!",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
@@ -24,7 +24,7 @@ function initPages(items, targets) {
 	);
 	pages.page_1_0 = new Page (
         /* pageKey */ "1_0",
-        /* pageText */ "The first thing to know is intensity: how bright the light is.  There are many ways to control intensity.  Number 1: distance.  The closer your light is to the subject, the brighter it is.  Drag the light icon to see how brightness changes with distance.  What else happens as you move the light in and out?",
+        /* pageText */ "The first thing to know is <span class='hilight'>intensity</span>: how bright the light is.  There are many ways to control intensity.  Number 1: distance.  The closer your light is to the subject, the brighter it is.  <span class='hilight'>Drag the light icon</span> to see how brightness changes with distance.  What else happens as you move the light in and out?",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
@@ -36,7 +36,7 @@ function initPages(items, targets) {
 	);
     pages.page_1_1 = new Page (
         /* pageKey */ "1_1",
-        /* pageText */ "Often, moving lights is not easy --  especially when its a 20k HMI lighting up a city block.  But if it's too bright you can drop a scrim into the barn door frame and cut it down a bit.  Drag some scrims towards the light and drop them into the barndoor frame.  Easy!",
+        /* pageText */ "Often, moving lights is not easy --  especially when its a 20k HMI lighting up a city block.  But if it's too bright you can drop a <span class='hilight'>scrim</span> into the <span class='hilight'>barn door frame</span> and cut it down a bit.  <span class='hilight'>Drag some scrims</span> towards the light and drop them into the barndoor frame.  Easy!",
         /* SetupItems */ [items.f650_0_2],
         /* GroupItems */ [],
         /* GridItems */ [items.scrim1_0, items.scrim2_0, items.scrim3_0],
@@ -48,7 +48,7 @@ function initPages(items, targets) {
 	);
     pages.page_1_2 = new Page (
         /* pageKey */ "1_2",
-        /* pageText */ "STILL UNDER CONSTRUCTION!!!  Please go to next page.  The power of lighting instruments is measured in watts -- from a tiny 150W to a monster 20,000W (or 20K).  Lights from a small lighting kit may range from 150 to 1,000 watts.  Try 'em.'",
+        /* pageText */ "<span class='hilight'>STILL UNDER CONSTRUCTION!!!  Please go to next page.</span>  The power of lighting instruments is measured in watts -- from a tiny 150W to a monster 20,000W (or 20K).  Lights from a small lighting kit may range from 150 to 1,000 watts.  Try 'em.'",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [items.f150, items.f300, items.f650, items.f1000],
@@ -60,7 +60,7 @@ function initPages(items, targets) {
 	);
 	pages.page_2_0 = new Page (
         /* pageKey */ "2_0",
-        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the flag around to see how shadows work with soft light.",
+        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the <span class='hilight'>flag</span> around to see how shadows work with <span class='hilight'>soft light</span>.",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
@@ -72,7 +72,7 @@ function initPages(items, targets) {
 	);
     pages.page_2_1 = new Page (
         /* pageKey */ "2_1",
-        /* pageText */ "Now try moving the flag with hard light.  Compare these hard shadows to the previous soft ones.  But it's not just shadow qualities that make a difference.  The distance of the flag to the light source also has an effect.  Check that out on the next page...",
+        /* pageText */ "Now try moving the flag with <span class='hilight'>hard light</span>.  Compare these hard shadows to the previous soft ones.  But it's not just shadow qualities that make a difference.  The distance of the flag to the light source also has an effect.  Check that out on the next page...",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],

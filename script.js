@@ -60,11 +60,7 @@ var clientApp = {
         this.makeLessonCanvases();
         this.makeLessonItems();
         this.activateLessonItems();
-        // if (lessonEl.className == "panelBtn") {
-        //     this.updateLessonText();
-        // } else {
-            this.makeLessonText(lessonEl);
-        // }
+        this.makeLessonText(lessonEl);
     },
 
     // ======= initLessonCanvases =======
@@ -525,7 +521,6 @@ var clientApp = {
 
         // == remove previous lesson text
         if ($('#lessonText').children('p').html()) {
-            // console.log("$('#lessonText').children('p').html():", $('#lessonText').children('p').html());
             $('#lessonText').animate({
                 height: 0,
                 opacity: 0
@@ -542,7 +537,6 @@ var clientApp = {
                 });
             });
         } else {
-            // console.log("$('#lessonText').children('p').html():", $('#lessonText').children('p').html());
 
             // == replace lessons list with lesson text
             $('#lessonText').children('p').html(lessonText);
@@ -565,25 +559,21 @@ var clientApp = {
         var titleText = clientApp.activeLesson.lessonIndex + " - " + clientApp.activeLesson.lessonTitle;
         var subTitleText = clientApp.activeLesson.lessonSubtitle;
 
-        $('#lessonTextDisplay').fadeOut('fast', function() {
-            // console.log("LESSON opacity 0");
-        });
-
         $('#selectedLesson').children('span').eq(0).text(titleText);
         $('#selectedLesson').children('span').eq(1).text(subTitleText);
 
-        // == update lesson text and activate prev/next
-        this.updateLessonText();
-
+        $("#lessonTextDisplay").fadeIn("fast", function() {
+            // console.log("MENU opacity 0");
+        });
         $("#lessonMenuDisplay").fadeOut("fast", function() {
             // console.log("MENU opacity 0");
         });
         $("#storeroomMenuDisplay").fadeOut("fast", function() {
             // console.log("STOREROOM opacity 0");
         });
-        $("#lessonTextDisplay").fadeIn("fast", function() {
-            // console.log("LESSON opacity 1.0");
-        });
+
+        // == update lesson text and activate prev/next
+        this.updateLessonText();
     },
 
     // ======= selectSectionItem =======
@@ -640,9 +630,44 @@ var clientApp = {
         }
     },
 
-// ======= ======= ======= ACTIVATORS ======= ======= =======
-// ======= ======= ======= ACTIVATORS ======= ======= =======
-// ======= ======= ======= ACTIVATORS ======= ======= =======
+    // ======= ======= ======= ACTIVATORS ======= ======= =======
+    // ======= ======= ======= ACTIVATORS ======= ======= =======
+    // ======= ======= ======= ACTIVATORS ======= ======= =======
+
+    // ======= activatePrevNext =======
+    activatePrevNext: function() {
+        console.log("activatePrevNext");
+
+        $('#navPanel').children('div').on('click', function(e) {
+            console.log("\n -- click PREV/NEXT buttons");
+            var lessonPage = clientApp.getNextPage(e.currentTarget.id);
+            if ((lessonPage[0] != null) && (lessonPage[1] != null))   {
+                var nextLessonName = "lesson_" + lessonPage[0];
+                var nextPageName = "page_" + lessonPage[0] + "_" + lessonPage[1];
+                if (clientApp.lessons[nextLessonName] && clientApp.pages[nextPageName]) {
+                    clientApp.activeLesson = clientApp.lessons[nextLessonName];
+                    clientApp.activePage = clientApp.pages[nextPageName];
+                    if (clientApp.activeActor) {
+                        clientApp.activeActor.dropLTWH = { L:0, T:0, W:0, H:0 };
+                        clientApp.activeActor = null;
+                    }
+                    clientApp.makeLessonPage(e.currentTarget);
+                } else {
+                    clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
+                }
+            } else {
+                clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
+            }
+        });
+        $('#navPanel').children('div').on('mouseenter', function(e) {
+            // console.log("-- mouseenter");
+            clientApp.toggleHoverText(e.currentTarget, null);
+        });
+        $('#navPanel').children('div').on('mouseleave', function(e) {
+            // console.log("-- mouseleave");
+            clientApp.toggleHoverText(null, null);
+        });
+    },
 
     // ======= activateLessonItems =======
     activateLessonItems: function() {
@@ -773,41 +798,6 @@ var clientApp = {
             });
             break;
         }
-    },
-
-    // ======= activatePrevNext =======
-    activatePrevNext: function() {
-        console.log("activatePrevNext");
-
-        $('#navPanel').children('div').on('click', function(e) {
-            console.log("\n -- click PREV/NEXT buttons");
-            var lessonPage = clientApp.getNextPage(e.currentTarget.id);
-            if ((lessonPage[0] != null) && (lessonPage[1] != null))   {
-                var nextLessonName = "lesson_" + lessonPage[0];
-                var nextPageName = "page_" + lessonPage[0] + "_" + lessonPage[1];
-                if (clientApp.lessons[nextLessonName] && clientApp.pages[nextPageName]) {
-                    clientApp.activeLesson = clientApp.lessons[nextLessonName];
-                    clientApp.activePage = clientApp.pages[nextPageName];
-                    if (clientApp.activeActor) {
-                        clientApp.activeActor.dropLTWH = { L:0, T:0, W:0, H:0 };
-                        clientApp.activeActor = null;
-                    }
-                    clientApp.makeLessonPage(e.currentTarget);
-                } else {
-                    clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
-                }
-            } else {
-                clientApp.updateLessonText("Sorry... requested page is missing.  Click Lessons tab to try again.");
-            }
-        });
-        $('#navPanel').children('div').on('mouseenter', function(e) {
-            // console.log("-- mouseenter");
-            clientApp.toggleHoverText(e.currentTarget, null);
-        });
-        $('#navPanel').children('div').on('mouseleave', function(e) {
-            // console.log("-- mouseleave");
-            clientApp.toggleHoverText(null, null);
-        });
     },
 
     // ======= getNextPage =======

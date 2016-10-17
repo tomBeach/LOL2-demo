@@ -270,6 +270,11 @@ html {
     background-color: #aaa;
     border-bottom: solid 1px gray;
 }
+.hilight {
+	color: purple;
+}
+
+
 
 /* ======= navPanel ======= */
 #navPanel {
