@@ -108,7 +108,7 @@ html {
     background-color: gray;
     border-bottom: solid 2px gray;
 }
-#lesson_menu {
+#lesson_tab {
     position: absolute;
     left: 934px;
     top: 242px;
@@ -151,7 +151,7 @@ html {
     border-left: solid 2px #666699;
     z-index: 1;
 }
-#shopLesson_display {
+#lessonMenuDisplay, #storeroomMenuDisplay, #lessonTextDisplay {
     position: absolute;
     left: 740px;
     top: 280px;
@@ -159,7 +159,7 @@ html {
     height: 405px;
     overflow-y: scroll;
 }
-#shopLesson_display {
+#lessonMenuDisplay, #storeroomMenuDisplay, #lessonTextDisplay {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -170,6 +170,15 @@ html {
     background: -ms-linear-gradient( to top, #777, #aaa);
     background: -o-linear-gradient( to top, #777, #aaa);
     background: linear-gradient( to top, #777, #aaa);
+}
+#lessonMenuDisplay {
+	display: block;
+}
+#storeroomMenuDisplay {
+	display: none;
+}
+#lessonTextDisplay {
+	display: none;
 }
 #locXYWH {
 	left: 0;

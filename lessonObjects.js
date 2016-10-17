@@ -27,7 +27,7 @@ function initLessons() {
         /* lessonIndex */    1,
         /* lessonTitle */    "Intensity",
         /* lessonSubtitle */ "lights and brightness",
-        /* pageKeys */       ["1_0", "1_1"]
+        /* pageKeys */       ["1_0", "1_1", "1_2"]
 	);
     lessons.lesson_2 = new Lesson (
         /* lessonIndex */    2,

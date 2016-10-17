@@ -46,6 +46,18 @@ function initPages(items, targets) {
         /* studio */ { folder:null, image:"st_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] },
         /* monitor */ { folder:null, image:"mn_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] }
 	);
+    pages.page_1_2 = new Page (
+        /* pageKey */ "1_2",
+        /* pageText */ "STILL UNDER CONSTRUCTION!!!  Please go to next page.  The power of lighting instruments is measured in watts -- from a tiny 150W to a monster 20,000W (or 20K).  Lights from a small lighting kit may range from 150 to 1,000 watts.  Try 'em.'",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [items.f150, items.f300, items.f650, items.f1000],
+        /* ActorItems */ [],
+        /* TargetItems */ [targets.stand],
+        /* guides */ [],
+        /* studio */ { folder:null, image:"st_int_power", startFrame:0, endFrame:6, initFrame:0, indexedFrames:[3, 2, 1] },
+        /* monitor */ { folder:null, image:"mn_int_power", startFrame:0, endFrame:6, initFrame:0, indexedFrames:[3, 2, 1] }
+	);
 	pages.page_2_0 = new Page (
         /* pageKey */ "2_0",
         /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the flag around to see how shadows work with soft light.",

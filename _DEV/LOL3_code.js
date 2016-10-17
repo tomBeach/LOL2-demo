@@ -286,7 +286,7 @@ var clientApp = {
         $.each(this.lessons, function(key, lesson) {
             menuHtml += clientApp.makeMenuItem(key, lesson, "lesson");
         });
-        $('#shopLesson_display').html(menuHtml);
+        $('#lessonMenuDisplay').html(menuHtml);
     },
 
     // ======= makeGridMenu =======
@@ -294,7 +294,7 @@ var clientApp = {
         console.log("makeGridMenu");
         console.log("this.activeLesson:", this.activeLesson);
         menuHtml = clientApp.makeMenuItem(null, this.activeLesson, "grid");
-        $('#shopLesson_display').html(menuHtml);
+        $('#lessonMenuDisplay').html(menuHtml);
     },
 
     // ======= activateGridItems =======

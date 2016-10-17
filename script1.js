@@ -430,7 +430,7 @@ var clientApp = {
             index++;
             menuHtml += clientApp.makeMenuItem(key, lesson, "lesson", index);
         });
-        $('#shopLesson_display').html(menuHtml);
+        $('#lessonMenuDisplay').html(menuHtml);
     },
 
     // ======= makeMenuItem =======
@@ -464,7 +464,7 @@ var clientApp = {
         console.log("makeMenuGrid");
         console.log("this.activeLesson:", this.activeLesson);
         menuHtml = clientApp.makeMenuItem(null, this.activeLesson, "grid");
-        $('#shopLesson_display').html(menuHtml);
+        $('#lessonMenuDisplay').html(menuHtml);
     },
 
     // ======= updateLessonText =======
@@ -500,7 +500,7 @@ var clientApp = {
         } else {
 
             // == replace lessons list with lesson text
-            var lessonBox = $('#shopLesson_display');
+            var lessonBox = $('#lessonMenuDisplay');
             var lessonTextHtml = "<div id='lessonText' class='hide'><p>" + lessonText + "</p></div>";
             $(lessonBox).append(lessonTextHtml);
             $('#lessonText').removeClass('hide');
@@ -521,7 +521,7 @@ var clientApp = {
 
         // == get selected lesson elements
         var lessonId = $(lessonEl).attr('id');
-        var lessonBox = $('#shopLesson_display');
+        var lessonBox = $('#lessonMenuDisplay');
         var lessonHtml = $(lessonEl).parents().eq(0).html();
 
         // == make prevNext openClose buttons

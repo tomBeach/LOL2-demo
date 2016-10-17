@@ -40,6 +40,10 @@ var clientApp = {
         this.activePage = this.pages.page_0_0;
         this.activeLesson = this.lessons.lesson_0;
         this.activeActor = null;
+        this.makeLessonMenu(2);
+        this.makeMenuGrid();
+        this.activatePrevNext();
+        this.activateMenuItems("lessonMenu");
         this.activateDisplayItems();
 
     },
@@ -56,11 +60,11 @@ var clientApp = {
         this.makeLessonCanvases();
         this.makeLessonItems();
         this.activateLessonItems();
-        if (lessonEl.className == "panelBtn") {
-            this.updateLessonText();
-        } else {
+        // if (lessonEl.className == "panelBtn") {
+        //     this.updateLessonText();
+        // } else {
             this.makeLessonText(lessonEl);
-        }
+        // }
     },
 
     // ======= initLessonCanvases =======
@@ -77,8 +81,6 @@ var clientApp = {
                 var width = can.offsetWidth;
                 var height = can.offsetHeight;
                 var scaleFactor = backingScale(ctx);
-                console.log("width:", width);
-                console.log("height:", height);
 
                 // == detect retina display
                 if (scaleFactor > 1) {
@@ -242,12 +244,12 @@ var clientApp = {
         var guides = page.guides;
         var targets = page.TargetItems;
         var gridders = page.GridItems;
-        console.log("setups:", setups);
-        console.log("actors:", actors);
-        console.log("groups:", groups);
-        console.log("guides:", guides);
-        console.log("targets:", targets);
-        console.log("gridders:", gridders);
+        // console.log("setups:", setups);
+        // console.log("actors:", actors);
+        // console.log("groups:", groups);
+        // console.log("guides:", guides);
+        // console.log("targets:", targets);
+        // console.log("gridders:", gridders);
 
         var lessonItemsArray = [setups, groups, gridders, actors, targets];
 
@@ -276,6 +278,11 @@ var clientApp = {
                 console.log("itemType:", itemType);
 
                 switch(itemType) {
+                    case "target":
+                        newDiv = makeItemHtml(item);
+                        item.itemEl = newDiv;
+                        locatePageTarget(item, newDiv);
+                        break;
                     case "grid":
                         newDiv = makeItemHtml(item);
                         item.itemEl = newDiv;
@@ -304,21 +311,9 @@ var clientApp = {
                 }
             }
 
-            // ======= locateSetupTarget =======
-            function locateSetupTarget(target, item, newDiv) {
-                console.log("locateSetupTarget");
-                console.log("target:", target);
-                console.log("item:", item);
-                console.log("item.itemEl:", item.itemEl);
-                console.log("newDiv:", newDiv);
-
-                // == setupTarget initLTWH is offset from setup item
-                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + target.initLTWH.L + 'px';
-                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + target.initLTWH.T + 'px';
-                newDiv.style.width = target.initLTWH.W + 'px';
-                newDiv.style.height = target.initLTWH.H + 'px';
-                newDiv.style.zIndex = 3;
-                $('body').append(newDiv);
+            // ======= makeGridHtml =======
+            function makeGridHtml(item) {
+                console.log("makeGridHtml");
             }
 
             // ======= locateGridItem =======
@@ -347,6 +342,38 @@ var clientApp = {
                 gridT = gridT + item.initLTWH.H + 10;
 
                 $('#grid').append(newDiv);
+            }
+
+            // ======= locatePageTarget =======
+            function locatePageTarget(target, newDiv) {
+                console.log("locatePageTarget");
+                console.log("target:", target);
+                console.log("newDiv:", newDiv);
+
+                // == setupTarget initLTWH is offset from setup item
+                newDiv.style.left = target.initLTWH.L + displayItems.studio.canL + target.initLTWH.L + 'px';
+                newDiv.style.top = target.initLTWH.T + displayItems.studio.canT + target.initLTWH.T + 'px';
+                newDiv.style.width = target.initLTWH.W + 'px';
+                newDiv.style.height = target.initLTWH.H + 'px';
+                newDiv.style.zIndex = 3;
+                $('body').append(newDiv);
+            }
+
+            // ======= locateSetupTarget =======
+            function locateSetupTarget(target, item, newDiv) {
+                console.log("locateSetupTarget");
+                // console.log("target:", target);
+                // console.log("item:", item);
+                // console.log("item.itemEl:", item.itemEl);
+                // console.log("newDiv:", newDiv);
+
+                // == setupTarget initLTWH is offset from setup item
+                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + target.initLTWH.L + 'px';
+                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + target.initLTWH.T + 'px';
+                newDiv.style.width = target.initLTWH.W + 'px';
+                newDiv.style.height = target.initLTWH.H + 'px';
+                newDiv.style.zIndex = 3;
+                $('body').append(newDiv);
             }
 
             // ======= locateNewActor =======
@@ -401,7 +428,6 @@ var clientApp = {
     // ======= makeItemGuides =======
     makeItemGuides: function(items) {
         console.log("makeItemGuides");
-        console.log("items:", items);
 
         var item, itemId;
         var guides = this.activePage.guides;
@@ -409,11 +435,9 @@ var clientApp = {
         for (var i = 0; i < items.length; i++) {
             item = items[i];
             itemId = items[i].itemId;
-            console.log("itemId:", itemId);
 
             for (var i = 0; i < guides.length; i++) {
                 var guideId = guides[i].itemId;
-                console.log("guideId:", guideId);
                 if (guideId == itemId) {
                     makeItemGuide(item);
                 }
@@ -453,49 +477,39 @@ var clientApp = {
     },
 
     // ======= makeLessonMenu =======
-    makeLessonMenu: function(menu) {
-        console.log("makeLessonMenu");
+    makeLessonMenu: function(pendingLesson) {
+        console.log("\n******* makeLessonMenu");
+
         var index = -1;
         var menuHtml = "<ul id='lessonMenu'>";
         $.each(this.lessons, function(key, lesson) {
             index++;
-            menuHtml += clientApp.makeMenuItem(key, lesson, "lesson", index);
-        });
-        $('#shopLesson_display').html(menuHtml);
-    },
 
-    // ======= makeMenuItem =======
-    makeMenuItem: function(key, lesson, menuType, index) {
-        console.log("makeMenuItem");
-        var itemHtml = ""
-        if (index > 2) {
-            var menuState = "lessonItem inactive";
-        } else {
-            var menuState = "lessonItem active";
-        }
-        switch(menuType) {
-            case "lesson":
-            itemHtml += "<li><div id='" + key + "' class='" + menuState + "'>";
-            itemHtml += "<span class='menu_title_active'>" + lesson.lessonIndex + " - " + lesson.lessonTitle + "</span>"
-            itemHtml += "<span class='menu_text_active'>" + lesson.lessonSubtitle + "</span>"
-            itemHtml += "</div>";
-            break;
-            case "grid":
-            itemHtml += "<div class='grid_item'>";
-            itemHtml += "<img class='grid_image' src='images/f150_0.png' alt='f150'>";
-            itemHtml += "<span class='grid_text'>150W</span>";
-            itemHtml += "</div>";
-            break;
-        }
-        return itemHtml;
+            // == hide lessons not yet built (development)
+            if (index > pendingLesson) {
+                var menuState = "lessonItem inactive";
+            } else {
+                var menuState = "lessonItem active";
+            }
+            console.log("menuState:", menuState);
+
+            menuHtml += "<li><div id='" + key + "' class='" + menuState + "'>";
+            menuHtml += "<span class='menu_title_active'>" + lesson.lessonIndex + " - " + lesson.lessonTitle + "</span>"
+            menuHtml += "<span class='menu_text_active'>" + lesson.lessonSubtitle + "</span>"
+            menuHtml += "</div>";
+        });
+        $('#lessonMenuDisplay').html(menuHtml);
     },
 
     // ======= makeMenuGrid =======
     makeMenuGrid: function(item) {
         console.log("makeMenuGrid");
-        console.log("this.activeLesson:", this.activeLesson);
-        menuHtml = clientApp.makeMenuItem(null, this.activeLesson, "grid");
-        $('#shopLesson_display').html(menuHtml);
+        var menuHtml = "";
+        menuHtml += "<div class='grid_item'>";
+        menuHtml += "<img class='grid_image' src='images/f150_0.png' alt='f150'>";
+        menuHtml += "<span class='grid_text'>150W</span>";
+        menuHtml += "</div>";
+        $('#storeroomMenuDisplay').html(menuHtml);
     },
 
     // ======= updateLessonText =======
@@ -509,16 +523,15 @@ var clientApp = {
             var lessonText = clientApp.activePage.pageText;
         }
 
-        // == update title/subtile
-        $('.menu_title_active').text(clientApp.activeLesson.lessonIndex + " - " + clientApp.activeLesson.lessonTitle);
-        $('.menu_text_active').text(clientApp.activeLesson.lessonSubtitle);
-
-        if ($('#lessonText').length > 0) {
+        // == remove previous lesson text
+        if ($('#lessonText').children('p').html()) {
+            // console.log("$('#lessonText').children('p').html():", $('#lessonText').children('p').html());
             $('#lessonText').animate({
                 height: 0,
                 opacity: 0
             }, 500, function() {
                 console.log("collapsed");
+
                 // == replace prev lesson text with new text
                 $('#lessonText').children('p').html(lessonText);
                 $('#lessonText').animate({
@@ -529,12 +542,12 @@ var clientApp = {
                 });
             });
         } else {
+            // console.log("$('#lessonText').children('p').html():", $('#lessonText').children('p').html());
 
             // == replace lessons list with lesson text
-            var lessonBox = $('#shopLesson_display');
-            var lessonTextHtml = "<div id='lessonText' class='hide'><p>" + lessonText + "</p></div>";
-            $(lessonBox).append(lessonTextHtml);
+            $('#lessonText').children('p').html(lessonText);
             $('#lessonText').removeClass('hide');
+            $('#lessonText').css('display, block');
             $('#lessonText').animate({
                 height: "200px",
                 opacity: 1.0
@@ -548,33 +561,29 @@ var clientApp = {
     makeLessonText: function(lessonEl) {
         console.log("makeLessonText");
 
-        var navPanel = "";
+        var lessonSelectedId = $(lessonEl).attr('id') + "_selected";
+        var titleText = clientApp.activeLesson.lessonIndex + " - " + clientApp.activeLesson.lessonTitle;
+        var subTitleText = clientApp.activeLesson.lessonSubtitle;
 
-        // == get selected lesson elements
-        var lessonId = $(lessonEl).attr('id');
-        var lessonBox = $('#shopLesson_display');
-        var lessonHtml = $(lessonEl).parents().eq(0).html();
+        $('#lessonTextDisplay').fadeOut('fast', function() {
+            // console.log("LESSON opacity 0");
+        });
 
-        // == make prevNext openClose buttons
-        navPanel += "<nav id='navPanel'><div id='prevBtn' class='panelBtn'><span>prev</span></div>";
-        navPanel += "<div id='nextBtn' class='panelBtn'><span>next</span></div></nav>";
+        $('#selectedLesson').children('span').eq(0).text(titleText);
+        $('#selectedLesson').children('span').eq(1).text(subTitleText);
 
-        // == get all lesson elements
-        var lessonItems = $('.lessonItem:gt(1)');
-        var index = $(lessonItems).index(lessonEl);
-
-        // == replace lesson menu with selected lesson and lesson text
-        $('#' + lessonId).parents().eq(1).remove();
-        $(lessonBox).append(lessonHtml);
-
-        // == change lesson container class to hold prevNext buttons
-        $('#' + lessonId).removeClass('active');
-        $('#' + lessonId).removeClass('lessonItem');
-        $('#' + lessonId).addClass('selectedLesson');
-        $(lessonBox).append(navPanel);
-
+        // == update lesson text and activate prev/next
         this.updateLessonText();
-        this.activatePrevNext();
+
+        $("#lessonMenuDisplay").fadeOut("fast", function() {
+            // console.log("MENU opacity 0");
+        });
+        $("#storeroomMenuDisplay").fadeOut("fast", function() {
+            // console.log("STOREROOM opacity 0");
+        });
+        $("#lessonTextDisplay").fadeIn("fast", function() {
+            // console.log("LESSON opacity 1.0");
+        });
     },
 
     // ======= selectSectionItem =======
@@ -586,16 +595,28 @@ var clientApp = {
             case "lessons":
                 deselectItem("shop");
                 selectItem(itemId);
-                this.removeGridItems();
-                this.makeLessonMenu();
-                this.activateMenuItems("lessonMenu");
+                $( "#storeroomMenuDisplay" ).fadeOut( "fast", function() {
+                    // console.log("STOREROOM opacity 0");
+                });
+                $( "#lessonTextDisplay" ).fadeOut( "fast", function() {
+                    // console.log("LESSON opacity 0");
+                });
+                $( "#lessonMenuDisplay" ).fadeIn( "fast", function() {
+                    // console.log("MENU opacity 1.0");
+                });
                 break;
             case "shop":
                 deselectItem("lessons");
                 selectItem(itemId);
-                this.removeLessonItems();
-                this.makeMenuGrid();
-                this.activateMenuGrid("lessonMenu");
+                $( "#lessonMenuDisplay" ).fadeOut( "fast", function() {
+                    // console.log("MENU opacity 0");
+                });
+                $( "#lessonTextDisplay" ).fadeOut( "fast", function() {
+                    // console.log("LESSON opacity 0");
+                });
+                $( "#storeroomMenuDisplay" ).fadeIn( "fast", function() {
+                    // console.log("STOREROOM opacity 1.0");
+                });
                 break;
         }
 
@@ -838,7 +859,7 @@ var clientApp = {
                     }
                     return [nextLessonIndex, nextPageIndex]
                 }
-                    }
+            }
         }
     },
 
@@ -849,12 +870,12 @@ var clientApp = {
     // ======= updateCanvasFrame =======
     updateCanvasFrame: function(frameIndexX, frameIndexY) {
         console.log("updateCanvasFrame");
-        console.log("frameIndexX/Y:", frameIndexX, frameIndexY);
+        // console.log("frameIndexX/Y:", frameIndexX, frameIndexY);
 
-        console.log("clientApp.activePage.studio.matrix:", clientApp.activePage.studio.matrix);
+        // console.log("clientApp.activePage.studio.matrix:", clientApp.activePage.studio.matrix);
         if (clientApp.activePage.studio.matrix) {
             var studioImage = clientApp.studioImages[frameIndexX][frameIndexY];
-            console.log("studioImage:", studioImage);
+            // console.log("studioImage:", studioImage);
         } else {
             var studioImage = clientApp.studioImages[frameIndexX];
         }

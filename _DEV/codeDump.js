@@ -1,4 +1,11 @@
 
+
+// == get all lesson elements
+// var lessonItems = $('.lessonItem:gt(1)');
+// var index = $(lessonItems).index(lessonEl);
+
+
+
 if (left > (displayItems.studio.canX + displayItems.studio.canW)) {
     left = item.minMaxLT.maxL - item.initLTWH.W;
 }

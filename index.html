@@ -21,29 +21,27 @@
 	<!-- ======= labels =======  -->
 	<div id="monitor_box" class="label"><a id="monitor" href="#" class="label_text_inert">monitor</a></div>
 	<div id="studio_tab" class="tab_box_selected"><a id="studio" href="#" class="label_text_inert">studio</a></div>
-	<div id="shop_tab" class="tab_box_selected"><a id="shop" href="#" class="label_text_selected">storeroom</a></div>
 
-	<!-- ======= lessons =======  -->
-	<div id="lesson_menu" class="tab_box_active"><a id="lessons" href="#" class="label_text_active">lessons</a></div>
+	<!-- ======= tabs =======  -->
+    <div id="shop_tab" class="tab_box_active"><a id="shop" href="#" class="label_text_active">storeroom</a></div>
+	<div id="lesson_tab" class="tab_box_selected"><a id="lessons" href="#" class="label_text_selected">lessons</a></div>
 
 	<!-- ======= canvases =======  -->
 	<canvas id="monitorCanvas" class="canvas"></canvas>
 	<canvas id="studioCanvas" class="canvas"></canvas>
-	<div id="shopLesson_display" class="display">
-
-        <!-- <nav id='navPanel'>
-            <div id='prevBtn' class='panelBtn'>
-                <span>P</span>
-            </div>;
-            <div id='nextBtn' class='panelBtn'>
-                <span>N</span>
-            </div>
-        </nav> -->
-
-
-        <!-- grid and menus -->
-
-	</div>
+	<div id="lessonMenuDisplay" class="display"></div>
+    <div id="lessonTextDisplay" class="display">
+        <div id='selectedLesson' class='selectedLesson'>
+            <span class='menu_title_active'></span>
+            <span class='menu_text_active'></span>
+        </div>
+        <nav id='navPanel'>
+            <div id='prevBtn' class='panelBtn'><span>prev</span></div>
+            <div id='nextBtn' class='panelBtn'><span>next</span></div>
+        </nav>
+        <div id='lessonText' class='hide'><p></p></div>
+    </div>
+    <div id="storeroomMenuDisplay" class="display"></div>
 
 	<!-- ======= item containers =======  -->
     <div id="locXYWH"></div>

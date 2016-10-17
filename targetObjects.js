@@ -9,6 +9,17 @@ function initTargets() {
     var studioCanvas = clientApp.displayItems.studio;
     var targets = {};
 
+    targets.stand = new Target(
+        /* itemId */ "stand",
+        /* itemEl */ null,
+        /* itemName */ "stand",
+        /* itemType */ "target",
+        /* itemText */ "drag lights here",
+        /* itemImage */ "null",
+        /* initLTWH */ { L:110, T:10, W:80, H:200 },
+        /* absLoc */ { L:0, T:0, W:0, H:0 },
+        /* occupier */ null
+    );
     targets.barndoorFrame = new Target(
         /* itemId */ "barndoorFrame",
         /* itemEl */ null,

@@ -9,6 +9,70 @@ function initItems(targets) {
     var items = {};
     var canvasS = clientApp.displayItems.studio;
 
+    items.f150 = new Item(
+        /* itemId */ "f150",
+        /* itemEl */ null,
+        /* itemName */ "f150",
+        /* itemText */ "",
+        /* itemType */ "grid",
+        /* itemMove */ "dragger",
+        /* itemImage */ "f150_0",
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:400, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+    );
+    items.f300 = new Item(
+        /* itemId */ "f300",
+        /* itemEl */ null,
+        /* itemName */ "f300",
+        /* itemText */ "",
+        /* itemType */ "grid",
+        /* itemMove */ "dragger",
+        /* itemImage */ "f300_0",
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:400, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+    );
+    items.f650 = new Item(
+        /* itemId */ "f650",
+        /* itemEl */ null,
+        /* itemName */ "f650",
+        /* itemText */ "",
+        /* itemType */ "grid",
+        /* itemMove */ "dragger",
+        /* itemImage */ "f650_0",
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:400, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+    );
+    items.f1000 = new Item(
+        /* itemId */ "f1000",
+        /* itemEl */ null,
+        /* itemName */ "f1000",
+        /* itemText */ "",
+        /* itemType */ "grid",
+        /* itemMove */ "dragger",
+        /* itemImage */ "f1000_0",
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:400, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:0, H:0 }      // relative
+    );
     items.flagMover = new Item(
         /* itemId */ "flagMover",
         /* itemEl */ null,
