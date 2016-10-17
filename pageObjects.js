@@ -60,7 +60,7 @@ function initPages(items, targets) {
 	);
 	pages.page_2_0 = new Page (
         /* pageKey */ "2_0",
-        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the <span class='hilight'>flag</span> around to see how shadows work with <span class='hilight'>soft light</span>.",
+        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the flag around with the <span class='hilight'>orange flag mover</span> to see how shadows work with <span class='hilight'>soft light</span>.",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
