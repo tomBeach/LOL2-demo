@@ -12,7 +12,7 @@ function initPages(items, targets) {
     // ======= demo items =======
     pages.page_0_0 = new Page (
         /* pageKey */ "0_0",
-        /* pageText */ "Welcome to Lighting on Location 2.0!</p><p><span class='hilight'>This is a work-in-progress</span>, but already demonstrates some interesting pseudo-3D animations and lots of drag-and-drop interactivity.</p><p>Note that canvas images can sometimes take a while to load.  (Progress bar in the works!)</p><p>The scenario begins like this: You've been hired as the grip for a big production, but the DP called in sick.  Now the job is yours and the crew is waiting.  Better know how to light up a set!  Keep reading.  If you don't know, you will soon!",
+        /* pageText */ "The scenario begins like this: You've been hired as the grip for a big production, but the DP called in sick.  Now the job is yours and the crew is waiting.  Better know how to light up a set!  Keep reading.  If you don't know, you will soon!",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
