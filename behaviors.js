@@ -158,6 +158,7 @@ Item.prototype.moveItem = function(e) {
         console.log("target:", target);
         console.log("target.occupier:", target.occupier);
 
+        // $(newOccupier.itemEl).css('background-size, 100%');
         $(newOccupier.itemEl).fadeOut(1000, function() {
 
             // == return target occupier to original location
@@ -168,7 +169,9 @@ Item.prototype.moveItem = function(e) {
                 $(occupier.itemEl).css('width', target.occupier.initLTWH.W * 0.4);
                 $(occupier.itemEl).css('height', target.occupier.initLTWH.H * 0.4);
                 $(occupier.itemEl).css('z-index', '10');
+                $(occupier.itemEl).css('background-size', '100%');
                 $(occupier.itemEl).animate({
+                    // backgroundColor: jQuery.Color("#abcdef"),  // 'red',  //rgba(255, 200, 200, 0.3),
                     width: occupier.initLTWH.W,
                     height: occupier.initLTWH.H,
                     left: occupier.initLTWH.L,
@@ -218,18 +221,21 @@ Item.prototype.moveItem = function(e) {
 
             if ((draggerL < target.absLoc.W) && (draggerT > target.absLoc.T) && (draggerL > target.absLoc.L) && (draggerT < target.absLoc.H)) {
                 console.log("-- HIT -- HIT -- HIT --");
+
+                // $('#' + target.itemEl.id).css('background-color', 'rgba(255, 200, 200, 0.3)')
+
+                // == locate dragged item at top/left of target
                 $(item.itemEl).off();
-                // $(item.itemEl).css('display', 'none');
                 $(item.itemEl).css('top', target.absLoc.T + 'px');
                 $(item.itemEl).css('left', target.absLoc.L + 'px');
-                $(item.itemEl).css('max-width', '100%');
-                $(item.itemEl).css('max-widtheight', target.initLTWH.H + 'px');
+                $(item.itemEl).css('background-size', target.initLTWH.W + 'px');
+                $(item.itemEl).css('background-repeat', 'no-repeat');
+                $(item.itemEl).css('width', target.initLTWH.W + 'px');
+                $(item.itemEl).css('height', target.initLTWH.H + 'px');
 
-                // $(target.itemEl).css('background-color', rgba(255, 200, 200, 0.5));
-                window.removeEventListener('mousemove', item.moveItem, true);
                 clientApp.updateCanvasFrame(item.indexedFrame, null);
                 swapTargetOccupiers(target, item);
-                toggleHoverText(target, "target");
+                window.removeEventListener('mousemove', item.moveItem, true);
             }
         }
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");

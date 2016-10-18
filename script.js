@@ -17,6 +17,20 @@ var displayItems = {
     gridLeft: 0
 }
 
+var gearItems = {
+    diffusion: { itemName:"diffusion", itemText:"diffusion", itemType:"gel", image:"diff1_0.png" },
+    Fresnel150W: { itemName:"Fresnel 150W", itemText:"Fresnel150W", itemType:"light", image:"f150_0.png" },
+    Fresnel300W: { itemName:"Fresnel 300W", itemText:"Fresnel300W", itemType:"light", image:"f300_0.png" },
+    Fresnel650W: { itemName:"Fresnel 650W", itemText:"Fresnel650W", itemType:"light", image:"f650_0.png" },
+    Fresnel1000W: { itemName:"Fresnel 1000W", itemText:"Fresnel1000W", itemType:"light", image:"f1000_0.png" },
+    Floppy: { itemName:"Floppy", itemText:"Floppy", itemType:"controller", image:"floppy_0.png" },
+    LEDLight: { itemName:"LED Light", itemText:"LEDLight", itemType:"light", image:"LED_0.png" },
+    HalfStopScrim: { itemName:"Half Stop Scrim", itemText:"HalfStopScrim", itemType:"scrim", image:"scrim1_0.png" },
+    FullStopScrim: { itemName:"Full Stop Scrim", itemText:"FullStopScrim", itemType:"scrim", image:"scrim2_0.png" },
+    GraduatedScrim: { itemName:"Graduated Scrim", itemText:"GraduatedScrim", itemType:"scrim", image:"scrim3_0.png" },
+    Softlight: { itemName:"Softlight", itemText:"Softlight", itemType:"light", image:"softlight_0.png" }
+}
+
 // ======= ======= ======= ======= ======= initialize ======= ======= ======= ======= =======
 // ======= ======= ======= ======= ======= initialize ======= ======= ======= ======= =======
 // ======= ======= ======= ======= ======= initialize ======= ======= ======= ======= =======
@@ -27,6 +41,7 @@ var clientApp = {
     activePage: null,
     activeActor: null,
     activeLesson: null,
+    gearItems: gearItems,
     displayItems: displayItems,
     monitorImages: [],
     studioImages: [],
@@ -42,7 +57,7 @@ var clientApp = {
         this.activeLesson = this.lessons.lesson_0;
         this.activeActor = null;
         this.makeLessonMenu(2);
-        // this.makeMenuGrid();
+        this.makeGearMenu();
         this.activatePrevNext();
         this.activateMenuItems("lessonMenu");
         this.activateDisplayItems();
@@ -266,8 +281,6 @@ var clientApp = {
             var item, itemType, urlString, newDiv, target, gridStartL;
             clientApp.displayItems.gridLeft = clientApp.displayItems.studio.canL + 10;
             clientApp.displayItems.gridTop = clientApp.displayItems.studio.canT + 10;
-            // var gridL = clientApp.displayItems.studio.canL + 10;
-            // var gridT = clientApp.displayItems.studio.canT + 10;
             $('#grid').css('left', clientApp.displayItems.gridLeft + 'px');
             $('#grid').css('top', clientApp.displayItems.gridTop + 'px');
 
@@ -299,19 +312,15 @@ var clientApp = {
                         if (item.itemTargets.length > 0) {
                             for (var j = 0; j < item.itemTargets.length; j++) {
                                 target = item.itemTargets[j];
-                                console.log("target:", target);
                                 newDiv = makeTargetHtml(target);
-                                item.itemEl = newDiv;
+                                target.itemEl = newDiv;
+                                console.log("item:", item);
+                                console.log("target:", target);
                                 locateSetupTarget(target, item, newDiv);
                             }
                         }
                         break;
                 }
-            }
-
-            // ======= makeGridHtml =======
-            function makeGridHtml(item) {
-                console.log("makeGridHtml");
             }
 
             // ======= locateGridItem =======
@@ -333,9 +342,6 @@ var clientApp = {
                         clientApp.displayItems.gridTop = gridT;
                     }
                 }
-                console.log("gridT:", gridT);
-                console.log("...gridLeft:", clientApp.displayItems.gridLeft);
-                console.log("...gridTop:", clientApp.displayItems.gridTop);
 
                 // == locate item on new grid values
                 newDiv.style.left = gridL + 'px';
@@ -352,8 +358,6 @@ var clientApp = {
             // ======= locatePageTarget =======
             function locatePageTarget(target, newDiv) {
                 console.log("locatePageTarget");
-                console.log("target:", target);
-                console.log("newDiv:", newDiv);
 
                 // == pageTarget initLTWH is absolute (page)
                 newDiv.style.left = displayItems.studio.canL + target.initLTWH.L + 'px';
@@ -367,10 +371,6 @@ var clientApp = {
             // ======= locateSetupTarget =======
             function locateSetupTarget(target, item, newDiv) {
                 console.log("locateSetupTarget");
-                // console.log("target:", target);
-                // console.log("item:", item);
-                // console.log("item.itemEl:", item.itemEl);
-                // console.log("newDiv:", newDiv);
 
                 // == setupTarget initLTWH is offset from setup item
                 newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + target.initLTWH.L + 'px';
@@ -504,17 +504,26 @@ var clientApp = {
             menuHtml += "<span class='menu_text_active'>" + lesson.lessonSubtitle + "</span>"
             menuHtml += "</div>";
         });
+        menuHtml += "</ul>";
         $('#lessonMenuDisplay').html(menuHtml);
     },
 
-    // ======= makeMenuGrid =======
-    makeMenuGrid: function(item) {
-        console.log("makeMenuGrid");
-        var menuHtml = "";
-        menuHtml += "<div class='gridItem'>";
-        menuHtml += "<img class='grid_image' src='images/f150_0.png' alt='f150'>";
-        menuHtml += "<span class='grid_text'>150W</span>";
-        menuHtml += "</div>";
+    // ======= makeGearMenu =======
+    makeGearMenu: function() {
+        console.log("makeGearMenu");
+        console.log("this.gearItems[0]:", this.gearItems[0]);
+
+        var index = -1;
+        var menuHtml = "<ul id='gearMenu'>";
+        $.each(this.gearItems, function(key, item) {
+            index++;
+            menuHtml += "<li><div id='" + key + "_" + index + "' class='gearItem'>";
+            menuHtml += "<div class='gearImage light' style='background-image:url(images/" + item.image + ");background-color:#ccc;background-repeat:no-repeat;background-size:100%;'></div>";
+            menuHtml += "<div><span class='gear_label_active'>" + item.itemName + "</span>";
+            menuHtml += "<span class='gear_text_active'>" + item.itemType + "</span></div>";
+            menuHtml += "</li>";
+        });
+        menuHtml += "</ul>";
         $('#storeroomMenuDisplay').html(menuHtml);
     },
 
@@ -744,7 +753,7 @@ var clientApp = {
                     clientApp.toggleHoverText(e.currentTarget, item.itemType);
                 });
                 $('#' + item.itemId).on('mouseleave', function(e) {
-                    console.log("\nmouseleave");
+                    // console.log("\nmouseleave");
                     clientApp.toggleHoverText(null, null);
                 });
             }
@@ -936,38 +945,10 @@ var clientApp = {
         }
     },
 
-    // // ======= removeActorsGuides =======
-    // removeActorsGuides: function() {
-    //     console.log("clearPageElements");
-    //     var actors = $('#actors').empty();
-    //     var guides = $('#guides').empty();
-    //     var actors = $('#grid').empty();
-    //     var setup = $('#setup').empty();
-    //     var setupTargets = $('.setupTarget').remove();
-    // },
-    //
-    // // ======= removeLessonItems =======
-    // removeLessonItems: function() {
-    //     console.log("removeLessonItems");
-    //     var lessonItems = $('#lessonMenu').remove();
-    // },
-    //
-    // // ======= removeGridItems =======
-    // removeGridItems: function(menu) {
-    //     console.log("removeGridItems");
-    //     var gridItems = $('.gridItem').remove();
-    // },
-    //
-    // // ======= removeTargets =======
-    // removeTargets: function(menu) {
-    //     console.log("removeTargets");
-    //     var targets = $('.target').remove();
-    // },
-
     // ======= toggleHoverText =======
     toggleHoverText: function(item, itemType) {
-        console.log("toggleHoverText");
-        console.log("itemType:", itemType);
+        // console.log("toggleHoverText");
+        // console.log("itemType:", itemType);
         if ($(item).attr('id')) {
             if (itemType == "display") {
                 var itemText = clientApp.displayItems[$(item).attr('id')].itemText;
@@ -975,8 +956,9 @@ var clientApp = {
                 var itemText = clientApp.lessons[$(item).attr('id')].itemText;
             } else if ((itemType == "actor") || (itemType == "gridItem")) {
                 var itemText = clientApp.items[$(item).attr('id')].itemText;
-            } else if (itemType == "target") {
-                var itemText = clientApp.targets[$(item).attr('id')].itemText;
+            } else if (itemType == "setupTarget") {
+                var target = clientApp.targets[$(item).attr('id')]
+                var itemText = target.itemText + target.itemName;
             } else {
                 var itemText = $(item).attr('id');
             }
@@ -987,5 +969,12 @@ var clientApp = {
     }
 
 };
+
+// == error-box functions
+$('#close-error, #close-message').on('click', function(e) {
+    e.stopPropagation();
+    $('#error-box, #message-box').css('display', 'none');
+});
+
 
 clientApp.initialize();
