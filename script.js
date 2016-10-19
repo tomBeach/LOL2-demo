@@ -9,8 +9,8 @@
 // var Target_Data = {};
 
 var displayItems = {
-    monitor: { itemName: "monitor", itemText: "Monitor", canvasName: "monitorCanvas", can:null, ctx:null, canL:740, canT:10, canW:384, canH:216 },
-    studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
+    monitor: { itemName: "monitor", itemText: "Monitor", can:null, ctx:null, canL:740, canT:10, canW:384, canH:216 },
+    studio: { itemName: "studio", itemText: "Studio View", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
     // studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:1440, canH:810 },
     shop: { itemName: "shop", itemText: "Shop Menu" },
     lessons: { itemName: "lessons", itemText: "Lesson Menu" },
@@ -84,48 +84,57 @@ var clientApp = {
     initLessonCanvases: function(lesson) {
         console.log("initLessonCanvases");
 
+        // == get device pixel ratio
+        var devicePixelRatio = window.devicePixelRatio || 1;
+
         if (!this.displayItems["studio"].can) {
 
             // == make canvas and context objects
             var canvases = ["studio", "monitor"];
             for (var i = 0; i < canvases.length; i++) {
+                console.log("canvases[i]:", canvases[i]);
                 var can = document.getElementById(canvases[i] + "Canvas");
-                var ctx = can.getContext("2d");
+                console.log("can:", can);
+                var ctx = can.getContext('2d');
+
+                // == calculate ratio for normal/retina displays
+                var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+                                    ctx.mozBackingStorePixelRatio ||
+                                    ctx.msBackingStorePixelRatio ||
+                                    ctx.oBackingStorePixelRatio ||
+                                    ctx.backingStorePixelRatio || 1;
+                var ratio = devicePixelRatio / backingStoreRatio;
+
                 var width = can.offsetWidth;
                 var height = can.offsetHeight;
-                var scaleFactor = backingScale(ctx);
-
-                // == detect retina display
-                if (scaleFactor > 1) {
-                    var canW = width / scaleFactor;
-                    var canH = height / scaleFactor;
-                    var ctx = can.getContext('2d');
-                } else {
-                    var canW = width;
-                    var canH = height;
-                }
-                console.log("can:", can);
+                console.log("ratio:", ratio);
                 console.log("width:", width);
                 console.log("height:", height);
-                console.log("scaleFactor:", scaleFactor);
-                console.log("canW:", canW);
-                console.log("canH:", canH);
+
+                can.width = width * ratio;
+                can.height = height * ratio;
+                can.style.width = width + "px";
+                can.style.height = height + "px";
+
+                can.getContext('2d').scale(2,2)
+
+                // == detect retina display
+                // if (ratio > 1) {
+                //     var canW = width / ratio;
+                //     var canH = height / ratio;
+                //     var ctx = can.getContext('2d');
+                // } else {
+                //     var canW = width;
+                //     var canH = height;
+                // }
+                // console.log("canW:", canW);
+                // console.log("canH:", canH);
 
                 // == store can/ctx on app object
                 this.displayItems[canvases[i]].can = can;
                 this.displayItems[canvases[i]].ctx = ctx;
-                // this.displayItems[canvases[i]].canW = canW;
-                // this.displayItems[canvases[i]].canH = canH;
-            }
-
-            // ======= backingScale =======
-            function backingScale(context) {
-                if ('devicePixelRatio' in window) {
-                    if (window.devicePixelRatio > 1) {
-                        return window.devicePixelRatio;
-                    }
-                }
-                return 1;
+                // this.displayItems[canvases[i]].canW = width * ratio;
+                // this.displayItems[canvases[i]].canH = height * ratio;
             }
         }
     },
@@ -149,6 +158,15 @@ var clientApp = {
         function loadCanvasImages(canvas) {
             console.log("loadCanvasImages");
 
+            // == get frameset and canvas params
+            var folder = page[canvas].folder;
+            var imageName = page[canvas].image;
+            var initFrame = page[canvas].initFrame;
+            var can = clientApp.displayItems[canvas].can;
+            var ctx = clientApp.displayItems[canvas].ctx;
+            var canW = clientApp.displayItems[canvas].canW;
+            var canH = clientApp.displayItems[canvas].canH;
+
             // == set start/end frame indexes
             if (page.studio.matrix) {
                 var matrix = page.studio.matrix;
@@ -162,15 +180,6 @@ var clientApp = {
                 var startFrameX = page[canvas].startFrame;
                 var endFrameX = page[canvas].endFrame + 1;
             }
-
-            // == get frameset and canvas params
-            var folder = page[canvas].folder;
-            var imageName = page[canvas].image;
-            var initFrame = page[canvas].initFrame;
-            var can = clientApp.displayItems[canvas].can;
-            var ctx = clientApp.displayItems[canvas].ctx;
-            var canW = clientApp.displayItems[canvas].canW;
-            var canH = clientApp.displayItems[canvas].canH;
 
             // == start image load self-invoking iterative function
             loadNextImage(0, 0);
@@ -223,7 +232,6 @@ var clientApp = {
 
                 // == display init image (usually first in frameset)
                 } else {
-
                     if (matrix) {
                         if (canvas == "studio") {
                             var initImage = clientApp.studioImages[initFrame][initFrame];
@@ -239,12 +247,11 @@ var clientApp = {
                             var initImage = clientApp.monitorImages[initFrame];
                         }
                     }
-                    ctx.clearRect(0, 0, 720, 405);
+                    ctx.clearRect(0, 0, canW, canH);
 
-                    // == context.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
-                    // console.log("clientApp.studioImages:", clientApp.studioImages);
+                    // == drawImage(img, imgX, imgY, imgW, imH, canX, canY, canW, canH);
                     if (initImage) {
-                        ctx.drawImage(initImage, 0, 0, 720, 405, 0, 0, 300, 150);
+                        ctx.drawImage(initImage, 0, 0, 720, 405, 0, 0, canW, canH);
                         ctx.save();
                     }
                 }
