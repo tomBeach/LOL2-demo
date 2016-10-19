@@ -124,7 +124,7 @@ function initPages(items, targets) {
 	);
     pages.page_2_5 = new Page (
         /* pageKey */ "2_5",
-        /* pageText */ "A hard light shadow gets even harder when the flag is farther from the light source -- but it's still too close to the subject.  How would you position a flag like this without blocking the subjecy or camera?  Stay tuned...",
+        /* pageText */ "A hard light shadow gets even harder when the flag is farther from the light source -- but it's still too close to the subject.  How would you position a flag like this without blocking the subject or camera?  Stay tuned...",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],

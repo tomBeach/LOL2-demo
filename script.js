@@ -130,7 +130,7 @@ var clientApp = {
         var page = clientApp.activePage;
 
         if (page.studio.image) {
-            $('#studioCanvas').fadeIn('fast', function() {
+            $('#studioCanvas, #studio_tab').fadeIn('fast', function() {
                 // console.log("studio IN");
             })
             $('#hover_text').addClass('loading');
@@ -138,17 +138,17 @@ var clientApp = {
             clientApp.displayItems.warningFlag = true;
             loadCanvasImages("studio");
         } else {
-            $('#studioCanvas').fadeOut('fast', function() {
+            $('#studioCanvas, #studio_tab').fadeOut('fast', function() {
                 // console.log("studio OUT");
             })
         }
         if (page.monitor.image) {
-            $('#monitorCanvas').fadeIn('fast', function() {
+            $('#monitorCanvas, #monitor_box').fadeIn('fast', function() {
                 // console.log("monitor IN");
             })
             loadCanvasImages("monitor");
         } else {
-            $('#monitorCanvas').fadeOut('fast', function() {
+            $('#monitorCanvas, #monitor_box').fadeOut('fast', function() {
                 // console.log("monitor OUT");
             })
         }

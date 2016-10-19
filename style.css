@@ -98,12 +98,19 @@ html {
     background-color: #aaa;
     border-bottom: solid 2px #aaa;
 }
-#studio_tab {
+#studio_tab, #studioTabOutline {
     position: absolute;
     left: 540px;
     top: 242px;
     background-color: gray;
-    border-bottom: solid 2px gray;
+}
+#studio_tab {
+	border-bottom: solid 2px gray;
+    z-index: 2;
+}
+#studioTabOutline {
+	background-color: rgba(255, 255, 255, 0.09);
+    z-index: 2;
 }
 #lesson_tab {
     position: absolute;
@@ -357,7 +364,7 @@ canvas {
     border: solid 2px #666699;
     z-index: 1;
 }
-#studioCanvas, #studioBox  {
+#studioCanvas, #studioOutline  {
     position: absolute;
     left: 10px;
     top: 280px;
@@ -368,12 +375,12 @@ canvas {
 	/*opacity: 0;*/
 	background-color: gray;
 }
-#studioBox {
+#studioOutline {
 	border: solid 2px #666699;
 	background-color: rgba(255, 255, 255, 0.05);
     z-index: 0;
 }
-#monitorCanvas, #monitorBox  {
+#monitorCanvas, #monitorOutline  {
     position: absolute;
     left: 740px;
     top: 10px;
@@ -385,7 +392,7 @@ canvas {
 	background-color: rgba(255, 255, 255, 0.05);
     box-shadow: 8px 8px 8px rgba(60, 10, 20, 0.7);
 }
-#monitorBox {
+#monitorOutline {
 	border: solid 2px #666699;
 	background-color: rgba(255, 255, 255, 0.05);
     z-index: 0;
