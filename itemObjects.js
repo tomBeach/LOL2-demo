@@ -16,7 +16,7 @@ function initItems(targets) {
         /* itemText */ "Mole Richardson 1K Softbox",
         /* itemType */ "gridItem",
         /* itemMove */ "dragger",
-        /* itemImage */ "Softlight_0",
+        /* itemImage */ "softlight_0",
         /* itemTargets */ [],
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
