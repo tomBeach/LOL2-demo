@@ -76,7 +76,7 @@ function initPages(items, targets) {
 	);
     pages.page_2_1 = new Page (
         /* pageKey */ "2_1",
-        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Movie lights almost always need some sort of diffusion material to ake them more realistic.  Try these common diffusers.  They soften the light but also cut down on brightness.",
+        /* pageText */ "Movie lights almost always need some sort of diffusion material to make them more realistic.  Try these common diffusers.  They soften the light -- but also cut down on brightness.  That can mean swapping in a brighter light if the diffusion cuts the brightness too much.",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [items.opal, items.halfWhite, items.toughspun, items.toughWhite, items.rolux],
@@ -88,7 +88,7 @@ function initPages(items, targets) {
 	);
     pages.page_2_2 = new Page (
         /* pageKey */ "2_2",
-        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the flag around with the <span class='hilight'>orange flag mover</span> to see how shadows work with <span class='hilight'>soft light</span>.",
+        /* pageText */ "Diffuse light can be more 'natural' but it's also harder to control -- especially when a controller (like the floppy flag here) is close to the light.  Try moving the flag around with the <span class='hilight'>orange flag mover</span> to see how shadows work with <span class='hilight'>soft light</span>.",
         /* SetupItems */ [],
         /* GroupItems */ [],
         /* GridItems */ [],
@@ -100,18 +100,6 @@ function initPages(items, targets) {
 	);
     pages.page_2_3 = new Page (
         /* pageKey */ "2_3",
-        /* pageText */ "Now try moving the flag with <span class='hilight'>hard light</span>.  Compare these hard shadows to the previous soft ones.  But it's not just shadow qualities that make a difference.  The distance of the flag to the light source also has an effect.  Check that out on the next page...",
-        /* SetupItems */ [],
-        /* GroupItems */ [],
-        /* GridItems */ [],
-        /* ActorItems */ [items.flagMover],
-        /* TargetItems */ [],
-        /* guides */ [],
-        /* studio */ { folder:"st_shadow_hard_near", image:"st_shadow_hard_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
-        /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
-	);
-    pages.page_2_4 = new Page (
-        /* pageKey */ "2_4",
         /* pageText */ "Softlight shadows can be placed more accurately when the flag is farther from the light.  But now the flag is probably in the shot!  Check out similar positioning with hard light...",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -120,6 +108,18 @@ function initPages(items, targets) {
         /* TargetItems */ [],
         /* guides */ [],
         /* studio */ { folder:"st_shadow_soft_far", image:"st_shadow_soft_far", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
+        /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
+	);
+    pages.page_2_4 = new Page (
+        /* pageKey */ "2_4",
+        /* pageText */ "Now try moving the flag with <span class='hilight'>hard light</span>.  Compare these hard shadows to the previous soft ones.  But it's not just shadow qualities that make a difference.  The distance of the flag to the light source also has an effect.  Check that out on the next page...",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [],
+        /* ActorItems */ [items.flagMover],
+        /* TargetItems */ [],
+        /* guides */ [],
+        /* studio */ { folder:"st_shadow_hard_near", image:"st_shadow_hard_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
     pages.page_2_5 = new Page (

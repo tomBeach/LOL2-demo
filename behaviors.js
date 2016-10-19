@@ -17,9 +17,6 @@ Item.prototype.initMove = function(e) {
     var locL = parseInt($(item.itemEl).css('left').substring(0, $(item.itemEl).css('left').length - 2));
     var locT = parseInt($(item.itemEl).css('top').substring(0, $(item.itemEl).css('top').length - 2));
 
-    // == update locXY indicator
-    $('#locXYWH').html("<p class='info-text'>left: " + locL + "</p><p class='info-text'>top: " + locT + "</p>");
-
     // == limit moves to LTWH (left/top/width/height) boundaries
     if (item.bounds.W > (displayItems.studio.canW - item.initLTWH.W)) {
         var itemBoundsW = displayItems.studio.canW - item.initLTWH.W;
@@ -137,8 +134,8 @@ Item.prototype.moveItem = function(e) {
         if (indexY > page.studio.endFrame) {
             indexY = page.studio.endFrame;
         }
-        console.log("indexX:", indexX);
-        console.log("indexY:", indexY);
+        // console.log("indexX:", indexX);
+        // console.log("indexY:", indexY);
 
         // == set real-time item loc based on slider position
         $(item.itemEl).css('z-index', '10');
@@ -151,7 +148,7 @@ Item.prototype.moveItem = function(e) {
         clientApp.updateCanvasFrame(indexX, indexY);
 
         // == update locXY indicator
-        $('#locXYWH').html("<p class='info-text'>left: " + locL + "</p><p class='info-text'>top: " + locT + "</p>");
+        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
     }
 
     // ======= checkItemTargets =======
@@ -208,9 +205,6 @@ Item.prototype.moveItem = function(e) {
                 window.removeEventListener('mouseup', item.mouseUp, true);
             }
         }
-
-        // == update screen XY locator
-        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
     }
 
     // ======= swapTargetOccupiers =======
