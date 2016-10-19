@@ -35,8 +35,8 @@ function initLessons() {
         /* lessonSubtitle */ "soft light / hard light",
         /* pageKeys */       ["2_0", "2_1", "2_2", "2_3", "2_4", "2_5"]
 	);
-    lessons.lesson_3 = new Lesson ( 3, "Color", "warm, cool, effects", ["0_0"] );
-    lessons.lesson_4 = new Lesson ( 4, "Position", "location, location, location", ["0_0"] );
+    lessons.lesson_3 = new Lesson ( 3, "Position", "location, location, location", ["3_0", "3_1"] );
+    lessons.lesson_4 = new Lesson ( 4, "Color", "warm, cool, effects", ["0_0"] );
     lessons.lesson_5 = new Lesson ( 5, "Instruments", "light show", ["0_0"] );
     lessons.lesson_6 = new Lesson ( 6, "Stands", "from babies to mombos", ["0_0"] );
     lessons.lesson_7 = new Lesson ( 7, "Controllers", "gobos, floppies, cookies and more", ["0_0"] );

@@ -58,7 +58,7 @@ var clientApp = {
         this.activePage = this.pages.page_0_0;
         this.activeLesson = this.lessons.lesson_0;
         this.activeActor = null;
-        this.makeLessonMenu(2);
+        this.makeLessonMenu(3);
         this.makeGearMenu();
         this.activatePrevNext();
         this.activateMenuItems("lessonMenu");
@@ -901,18 +901,23 @@ var clientApp = {
     // ======= ======= ======= UTILITIES ======= ======= =======
 
     // ======= updateCanvasFrame =======
-    updateCanvasFrame: function(frameIndexX, frameIndexY) {
+    updateCanvasFrame: function(indexX, indexY) {
         // console.log("updateCanvasFrame");
-        // console.log("frameIndexX/Y:", frameIndexX, frameIndexY);
+        // console.log("frameIndexX/Y:", indexX, indexY);
+
+        var page = clientApp.activePage;
 
         // == get frame from nested array matrix (left/right, up/down) based on XY dragger indexes
         if (clientApp.activePage.studio.matrix) {
-            var studioImage = clientApp.studioImages[frameIndexX][frameIndexY];
+            if (page.studio.dir == "reverse")  {
+                var studioImage = clientApp.studioImages[indexY][indexX];
+            } else {
+                var studioImage = clientApp.studioImages[indexX][indexY];
+            }
         } else {
-            var studioImage = clientApp.studioImages[frameIndexX];
+            var studioImage = clientApp.studioImages[indexX];
         }
 
-        // == all animations display on studio canvas
         var studioCan = this.displayItems["studio"].can;
         var studioCtx = this.displayItems["studio"].ctx;
         var canW = clientApp.displayItems["studio"].canW;
@@ -924,17 +929,22 @@ var clientApp = {
         }
 
         // == only some animations display on monitor canvas
-        if (clientApp.activePage.studio.matrix) {
-            var monitorImage = clientApp.monitorImages[frameIndexX, frameIndexY];
+        if (clientApp.activePage.monitor.matrix) {
+            if (page.monitor.dir == "reverse")  {
+                var monitorImage = clientApp.monitorImages[indexY][indexX];
+            } else {
+                var monitorImage = clientApp.monitorImages[indexX][indexY];
+            }
         } else {
-            var monitorImage = clientApp.monitorImages[frameIndexX];
-            var monitorCan = this.displayItems["monitor"].can;
-            var monitorCtx = this.displayItems["monitor"].ctx;
-            var canW = clientApp.displayItems["monitor"].canW;
-            var canH = clientApp.displayItems["monitor"].canH;
-            monitorCtx.clearRect(0, 0, canW, canH);
-            monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, canW, canH);
+            var monitorImage = clientApp.monitorImages[indexX];
         }
+
+        var monitorCan = this.displayItems["monitor"].can;
+        var monitorCtx = this.displayItems["monitor"].ctx;
+        var canW = clientApp.displayItems["monitor"].canW;
+        var canH = clientApp.displayItems["monitor"].canH;
+        monitorCtx.clearRect(0, 0, canW, canH);
+        monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, canW, canH);
     },
 
     // ======= clearPageElements =======

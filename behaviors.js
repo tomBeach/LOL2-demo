@@ -114,7 +114,7 @@ Item.prototype.moveItem = function(e) {
 
     // ======= updateMatrixAB =======
     function updateMatrixAB(left, top) {
-        console.log("updateMatrixAB");
+        // console.log("updateMatrixAB");
 
         var page = clientApp.activePage;
         var item = clientApp.activeActor;

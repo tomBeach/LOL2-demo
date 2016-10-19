@@ -169,11 +169,27 @@ function initItems(targets) {
         /* initLTWH */ { L:20, T:80, W:100, H:100 },
         /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
     );
+    items.keyMover = new Item(
+        /* itemId */ "keyMover",
+        /* itemEl */ null,
+        /* itemName */ "keyMover",
+        /* itemText */ "click and drag light mover to change position",
+        /* itemType */ "actor",
+        /* itemMove */ "matrixAB",
+        /* itemImage */ "dragger1_0",
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:620, T:30, W:60, H:60 },      // relative
+        /* bounds */ { L:560, T:20, W:80, H:80 }      // relative
+    );
     items.flagMover = new Item(
         /* itemId */ "flagMover",
         /* itemEl */ null,
         /* itemName */ "flagMover",
-        /* itemText */ "click and drag flag icon to change position",
+        /* itemText */ "click and drag flag mover to change position",
         /* itemType */ "actor",
         /* itemMove */ "matrixAB",
         /* itemImage */ "dragger1_0",

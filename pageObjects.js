@@ -134,6 +134,30 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_hard_far", image:"st_shadow_hard_far", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
+    pages.page_3_0 = new Page (
+        /* pageKey */ "3_0",
+        /* pageText */ "Probably the toughest challenge in lighting is putting the light where it needs to be -- often where there's a plant or a beam or a wall in the way.  There are many ways to meet this challenge, but it starts with knowing what result you are trying to achieve.  A traditional place to start is 3-point lighting: Key, Back and Fill lights.  Try moving the <span class='hilight'>Key light</span> around to create different moods.  What do you notice about light hitting the background?",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [],
+        /* ActorItems */ [items.keyMover],
+        /* TargetItems */ [],
+        /* guides */ [],
+        /* studio */ { folder:"st_KBangles_K", image:"st_KBangles_K", startFrame:0, endFrame:6, initFrame:0, matrix:"AB", dir:"reverse" },
+        /* monitor */ { folder:"mn_KBangles_K", image:"mn_KBangles_K", startFrame:0, endFrame:6, initFrame:0, matrix:"AB", dir:"reverse" }
+	);
+    pages.page_3_1 = new Page (
+        /* pageKey */ "3_1",
+        /* pageText */ "<span class='hilight'>Backlight</span> is something everyone notices -- especially when it's too much.  Try different positions for the backlight.  How does this affect the mood?.  Why are <span class='hilight'>framelines</span> (the line between in and out of frame) so important with backlights?",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [],
+        /* ActorItems */ [items.keyMover],
+        /* TargetItems */ [],
+        /* guides */ [],
+        /* studio */ { folder:"st_KBangles_B", image:"st_KBangles_B", startFrame:0, endFrame:6, initFrame:0, matrix:"AB", dir:"forward" },
+        /* monitor */ { folder:"mn_KBangles_B", image:"mn_KBangles_B", startFrame:0, endFrame:6, initFrame:0, matrix:"AB", dir:"reverse" }
+	);
     return pages;
 }
 
