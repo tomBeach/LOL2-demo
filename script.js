@@ -14,7 +14,8 @@ var displayItems = {
     shop: { itemName: "shop", itemText: "Shop Menu" },
     lessons: { itemName: "lessons", itemText: "Lesson Menu" },
     gridTop: 0,
-    gridLeft: 0
+    gridLeft: 0,
+    warningFlag: false
 }
 
 var gearItems = {
@@ -92,9 +93,7 @@ var clientApp = {
             // == make canvas and context objects
             var canvases = ["studio", "monitor"];
             for (var i = 0; i < canvases.length; i++) {
-                console.log("canvases[i]:", canvases[i]);
                 var can = document.getElementById(canvases[i] + "Canvas");
-                console.log("can:", can);
                 var ctx = can.getContext('2d');
 
                 // == calculate ratio for normal/retina displays
@@ -132,24 +131,25 @@ var clientApp = {
 
         if (page.studio.image) {
             $('#studioCanvas').fadeIn('fast', function() {
-                console.log("studio IN");
+                // console.log("studio IN");
             })
             $('#hover_text').addClass('loading');
             $('#hover_text').text("Images loading... please wait");
+            clientApp.displayItems.warningFlag = true;
             loadCanvasImages("studio");
         } else {
             $('#studioCanvas').fadeOut('fast', function() {
-                console.log("studio OUT");
+                // console.log("studio OUT");
             })
         }
         if (page.monitor.image) {
             $('#monitorCanvas').fadeIn('fast', function() {
-                console.log("monitor IN");
+                // console.log("monitor IN");
             })
             loadCanvasImages("monitor");
         } else {
             $('#monitorCanvas').fadeOut('fast', function() {
-                console.log("monitor OUT");
+                // console.log("monitor OUT");
             })
         }
 
@@ -234,6 +234,7 @@ var clientApp = {
 
                     // == clear load warning
                     $('#hover_text').fadeOut("fast", function() {
+                        clientApp.displayItems.warningFlag = false;
                         $('#hover_text').removeClass('loading');
                         $('#hover_text').text('');
                         $('#hover_text').css('display', 'block');
@@ -834,7 +835,7 @@ var clientApp = {
                 e.stopPropagation();
             });
             $('#lessonMenu').children('li').children('div').on('mouseleave', function(e) {
-                // console.log("\n-- mouseleave");
+                console.log("\n-- mouseleave");
                 clientApp.toggleHoverText(null, null);
                 e.stopPropagation();
             });
@@ -992,10 +993,11 @@ var clientApp = {
             }
             $('#hover_text').text(itemText);
         } else {
-            $('#hover_text').text('');
+            if (clientApp.displayItems.warningFlag == false) {
+                $('#hover_text').text('');
+            }
         }
     }
-
 };
 
 // == error-box functions
