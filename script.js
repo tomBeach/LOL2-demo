@@ -978,23 +978,23 @@ var clientApp = {
     toggleHoverText: function(item, itemType) {
         // console.log("toggleHoverText");
         // console.log("itemType:", itemType);
-        if ($(item).attr('id')) {
-            if (itemType == "display") {
-                var itemText = clientApp.displayItems[$(item).attr('id')].itemText;
-            } else if (itemType == "lesson") {
-                var itemText = clientApp.lessons[$(item).attr('id')].itemText;
-            } else if ((itemType == "actor") || (itemType == "gridItem")) {
-                var itemText = clientApp.items[$(item).attr('id')].itemText;
-            } else if (itemType == "setupTarget") {
-                var target = clientApp.targets[$(item).attr('id')]
-                var itemText = target.itemText + target.itemName;
+        if (clientApp.displayItems.warningFlag == false) {
+            if ($(item).attr('id')) {
+                if (itemType == "display") {
+                    var itemText = clientApp.displayItems[$(item).attr('id')].itemText;
+                } else if (itemType == "lesson") {
+                    var itemText = clientApp.lessons[$(item).attr('id')].itemText;
+                } else if ((itemType == "actor") || (itemType == "gridItem")) {
+                    var itemText = clientApp.items[$(item).attr('id')].itemText;
+                } else if (itemType == "setupTarget") {
+                    var target = clientApp.targets[$(item).attr('id')]
+                    var itemText = target.itemText + target.itemName;
+                } else {
+                    var itemText = $(item).attr('id');
+                }
+                $('#hover_text').text(itemText);
             } else {
-                var itemText = $(item).attr('id');
-            }
-            $('#hover_text').text(itemText);
-        } else {
-            if (clientApp.displayItems.warningFlag == false) {
-                $('#hover_text').text('');
+                    $('#hover_text').text('');
             }
         }
     }
