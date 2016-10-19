@@ -9,7 +9,7 @@ function initPages(items, targets) {
     // pageKey, pageText, SetupItems, GroupItems, GridItems, ActorItems, TargetItems, studioCanvas, monitorCanvas
     var pages = {};
 
-    // ======= demo items =======
+    // ======= intro =======
     pages.page_0_0 = new Page (
         /* pageKey */ "0_0",
         /* pageText */ "The scenario begins like this: You've been hired as the grip for a big production, but the DP called in sick.  Now the job is yours and the crew is waiting.  Better know how to light up a set!  Keep reading.  If you don't know, you will soon!",
@@ -22,6 +22,8 @@ function initPages(items, targets) {
         /* studio */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0 },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0 }
 	);
+
+    // ======= intensity =======
 	pages.page_1_0 = new Page (
         /* pageKey */ "1_0",
         /* pageText */ "The first thing to know is <span class='hilight'>intensity</span>: how bright the light is.  There are many ways to control intensity.  Number 1: distance.  The closer your light is to the subject, the brighter it is.  <span class='hilight'>Drag the light icon</span> to see how brightness changes with distance.  What else happens as you move the light in and out?",
@@ -58,8 +60,22 @@ function initPages(items, targets) {
         /* studio */ { folder:null, image:"st_int_power", startFrame:0, endFrame:4, initFrame:0, indexedFrames:[1, 2, 3, 4] },
         /* monitor */ { folder:null, image:"mn_int_power", startFrame:0, endFrame:4, initFrame:0, indexedFrames:[1, 2, 3, 4] }
 	);
+
+    // ======= quality =======
 	pages.page_2_0 = new Page (
         /* pageKey */ "2_0",
+        /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Check out the difference between a 1K and a softbox light.  Hint: it's not only 'softness'.  What else changes with these lights?",
+        /* SetupItems */ [],
+        /* GroupItems */ [],
+        /* GridItems */ [items.f1000, items.Softlight],
+        /* ActorItems */ [],
+        /* TargetItems */ [targets.stand],
+        /* guides */ [],
+        /* studio */ { folder:null, image:"st_qual", startFrame:0, endFrame:2, initFrame:0, indexedFrames:[1, 2] },
+        /* monitor */ { folder:null, image:"mn_qual", startFrame:0, endFrame:2, initFrame:0, indexedFrames:[1, 2] }
+	);
+    pages.page_2_1 = new Page (
+        /* pageKey */ "2_1",
         /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Movie lights almost always need some sort of diffusion material to ake them more realistic.  Try these common diffusers.  They soften the light but also cut down on brightness.",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -70,8 +86,8 @@ function initPages(items, targets) {
         /* studio */ { folder:null, image:"st_qual_diff", startFrame:0, endFrame:6, initFrame:0, indexedFrames:[1, 2, 3, 4, 6] },
         /* monitor */ { folder:null, image:"mn_qual_diff", startFrame:0, endFrame:6, initFrame:0, indexedFrames:[1, 2, 3, 4, 6] }
 	);
-    pages.page_2_1 = new Page (
-        /* pageKey */ "2_1",
+    pages.page_2_2 = new Page (
+        /* pageKey */ "2_2",
         /* pageText */ "Light can be hard -- like direct sunlight -- or soft -- like a cloudy day.  Try moving the flag around with the <span class='hilight'>orange flag mover</span> to see how shadows work with <span class='hilight'>soft light</span>.",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -82,8 +98,8 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_soft_near", image:"st_shadow_soft_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
-    pages.page_2_2 = new Page (
-        /* pageKey */ "2_2",
+    pages.page_2_3 = new Page (
+        /* pageKey */ "2_3",
         /* pageText */ "Now try moving the flag with <span class='hilight'>hard light</span>.  Compare these hard shadows to the previous soft ones.  But it's not just shadow qualities that make a difference.  The distance of the flag to the light source also has an effect.  Check that out on the next page...",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -94,8 +110,8 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_hard_near", image:"st_shadow_hard_near", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
-    pages.page_2_3 = new Page (
-        /* pageKey */ "2_3",
+    pages.page_2_4 = new Page (
+        /* pageKey */ "2_4",
         /* pageText */ "Softlight shadows can be placed more accurately when the flag is farther from the light.  But now the flag is probably in the shot!  Check out similar positioning with hard light...",
         /* SetupItems */ [],
         /* GroupItems */ [],
@@ -106,8 +122,8 @@ function initPages(items, targets) {
         /* studio */ { folder:"st_shadow_soft_far", image:"st_shadow_soft_far", startFrame:0, endFrame:6, initFrame:0, matrix:"AB" },
         /* monitor */ { folder:null, image:null, startFrame:0, endFrame:6, initFrame:0, matrix:"AB" }
 	);
-    pages.page_2_4 = new Page (
-        /* pageKey */ "2_4",
+    pages.page_2_5 = new Page (
+        /* pageKey */ "2_5",
         /* pageText */ "A hard light shadow gets even harder when the flag is farther from the light source -- but it's still too close to the subject.  How would you position a flag like this without blocking the subjecy or camera?  Stay tuned...",
         /* SetupItems */ [],
         /* GroupItems */ [],

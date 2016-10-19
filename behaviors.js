@@ -205,6 +205,7 @@ Item.prototype.moveItem = function(e) {
                 clientApp.updateCanvasFrame(item.indexedFrame, null);
                 swapTargetOccupiers(target, item);
                 window.removeEventListener('mousemove', item.moveItem, true);
+                window.removeEventListener('mouseup', item.mouseUp, true);
             }
         }
 
@@ -237,6 +238,18 @@ Item.prototype.moveItem = function(e) {
                     top: occupier.initLTWH.T
                 }, 500, function() {
                     console.log("itemReturned");
+
+                    // ======= MOUSEDOWN =======
+                    $(occupier.itemEl).on('mousedown', function(e) {
+                        console.log("\nmousedown");
+                        window.removeEventListener('mouseup', item.moveUp, true);
+                        var actor = clientApp.items[$(e.currentTarget).attr('id')];
+                        var actorEl = $(e.currentTarget);
+                        e.preventDefault();
+                        clientApp.activeActor = actor;
+                        actor.initMove(e, actorEl, actor);
+                    });
+
                 });
             }
 

@@ -9,6 +9,22 @@ function initItems(targets) {
     var items = {};
     var canvasS = clientApp.displayItems.studio;
 
+    items.Softlight = new Item(
+        /* itemId */ "Softlight",
+        /* itemEl */ null,
+        /* itemName */ "Softlight",
+        /* itemText */ "Mole Richardson 1K Softbox",
+        /* itemType */ "gridItem",
+        /* itemMove */ "dragger",
+        /* itemImage */ "Softlight_0",
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:20, T:80, W:100, H:100 },
+        /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
+    );
     items.opal = new Item(
         /* itemId */ "opal",
         /* itemEl */ null,

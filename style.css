@@ -59,17 +59,22 @@ html {
     font-weight: 400;
     color: #666699;
 }
+.loading{
+    color: red;
+}
 
 /* ======= info ======= */
 #monitor_box {
     position: absolute;
-    left: 855px;
-    top: 95px;
+    left: 740px;
+    top: 10px;
     width: 160px;
     height: 35px;
-    padding: 0;
-    text-align: center;
+    padding-left: 10px;
+    text-align: left;
+	z-index: 2;
 }
+
 .tab_box_selected {
     width: 190px;
     height: 40px;
@@ -188,7 +193,7 @@ html {
 #lessonMenu, #gearMenu {
     display: block;
     margin: 0;
-    padding: 5px 10px;
+    padding: 5px 0;
     text-decoration: none;
     list-style-type: none;}
 #lessonMenu > li, #gearMenu > li {
@@ -349,18 +354,26 @@ html {
 
 /* ======= canvases ======= */
 canvas {
-    background-color: gray;
     border: solid 2px #666699;
     z-index: 1;
 }
-#studioCanvas  {
+#studioCanvas, #studioBox  {
     position: absolute;
     left: 10px;
     top: 280px;
 	width: 720px;
     height: 405px;
 }
-#monitorCanvas  {
+#studioCanvas {
+	/*opacity: 0;*/
+	background-color: gray;
+}
+#studioBox {
+	border: solid 2px #666699;
+	background-color: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+}
+#monitorCanvas, #monitorBox  {
     position: absolute;
     left: 740px;
     top: 10px;
@@ -368,7 +381,14 @@ canvas {
     height: 216px;
 }
 #monitorCanvas {
+	/*opacity: 0;*/
+	background-color: rgba(255, 255, 255, 0.05);
     box-shadow: 8px 8px 8px rgba(60, 10, 20, 0.7);
+}
+#monitorBox {
+	border: solid 2px #666699;
+	background-color: rgba(255, 255, 255, 0.05);
+    z-index: 0;
 }
 
 /* ======= targets ======= */

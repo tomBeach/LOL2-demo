@@ -9,9 +9,8 @@
 // var Target_Data = {};
 
 var displayItems = {
-    monitor: { itemName: "monitor", itemText: "Monitor", can:null, ctx:null, canL:740, canT:10, canW:384, canH:216 },
     studio: { itemName: "studio", itemText: "Studio View", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
-    // studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:1440, canH:810 },
+    monitor: { itemName: "monitor", itemText: "Monitor", can:null, ctx:null, canL:740, canT:10, canW:384, canH:216 },
     shop: { itemName: "shop", itemText: "Shop Menu" },
     lessons: { itemName: "lessons", itemText: "Lesson Menu" },
     gridTop: 0,
@@ -50,6 +49,7 @@ var clientApp = {
     // ======= initialize =======
     initialize: function() {
         console.log("initialize");
+
         this.targets = initTargets();
         this.items = initItems(this.targets);
         this.pages = initPages(this.items, this.targets);
@@ -107,9 +107,6 @@ var clientApp = {
 
                 var width = can.offsetWidth;
                 var height = can.offsetHeight;
-                console.log("ratio:", ratio);
-                console.log("width:", width);
-                console.log("height:", height);
 
                 can.width = width * ratio;
                 can.height = height * ratio;
@@ -118,23 +115,9 @@ var clientApp = {
 
                 can.getContext('2d').scale(2,2)
 
-                // == detect retina display
-                // if (ratio > 1) {
-                //     var canW = width / ratio;
-                //     var canH = height / ratio;
-                //     var ctx = can.getContext('2d');
-                // } else {
-                //     var canW = width;
-                //     var canH = height;
-                // }
-                // console.log("canW:", canW);
-                // console.log("canH:", canH);
-
                 // == store can/ctx on app object
                 this.displayItems[canvases[i]].can = can;
                 this.displayItems[canvases[i]].ctx = ctx;
-                // this.displayItems[canvases[i]].canW = width * ratio;
-                // this.displayItems[canvases[i]].canH = height * ratio;
             }
         }
     },
@@ -148,10 +131,26 @@ var clientApp = {
         var page = clientApp.activePage;
 
         if (page.studio.image) {
+            $('#studioCanvas').fadeIn('fast', function() {
+                console.log("studio IN");
+            })
+            $('#hover_text').addClass('loading');
+            $('#hover_text').text("Images loading... please wait");
             loadCanvasImages("studio");
+        } else {
+            $('#studioCanvas').fadeOut('fast', function() {
+                console.log("studio OUT");
+            })
         }
         if (page.monitor.image) {
+            $('#monitorCanvas').fadeIn('fast', function() {
+                console.log("monitor IN");
+            })
             loadCanvasImages("monitor");
+        } else {
+            $('#monitorCanvas').fadeOut('fast', function() {
+                console.log("monitor OUT");
+            })
         }
 
         // ======= loadCanvasImages =======
@@ -232,6 +231,14 @@ var clientApp = {
 
                 // == display init image (usually first in frameset)
                 } else {
+
+                    // == clear load warning
+                    $('#hover_text').fadeOut("fast", function() {
+                        $('#hover_text').removeClass('loading');
+                        $('#hover_text').text('');
+                        $('#hover_text').css('display', 'block');
+                    });
+
                     if (matrix) {
                         if (canvas == "studio") {
                             var initImage = clientApp.studioImages[initFrame][initFrame];
@@ -423,7 +430,6 @@ var clientApp = {
                 newDiv = document.createElement('div');
                 newDiv.id = item.itemId;
                 newDiv.classList.add(item.itemType);
-                // newDiv.style.position = "relative";
                 newDiv.style.position = "absolute";
                 return newDiv;
             }
@@ -762,8 +768,8 @@ var clientApp = {
 
                 // ======= MOUSEENTER/LEAVE =======
                 $('#' + item.itemId).on('mouseenter', function(e) {
-                    console.log("\nmouseenter");
-                    console.log("e.currentTarget:", e.currentTarget);
+                    // console.log("\nmouseenter");
+                    // console.log("e.currentTarget:", e.currentTarget);
                     clientApp.toggleHoverText(e.currentTarget, item.itemType);
                 });
                 $('#' + item.itemId).on('mouseleave', function(e) {
@@ -895,7 +901,7 @@ var clientApp = {
 
     // ======= updateCanvasFrame =======
     updateCanvasFrame: function(frameIndexX, frameIndexY) {
-        console.log("updateCanvasFrame");
+        // console.log("updateCanvasFrame");
         // console.log("frameIndexX/Y:", frameIndexX, frameIndexY);
 
         // == get frame from nested array matrix (left/right, up/down) based on XY dragger indexes
@@ -908,8 +914,13 @@ var clientApp = {
         // == all animations display on studio canvas
         var studioCan = this.displayItems["studio"].can;
         var studioCtx = this.displayItems["studio"].ctx;
-        studioCtx.clearRect(0, 0, 720, 405);
-        studioCtx.drawImage(studioImage, 0, 0, 720, 405, 0, 0, 300, 150);
+        var canW = clientApp.displayItems["studio"].canW;
+        var canH = clientApp.displayItems["studio"].canH;
+        studioCtx.clearRect(0, 0, canW, canH);
+        if (studioImage) {
+            studioCtx.drawImage(studioImage, 0, 0, 720, 405, 0, 0, canW, canH);
+            studioCtx.save();
+        }
 
         // == only some animations display on monitor canvas
         if (clientApp.activePage.studio.matrix) {
@@ -918,8 +929,10 @@ var clientApp = {
             var monitorImage = clientApp.monitorImages[frameIndexX];
             var monitorCan = this.displayItems["monitor"].can;
             var monitorCtx = this.displayItems["monitor"].ctx;
-            monitorCtx.clearRect(0, 0, 384, 180);
-            monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, 300, 150);
+            var canW = clientApp.displayItems["monitor"].canW;
+            var canH = clientApp.displayItems["monitor"].canH;
+            monitorCtx.clearRect(0, 0, canW, canH);
+            monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, canW, canH);
         }
     },
 
