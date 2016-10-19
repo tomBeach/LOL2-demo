@@ -146,42 +146,12 @@ Item.prototype.moveItem = function(e) {
         $(item.itemEl).css('left', left + 'px');
         item.startXY.dragL = left;
         item.startXY.dragT = top;
-        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
 
         // == set real-time canvas frame based on slider position
         clientApp.updateCanvasFrame(indexX, indexY);
-    }
 
-    // ======= swapTargetOccupiers =======
-    function swapTargetOccupiers(target, newOccupier) {
-        console.log("swapTargetOccupiers");
-        console.log("target:", target);
-        console.log("target.occupier:", target.occupier);
-
-        // $(newOccupier.itemEl).css('background-size, 100%');
-        $(newOccupier.itemEl).fadeOut(1000, function() {
-
-            // == return target occupier to original location
-            var occupier = target.occupier;
-            if (occupier) {
-                $(occupier.itemEl).css('visibility', 'visible');
-                $(occupier.itemEl).css('display', 'block');
-                $(occupier.itemEl).css('width', target.occupier.initLTWH.W * 0.4);
-                $(occupier.itemEl).css('height', target.occupier.initLTWH.H * 0.4);
-                $(occupier.itemEl).css('z-index', '10');
-                $(occupier.itemEl).css('background-size', '100%');
-                $(occupier.itemEl).animate({
-                    // backgroundColor: jQuery.Color("#abcdef"),  // 'red',  //rgba(255, 200, 200, 0.3),
-                    width: occupier.initLTWH.W,
-                    height: occupier.initLTWH.H,
-                    left: occupier.initLTWH.L,
-                    top: occupier.initLTWH.T
-                }, 500, function() {
-                    console.log("itemReturned");
-                });
-            }
-            target.occupier = newOccupier;
-        });
+        // == update locXY indicator
+        $('#locXYWH').html("<p class='info-text'>left: " + locL + "</p><p class='info-text'>top: " + locT + "</p>");
     }
 
     // ======= checkItemTargets =======
@@ -204,12 +174,13 @@ Item.prototype.moveItem = function(e) {
         item.startXY.dragL = left;
         item.startXY.dragT = top;
 
-        // == collision detector for target
+        // == init collision detector for target
         var target;
         var overlap = 10;
         var draggerL = left + item.initLTWH.W/2;
         var draggerT = top + item.initLTWH.H/2;
 
+        // == search available targets for collision
         for (var i = 0; i < targetList.length; i++) {
             target = targetList[i];
 
@@ -221,8 +192,6 @@ Item.prototype.moveItem = function(e) {
 
             if ((draggerL < target.absLoc.W) && (draggerT > target.absLoc.T) && (draggerL > target.absLoc.L) && (draggerT < target.absLoc.H)) {
                 console.log("-- HIT -- HIT -- HIT --");
-
-                // $('#' + target.itemEl.id).css('background-color', 'rgba(255, 200, 200, 0.3)')
 
                 // == locate dragged item at top/left of target
                 $(item.itemEl).off();
@@ -238,7 +207,42 @@ Item.prototype.moveItem = function(e) {
                 window.removeEventListener('mousemove', item.moveItem, true);
             }
         }
+
+        // == update screen XY locator
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+    }
+
+    // ======= swapTargetOccupiers =======
+    function swapTargetOccupiers(target, newOccupier) {
+        console.log("swapTargetOccupiers");
+        console.log("target:", target);
+        console.log("target.occupier:", target.occupier);
+
+        // == fade out new occupier
+        $(newOccupier.itemEl).fadeOut(1000, function() {
+
+            // == return target occupier to its original location
+            var occupier = target.occupier;
+            if (occupier) {
+                $(occupier.itemEl).css('visibility', 'visible');
+                $(occupier.itemEl).css('display', 'block');
+                $(occupier.itemEl).css('width', target.occupier.initLTWH.W * 0.4);
+                $(occupier.itemEl).css('height', target.occupier.initLTWH.H * 0.4);
+                $(occupier.itemEl).css('z-index', '10');
+                $(occupier.itemEl).css('background-size', '100%');
+                $(occupier.itemEl).animate({
+                    width: occupier.initLTWH.W,
+                    height: occupier.initLTWH.H,
+                    left: occupier.initLTWH.L,
+                    top: occupier.initLTWH.T
+                }, 500, function() {
+                    console.log("itemReturned");
+                });
+            }
+
+            // == install newOccupier on target
+            target.occupier = newOccupier;
+        });
     }
 
     // ======= updateItemLoc =======
@@ -248,12 +252,12 @@ Item.prototype.moveItem = function(e) {
         var item = clientApp.activeActor;
 
         // == calculate percent movement through frameset/limit frames to start/end
-        var indexX = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
-        if (indexX < 0) {
-            indexX = 0;
+        var frameIndex = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
+        if (frameIndex < 0) {
+            frameIndex = 0;
         }
-        if (indexX > clientApp.activePage.studio.endFrame) {
-            indexX = clientApp.activePage.studio.endFrame;
+        if (frameIndex > clientApp.activePage.studio.endFrame) {
+            frameIndex = clientApp.activePage.studio.endFrame;
         }
 
         // == set real-time item loc based on slider position
@@ -262,10 +266,12 @@ Item.prototype.moveItem = function(e) {
         $(item.itemEl).css('left', left + 'px');
         item.startXY.dragL = left;
         item.startXY.dragT = top;
+
+        // == update screen XY locator (for development)
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
 
-        // == set real-time canvas frame based on slider position
-        clientApp.updateCanvasFrame(indexX, null);
+        // == set real-time canvas frame based on slider/dragger position
+        clientApp.updateCanvasFrame(frameIndex, null);
     }
 
     // ======= ======= ======= MATH ======= ======= =======

@@ -1,5 +1,42 @@
 
 
+            // ======= backingScale =======
+            function backingScale(context) {
+                if ('devicePixelRatio' in window) {
+                    if (window.devicePixelRatio > 1) {
+                        return window.devicePixelRatio;
+                    }
+                }
+                return 1;
+            }
+
+
+// upscale the canvas if the two ratios don't match
+// if (devicePixelRatio !== backingStoreRatio) {
+    // var oldWidth = can.width;
+    // var oldHeight = can.height;
+    // can.width = oldWidth * ratio;
+    // can.height = oldHeight * ratio;
+    // can.style.width = oldWidth + 'px';
+    // can.style.height = oldHeight + 'px';
+//     ctx.scale(ratio, ratio);
+// }
+
+
+// == detect retina display
+// if (scaleFactor > 1) {
+//     var canW = width / scaleFactor;
+//     var canH = height / scaleFactor;
+//     var ctx = can.getContext('2d');
+// } else {
+//     var canW = width;
+//     var canH = height;
+// }
+
+
+
+
+
 // == get all lesson elements
 // var lessonItems = $('.lessonItem:gt(1)');
 // var index = $(lessonItems).index(lessonEl);

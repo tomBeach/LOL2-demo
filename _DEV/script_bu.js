@@ -10,8 +10,8 @@
 
 var displayItems = {
     monitor: { itemName: "monitor", itemText: "Monitor", canvasName: "monitorCanvas", can:null, ctx:null, canL:740, canT:10, canW:384, canH:216 },
-    studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
-    // studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:1440, canH:810 },
+    // studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
+    studio: { itemName: "studio", itemText: "Studio View", canvaNames: "studioCanvas", can:null, ctx:null, canL:10, canT:280, canW:1440, canH:810 },
     shop: { itemName: "shop", itemText: "Shop Menu" },
     lessons: { itemName: "lessons", itemText: "Lesson Menu" },
     gridTop: 0,
@@ -72,7 +72,7 @@ var clientApp = {
         console.log("activePage:  ", clientApp.activePage.pageKey);
 
         this.initLessonCanvases();
-        // this.clearLessonCanvases();
+        this.clearLessonCanvases();
         this.clearPageElements();
         this.makeLessonCanvases();
         this.makeLessonItems();
