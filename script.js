@@ -278,15 +278,17 @@ var clientApp = {
         var guides = page.guides;
         var targets = page.TargetItems;
         var gridders = page.GridItems;
-        // console.log("setups:", setups);
+        console.log("setups:", setups);
+        console.log("setups.item:", setups.item);
         // console.log("actors:", actors);
         // console.log("groups:", groups);
         // console.log("guides:", guides);
         // console.log("targets:", targets);
         // console.log("gridders:", gridders);
 
-        var lessonItemsArray = [setups, groups, gridders, actors, targets];
+        var lessonItemsArray = [groups, gridders, actors, targets];
 
+        // ======= make html for lesson items =======
         for (var i = 0; i < lessonItemsArray.length; i++) {
             if ((lessonItemsArray[i]) && (lessonItemsArray[i].length > 0)) {
                 makeItemEls(lessonItemsArray[i]);
@@ -296,10 +298,16 @@ var clientApp = {
             }
         }
 
+        // ======= make html for setup items =======
+        if (setups.item) {
+            makeItemEls([setups.item]);     // makeItemEls expects an array
+        }
+
         // ======= makeItemEls =======
         function makeItemEls(items) {
             console.log("makeItemEls");
             console.log("items:", items);
+            console.log("items.length:", items.length);
             var item, itemType, urlString, newDiv, target, gridStartL;
             clientApp.displayItems.gridLeft = clientApp.displayItems.studio.canL + 10;
             clientApp.displayItems.gridTop = clientApp.displayItems.studio.canT + 10;
@@ -331,14 +339,26 @@ var clientApp = {
                         newDiv = makeItemHtml(item);
                         item.itemEl = newDiv;
                         locateNewSetup(item, newDiv);
-                        if (item.itemTargets.length > 0) {
-                            for (var j = 0; j < item.itemTargets.length; j++) {
-                                target = item.itemTargets[j];
-                                newDiv = makeTargetHtml(target);
+                        console.log("setups.targets:", setups.targets);
+                        if (setups.targets) {
+                            for (var j = 0; j < setups.targets.length; j++) {
+                                target = setups.targets[j];
+                                newDiv = makeSetupPartHtml(target);
                                 target.itemEl = newDiv;
                                 console.log("item:", item);
                                 console.log("target:", target);
-                                locateSetupTarget(target, item, newDiv);
+                                locateSetupParts(target, item, newDiv);
+                            }
+                        }
+                        console.log("setups.controls:", setups.controls);
+                        if (setups.controls) {
+                            for (var j = 0; j < setups.controls.length; j++) {
+                                control = setups.controls[j];
+                                newDiv = makeSetupPartHtml(control);
+                                control.itemEl = newDiv;
+                                console.log("item:", item);
+                                console.log("control:", control);
+                                locateSetupParts(control, item, newDiv);
                             }
                         }
                         break;
@@ -390,16 +410,23 @@ var clientApp = {
                 $('body').append(newDiv);
             }
 
-            // ======= locateSetupTarget =======
-            function locateSetupTarget(target, item, newDiv) {
-                console.log("locateSetupTarget");
+            // ======= locateSetupParts =======
+            function locateSetupParts(setupPart, item, newDiv) {
+                console.log("locateSetupParts");
+                console.log("setupPart.initLTWH.L:", setupPart.initLTWH.L);
+                console.log("setupPart.initLTWH.T:", setupPart.initLTWH.T);
 
                 // == setupTarget initLTWH is offset from setup item
-                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + target.initLTWH.L + 'px';
-                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + target.initLTWH.T + 'px';
-                newDiv.style.width = target.initLTWH.W + 'px';
-                newDiv.style.height = target.initLTWH.H + 'px';
-                newDiv.style.zIndex = 3;
+                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + setupPart.initLTWH.L + 'px';
+                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + setupPart.initLTWH.T + 'px';
+                if (item.itemImage.image) {
+                    newDiv.style.width = item.itemImage.image.naturalWidth + 'px';
+                    newDiv.style.height = item.itemImage.image.naturalHeight + 'px';
+                } else {
+                    newDiv.style.width = setupPart.initLTWH.W + 'px';
+                    newDiv.style.height = setupPart.initLTWH.H + 'px';
+                }
+                newDiv.style.zIndex = 4;
                 $('body').append(newDiv);
             }
 
@@ -425,13 +452,19 @@ var clientApp = {
                 $('#setup').append(newDiv);
             }
 
-            // ======= makeTargetHtml =======
-            function makeTargetHtml(item) {
-                console.log("makeTargetHtml");
+            // ======= makeSetupPartHtml =======
+            function makeSetupPartHtml(item) {
+                console.log("makeSetupPartHtml");
                 newDiv = document.createElement('div');
                 newDiv.id = item.itemId;
                 newDiv.classList.add(item.itemType);
                 newDiv.style.position = "absolute";
+                if (item.itemImage.image) {
+                    urlString = "url('images/" + item.itemImage.image + "_" + item.itemImage.startFrame + ".png') 0 0";
+                    console.log("urlString:", urlString);
+                    newDiv.style.background = urlString;
+                    newDiv.style.backgroundSize = item.itemImage.image.naturalWidth + 'px ' + item.itemImage.image.naturalHeight + 'px';
+                }
                 return newDiv;
             }
 
@@ -445,7 +478,7 @@ var clientApp = {
                 if (item.itemImage) {
                     urlString = "url('images/" + item.itemImage + ".png') 0 0";
                     newDiv.style.background = urlString;
-                    newDiv.style.backgroundSize =  item.initLTWH.W + 'px ' + item.initLTWH.H + 'px';
+                    newDiv.style.backgroundSize = item.initLTWH.W + 'px ' + item.initLTWH.H + 'px';
                 }
                 return newDiv;
             }

@@ -9,6 +9,22 @@ function initItems(targets) {
     var items = {};
     var canvasS = clientApp.displayItems.studio;
 
+    items.spotFlood = new Item(
+        /* itemId */ "spotFlood",
+        /* itemEl */ null,
+        /* itemName */ "spotFlood",
+        /* itemText */ "click and drag spot/flood knob",
+        /* itemType */ "control",
+        /* itemMove */ "control",
+        /* itemImage */ { folder:null, image:"spotFlood", startFrame:0, endFrame:6, initFrame:0 },
+        /* itemTargets */ [],
+        /* itemControls */ [],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:240, T:0, W:100, H:200 },
+        /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
+    );
     items.Softlight = new Item(
         /* itemId */ "Softlight",
         /* itemEl */ null,
@@ -258,7 +274,7 @@ function initItems(targets) {
         /* itemMove */ "none",
         /* itemImage */ "f650_0",
         /* itemTargets */ [targets.barndoorFrame],
-        /* itemControls */ [],
+        /* itemControls */ [items.spotFlood],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
         /* dropLTWH */ { L:0, T:0, W:0, H:0 },
