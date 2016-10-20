@@ -413,6 +413,12 @@ canvas {
 	border: solid 5px green;
 }
 
+/* ======= controls ======= */
+.control-border {
+	border: solid 5px yellow;
+	box-shadow: 8px 8px 8px rgba(60, 10, 20, 0.7);
+}
+
 /* ======= message ======= */
 #message-box {
     position: absolute;

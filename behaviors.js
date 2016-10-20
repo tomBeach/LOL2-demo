@@ -36,15 +36,25 @@ Item.prototype.initMove = function(e) {
     item.startXY.mouseY = e.clientY;
     item.startXY.diffX = e.clientX - locL;
     item.startXY.diffY = e.clientY - locT;
-    item.minMaxLT.minL = displayItems.studio.canL + item.bounds.L;
-    item.minMaxLT.minT = displayItems.studio.canT + item.bounds.T;
-    item.minMaxLT.maxL = displayItems.studio.canL + item.bounds.L + itemBoundsW;
-    item.minMaxLT.maxT = displayItems.studio.canT + item.bounds.T + itemBoundsH;
+
+    if (page.SetupItems.controls) {
+        var control = page.SetupItems.controls[0];
+        var setupItem = page.SetupItems.item;
+        item.minMaxLT.minL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + item.bounds.L;
+        item.minMaxLT.minT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + item.bounds.T;
+        item.minMaxLT.maxL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + item.bounds.L + itemBoundsW;
+        item.minMaxLT.maxT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + item.bounds.T + itemBoundsH;
+    } else {
+        item.minMaxLT.minL = displayItems.studio.canL + item.bounds.L;
+        item.minMaxLT.minT = displayItems.studio.canT + item.bounds.T;
+        item.minMaxLT.maxL = displayItems.studio.canL + item.bounds.L + itemBoundsW;
+        item.minMaxLT.maxT = displayItems.studio.canT + item.bounds.T + itemBoundsH;
+    }
 
     // == change relative LTWH to absolute LTWH for setup targets (which are 'children' of setup objects)
     var target, setup;
-    if ((item.itemTargets.length > 0) && (page.SetupItems.length > 0)) {
-        setup = page.SetupItems[0];
+    if ((page.SetupItems.item) && (item.itemTargets.length > 0)) {
+        setup = page.SetupItems.item;
         for (var i = 0; i < item.itemTargets.length; i++) {
             target = item.itemTargets[i];
             target.absLoc.L = target.initLTWH.L + setup.initLTWH.L + displayItems.studio.canL;
@@ -83,6 +93,12 @@ Item.prototype.moveItem = function(e) {
     var deltaY = ((dY + item.dropLTWH.T)/item.bounds.H).toFixed(2);
 
     switch(itemMove) {
+        case "control":
+            var left = parseInt(item.startXY.itemL + dX);
+            var top = parseInt(item.startXY.itemT + dY);
+            var itemLT = getMoveBoundaries(left, top);
+            getControlFrames(itemLT[0], itemLT[1], deltaX, deltaY);
+            break;
         case "matrixAB":
             var left = parseInt(item.startXY.itemL + dX);
             var top = parseInt(item.startXY.itemT + dY);
@@ -153,7 +169,7 @@ Item.prototype.moveItem = function(e) {
 
     // ======= checkItemTargets =======
     function checkItemTargets(left, top, targetType) {
-        // console.log("checkItemTargets");
+        console.log("checkItemTargets");
 
         var page = clientApp.activePage;
         var item = clientApp.activeActor;
@@ -162,6 +178,7 @@ Item.prototype.moveItem = function(e) {
             var targetList = page.TargetItems;
         } else if (targetType == "setup") {
             var targetList = item.itemTargets;
+            console.log("item.itemTargets:", item.itemTargets);
         }
 
         // == set real-time item loc and canvas frame based on slider position
@@ -210,8 +227,8 @@ Item.prototype.moveItem = function(e) {
     // ======= swapTargetOccupiers =======
     function swapTargetOccupiers(target, newOccupier) {
         console.log("swapTargetOccupiers");
-        console.log("target:", target);
-        console.log("target.occupier:", target.occupier);
+        // console.log("target:", target);
+        // console.log("target.occupier:", target.occupier);
 
         // == fade out new occupier
         $(newOccupier.itemEl).fadeOut(1000, function() {
@@ -250,6 +267,25 @@ Item.prototype.moveItem = function(e) {
             // == install newOccupier on target
             target.occupier = newOccupier;
         });
+    }
+
+    // ======= getControlFrames =======
+    function getControlFrames(dX, dY, deltaX, deltaY) {
+        // console.log("getControlFrames");
+        // console.log("dX, dY, deltaX, deltaY:", dX, dY, deltaX, deltaY);
+
+        var item = clientApp.activeActor;
+
+        // == calculate percent movement through frameset/limit frames to start/end
+        var frameIndex = Math.round(-deltaX * item.itemImage.endFrame);
+        if (frameIndex < 0) {
+            frameIndex = 0;
+        }
+        if (frameIndex > item.itemImage.endFrame) {
+            frameIndex = item.itemImage.endFrame;
+        }
+        clientApp.updateControlFrame(frameIndex, null);
+        clientApp.updateCanvasFrame(frameIndex, null);
     }
 
     // ======= updateItemLoc =======
@@ -313,7 +349,6 @@ Item.prototype.mouseUp = function(e) {
     console.log("mouseUp");
     var item = clientApp.activeActor;
     $(clientApp.activeActor.itemEl).off();
-    // $(clientApp.activeActor.itemEl).css('z-index', '2');
     window.removeEventListener('mousemove', item.moveItem, true);
 
     // == store relative loc where item was dropped
@@ -321,7 +356,6 @@ Item.prototype.mouseUp = function(e) {
     item.dropLTWH.T = item.startXY.dragT - (clientApp.displayItems.studio.canT + item.bounds.T);
     item.dropLTWH.W = null;
     item.dropLTWH.H = null;
-    console.log("\n******* dropLTWH:", item.dropLTWH.L, item.dropLTWH.T);
 
     // == reactivate item
     clientApp.activateLessonItems();

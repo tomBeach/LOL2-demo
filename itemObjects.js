@@ -23,7 +23,7 @@ function initItems(targets) {
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
         /* dropLTWH */ { L:0, T:0, W:0, H:0 },
         /* initLTWH */ { L:240, T:0, W:100, H:200 },
-        /* bounds */ { L:0, T:0, W:720, H:405 }      // relative
+        /* bounds */ { L:0, T:0, W:100, H:200 }      // relative
     );
     items.Softlight = new Item(
         /* itemId */ "Softlight",
@@ -49,7 +49,7 @@ function initItems(targets) {
         /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "diff1_0",
-        /* itemTargets */ [targets.barndoorFrame],
+        /* itemTargets */ [],
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
@@ -65,7 +65,7 @@ function initItems(targets) {
         /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "diff2_0",
-        /* itemTargets */ [targets.barndoorFrame],
+        /* itemTargets */ [],
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
@@ -81,7 +81,7 @@ function initItems(targets) {
         /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "diff3_0",
-        /* itemTargets */ [targets.barndoorFrame],
+        /* itemTargets */ [],
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
@@ -97,7 +97,7 @@ function initItems(targets) {
         /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "diff4_0",
-        /* itemTargets */ [targets.barndoorFrame],
+        /* itemTargets */ [],
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
@@ -113,7 +113,7 @@ function initItems(targets) {
         /* itemType */ "gridItem",
         /* itemMove */ "dragger",
         /* itemImage */ "diff5_0",
-        /* itemTargets */ [targets.barndoorFrame],
+        /* itemTargets */ [],
         /* itemControls */ [],
         /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
         /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },

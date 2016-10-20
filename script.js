@@ -73,12 +73,21 @@ var clientApp = {
         console.log("activePage:  ", clientApp.activePage.pageKey);
 
         this.initLessonCanvases();
-        // this.clearLessonCanvases();
+        this.clearTargetsControls();
         this.clearPageElements();
         this.makeLessonCanvases();
         this.makeLessonItems();
         this.activateLessonItems();
         this.makeLessonText(lessonEl);
+    },
+
+    // ======= clearTargetsControls =======
+    clearTargetsControls: function(lesson) {
+        console.log("clearTargetsControls");
+
+        $('.target').remove();
+        $('.control').remove();
+
     },
 
     // ======= initLessonCanvases =======
@@ -278,8 +287,6 @@ var clientApp = {
         var guides = page.guides;
         var targets = page.TargetItems;
         var gridders = page.GridItems;
-        console.log("setups:", setups);
-        console.log("setups.item:", setups.item);
         // console.log("actors:", actors);
         // console.log("groups:", groups);
         // console.log("guides:", guides);
@@ -306,9 +313,7 @@ var clientApp = {
         // ======= makeItemEls =======
         function makeItemEls(items) {
             console.log("makeItemEls");
-            console.log("items:", items);
-            console.log("items.length:", items.length);
-            var item, itemType, urlString, newDiv, target, gridStartL;
+            var item, itemType, urlString, newDiv, target, gridStartL, border;
             clientApp.displayItems.gridLeft = clientApp.displayItems.studio.canL + 10;
             clientApp.displayItems.gridTop = clientApp.displayItems.studio.canT + 10;
             $('#grid').css('left', clientApp.displayItems.gridLeft + 'px');
@@ -317,7 +322,6 @@ var clientApp = {
             for (var i = 0; i < items.length; i++) {
                 item = items[i];
                 itemType = item.itemType;
-                console.log("itemType:", itemType);
 
                 switch(itemType) {
                     case "target":
@@ -339,14 +343,11 @@ var clientApp = {
                         newDiv = makeItemHtml(item);
                         item.itemEl = newDiv;
                         locateNewSetup(item, newDiv);
-                        console.log("setups.targets:", setups.targets);
                         if (setups.targets) {
                             for (var j = 0; j < setups.targets.length; j++) {
                                 target = setups.targets[j];
                                 newDiv = makeSetupPartHtml(target);
                                 target.itemEl = newDiv;
-                                console.log("item:", item);
-                                console.log("target:", target);
                                 locateSetupParts(target, item, newDiv);
                             }
                         }
@@ -356,13 +357,42 @@ var clientApp = {
                                 control = setups.controls[j];
                                 newDiv = makeSetupPartHtml(control);
                                 control.itemEl = newDiv;
-                                console.log("item:", item);
-                                console.log("control:", control);
                                 locateSetupParts(control, item, newDiv);
+                                // border = makeControlOutline(control, item);
+                                // locateControlOutline(control, item, border);
                             }
                         }
                         break;
                 }
+            }
+
+            // ======= locateControlOutline =======
+            function locateControlOutline(control, item, newDiv) {
+                console.log("locateControlOutline");
+
+                // == setupTarget initLTWH is offset from setup item
+                newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + setupPart.initLTWH.L + 'px';
+                newDiv.style.top = item.initLTWH.T + displayItems.studio.canT + setupPart.initLTWH.T + 'px';
+                if (item.itemImage.image) {
+                    newDiv.style.width = item.itemImage.image.naturalWidth + 'px';
+                    newDiv.style.height = item.itemImage.image.naturalHeight + 'px';
+                } else {
+                    newDiv.style.width = setupPart.initLTWH.W + 'px';
+                    newDiv.style.height = setupPart.initLTWH.H + 'px';
+                }
+                newDiv.style.zIndex = 4;
+                $('body').append(newDiv);
+            }
+
+            // ======= makeControlOutline =======
+            function makeControlOutline(control, item) {
+                console.log("makeControlOutline");
+
+                newDiv = document.createElement('div');
+                newDiv.id = control.itemId + "_border";
+                newDiv.classList.add("control-border");
+                newDiv.style.position = "absolute";
+                return newDiv;
             }
 
             // ======= locateGridItem =======
@@ -413,8 +443,6 @@ var clientApp = {
             // ======= locateSetupParts =======
             function locateSetupParts(setupPart, item, newDiv) {
                 console.log("locateSetupParts");
-                console.log("setupPart.initLTWH.L:", setupPart.initLTWH.L);
-                console.log("setupPart.initLTWH.T:", setupPart.initLTWH.T);
 
                 // == setupTarget initLTWH is offset from setup item
                 newDiv.style.left = item.initLTWH.L + displayItems.studio.canL + setupPart.initLTWH.L + 'px';
@@ -461,8 +489,8 @@ var clientApp = {
                 newDiv.style.position = "absolute";
                 if (item.itemImage.image) {
                     urlString = "url('images/" + item.itemImage.image + "_" + item.itemImage.startFrame + ".png') 0 0";
-                    console.log("urlString:", urlString);
                     newDiv.style.background = urlString;
+                    newDiv.style.backgroundRepeat = "no-repeat";
                     newDiv.style.backgroundSize = item.itemImage.image.naturalWidth + 'px ' + item.itemImage.image.naturalHeight + 'px';
                 }
                 return newDiv;
@@ -756,7 +784,6 @@ var clientApp = {
 
         var setupItem, setupTargets, setupControls;
         var lessonItemsArray = [groups, gridders, actors, targets];
-        console.log("gridders: ", gridders);
 
         // == activate page level items
         for (var i = 0; i < lessonItemsArray.length; i++) {
@@ -768,13 +795,17 @@ var clientApp = {
         }
 
         // == activate setup level items
-        for (var i = 0; i < setups.length; i++) {
-            setupItem = setups[i];
-            if (setupItem.itemTargets.length > 0) {
-                activatePageItems(setupItem.itemTargets);
+        if (setups.item) {
+            if (setups.targets) {
+                for (var i = 0; i < setups.targets.length; i++) {
+                    activatePageItems(setups.targets[i]);
+                }
             }
-            if (setupItem.itemControls.length > 0) {
-                activatePageItems(setupItem.itemControls);
+            if (setups.controls) {
+                console.log("setups.controls.length: ", setups.controls.length);
+                for (var i = 0; i < setups.controls.length; i++) {
+                    activatePageItems(setups.controls[i]);
+                }
             }
         }
 
@@ -786,7 +817,13 @@ var clientApp = {
         // ======= activatePageItems =======
         function activatePageItems(items) {
             console.log("activatePageItems");
+            // console.log("items:", items);
+            // console.log("items.length:", items.length);
 
+            if (!items.length) {
+                console.log("*** !items.length ***");
+                items = [items];
+            }
             for (var i = 0; i < items.length; i++) {
                 var item = items[i];
 
@@ -933,51 +970,70 @@ var clientApp = {
     // ======= ======= ======= UTILITIES ======= ======= =======
     // ======= ======= ======= UTILITIES ======= ======= =======
 
+    // ======= updateControlFrame =======
+    updateControlFrame: function(frameIndex) {
+        // console.log("updateControlFrame");
+        // console.log("frameIndex:", frameIndex);
+
+        var item = clientApp.activeActor;
+
+        if (item.itemImage.image) {
+            urlString = "url('images/" + item.itemImage.image + "_" + frameIndex + ".png') 0 0";
+            item.itemEl[0].style.background = urlString;
+        }
+    },
+
     // ======= updateCanvasFrame =======
     updateCanvasFrame: function(indexX, indexY) {
         // console.log("updateCanvasFrame");
-        // console.log("frameIndexX/Y:", indexX, indexY);
 
         var page = clientApp.activePage;
 
         // == get frame from nested array matrix (left/right, up/down) based on XY dragger indexes
-        if (clientApp.activePage.studio.matrix) {
-            if (page.studio.dir == "reverse")  {
-                var studioImage = clientApp.studioImages[indexY][indexX];
+        if (clientApp.activePage.studio.image) {
+            if (clientApp.activePage.studio.matrix) {
+                if (page.studio.dir == "reverse")  {
+                    var studioImage = clientApp.studioImages[indexY][indexX];
+                } else {
+                    var studioImage = clientApp.studioImages[indexX][indexY];
+                }
             } else {
-                var studioImage = clientApp.studioImages[indexX][indexY];
+                var studioImage = clientApp.studioImages[indexX];
             }
-        } else {
-            var studioImage = clientApp.studioImages[indexX];
-        }
-
-        var studioCan = this.displayItems["studio"].can;
-        var studioCtx = this.displayItems["studio"].ctx;
-        var canW = clientApp.displayItems["studio"].canW;
-        var canH = clientApp.displayItems["studio"].canH;
-        studioCtx.clearRect(0, 0, canW, canH);
-        if (studioImage) {
-            studioCtx.drawImage(studioImage, 0, 0, 720, 405, 0, 0, canW, canH);
-            studioCtx.save();
+            var studioCan = this.displayItems["studio"].can;
+            var studioCtx = this.displayItems["studio"].ctx;
+            var canW = clientApp.displayItems["studio"].canW;
+            var canH = clientApp.displayItems["studio"].canH;
+            studioCtx.clearRect(0, 0, canW, canH);
+            if (studioImage) {
+                studioCtx.drawImage(studioImage, 0, 0, 720, 405, 0, 0, canW, canH);
+                studioCtx.save();
+            }
         }
 
         // == only some animations display on monitor canvas
-        if (clientApp.activePage.monitor.matrix) {
-            if (page.monitor.dir == "reverse")  {
-                var monitorImage = clientApp.monitorImages[indexY][indexX];
+        if (clientApp.activePage.monitor.image) {
+            if (clientApp.activePage.monitor.matrix) {
+                if (page.monitor.dir == "reverse")  {
+                    var monitorImage = clientApp.monitorImages[indexY][indexX];
+                } else {
+                    var monitorImage = clientApp.monitorImages[indexX][indexY];
+                }
             } else {
-                var monitorImage = clientApp.monitorImages[indexX][indexY];
+                if (clientApp.activePage.monitor.image) {
+                    var monitorImage = clientApp.monitorImages[indexX];
+                }
             }
-        } else {
-            var monitorImage = clientApp.monitorImages[indexX];
+            var monitorCan = this.displayItems["monitor"].can;
+            var monitorCtx = this.displayItems["monitor"].ctx;
+            var canW = clientApp.displayItems["monitor"].canW;
+            var canH = clientApp.displayItems["monitor"].canH;
+            monitorCtx.clearRect(0, 0, canW, canH);
+            if (monitorImage) {
+                monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, canW, canH);
+                studioCtx.save();
+            }
         }
-
-        var monitorCan = this.displayItems["monitor"].can;
-        var monitorCtx = this.displayItems["monitor"].ctx;
-        var canW = clientApp.displayItems["monitor"].canW;
-        var canH = clientApp.displayItems["monitor"].canH;
-        monitorCtx.clearRect(0, 0, canW, canH);
-        monitorCtx.drawImage(monitorImage, 0, 0, 720, 405, 0, 0, canW, canH);
     },
 
     // ======= clearPageElements =======
