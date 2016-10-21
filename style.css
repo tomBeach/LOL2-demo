@@ -22,6 +22,11 @@ html {
     background: -o-linear-gradient( to top, #777, #ccc);
     background: linear-gradient( to top, #777, #ccc);
 }
+#banner {
+	position: absolute;
+	top: 130px;
+	left: 10px;
+}
 
 /* ======= grid_image ======= */
 .grid_item {

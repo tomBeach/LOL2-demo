@@ -256,11 +256,11 @@ var clientApp = {
         console.log("makeLessonItems");
 
         var page = this.activePage;
-        var setups = page.SetupItems;
+        var setups = page.SetupItem;
         var actors = page.ActorItems;
         var groups = page.GroupItems;
         var guides = page.guides;
-        var targets = page.TargetItems;
+        var targets = page.pageTargets;
         var gridders = page.GridItems;
         // console.log("setups:", setups);
         // console.log("actors:", actors);
@@ -699,11 +699,11 @@ var clientApp = {
         console.log("activateLessonItems");
 
         var page = this.activePage;
-        var setups = page.SetupItems;
+        var setups = page.SetupItem;
         var groups = page.GroupItems;
         var gridders = page.GridItems;
         var actors = page.ActorItems;
-        var targets = page.TargetItems;
+        var targets = page.pageTargets;
         var guides = page.guides;
 
         var setupItem, setupTargets, setupControls;

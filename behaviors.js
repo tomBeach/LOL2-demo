@@ -1,128 +1,147 @@
 
-// ======= ======= ======= BEHAVIORS ======= ======= =======
-// ======= ======= ======= BEHAVIORS ======= ======= =======
-// ======= ======= ======= BEHAVIORS ======= ======= =======
+// ======= ======= ======= INIT MOVE ======= ======= =======
+// ======= ======= ======= INIT MOVE ======= ======= =======
+// ======= ======= ======= INIT MOVE ======= ======= =======
 
 // ======= initMove =======
 Item.prototype.initMove = function(e) {
     console.log("initMove");
 
-    // == get active item element
     var page = clientApp.activePage;
-    var item = clientApp.activeActor;
-    var itemType = item.itemType;
-    item.itemEl = $("#" + item.itemId).eq(0);
+
+    // == get active item element
+    var actor = clientApp.activeActor;
+    var itemType = actor.itemType;
+    actor.itemEl = $("#" + actor.itemId).eq(0);
 
     // == strip "px" suffix from left and top properties
-    var locL = parseInt($(item.itemEl).css('left').substring(0, $(item.itemEl).css('left').length - 2));
-    var locT = parseInt($(item.itemEl).css('top').substring(0, $(item.itemEl).css('top').length - 2));
+    var locL = parseInt($(actor.itemEl).css('left').substring(0, $(actor.itemEl).css('left').length - 2));
+    var locT = parseInt($(actor.itemEl).css('top').substring(0, $(actor.itemEl).css('top').length - 2));
 
     // == limit moves to LTWH (left/top/width/height) boundaries
-    if (item.bounds.W > (displayItems.studio.canW - item.initLTWH.W)) {
-        var itemBoundsW = displayItems.studio.canW - item.initLTWH.W;
+    if (actor.bounds.W > (displayItems.studio.canW - actor.initLTWH.W)) {
+        var itemBoundsW = displayItems.studio.canW - actor.initLTWH.W;
     } else {
-        var itemBoundsW = item.bounds.W;
+        var itemBoundsW = actor.bounds.W;
     }
-    if (item.bounds.H > (displayItems.studio.canH - item.initLTWH.H)) {
-        var itemBoundsH = displayItems.studio.canH - item.initLTWH.H;
+    if (actor.bounds.H > (displayItems.studio.canH - actor.initLTWH.H)) {
+        var itemBoundsH = displayItems.studio.canH - actor.initLTWH.H;
     } else {
-        var itemBoundsH = item.bounds.H;
+        var itemBoundsH = actor.bounds.H;
     }
+
+    // ======= ======= ACTOR ======= =======
+    // ======= ======= ACTOR ======= =======
+    // ======= ======= ACTOR ======= =======
 
     // == set item/mouse locations and bounds (absolute position)
-    item.startXY.itemL = locL;
-    item.startXY.itemT = locT;
-    item.startXY.mouseX = e.clientX;
-    item.startXY.mouseY = e.clientY;
-    item.startXY.diffX = e.clientX - locL;
-    item.startXY.diffY = e.clientY - locT;
+    actor.startXY.itemL = locL;
+    actor.startXY.itemT = locT;
+    actor.startXY.mouseX = e.clientX;
+    actor.startXY.mouseY = e.clientY;
+    actor.startXY.diffX = e.clientX - locL;
+    actor.startXY.diffY = e.clientY - locT;
+    actor.minMaxLT.minL = displayItems.studio.canL + actor.bounds.L;
+    actor.minMaxLT.minT = displayItems.studio.canT + actor.bounds.T;
+    actor.minMaxLT.maxL = displayItems.studio.canL + actor.bounds.L + itemBoundsW;
+    actor.minMaxLT.maxT = displayItems.studio.canT + actor.bounds.T + itemBoundsH;
 
-    if (page.SetupItems.controls) {
-        var control = page.SetupItems.controls[0];
-        var setupItem = page.SetupItems.item;
-        item.minMaxLT.minL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + item.bounds.L;
-        item.minMaxLT.minT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + item.bounds.T;
-        item.minMaxLT.maxL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + item.bounds.L + itemBoundsW;
-        item.minMaxLT.maxT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + item.bounds.T + itemBoundsH;
-    } else {
-        item.minMaxLT.minL = displayItems.studio.canL + item.bounds.L;
-        item.minMaxLT.minT = displayItems.studio.canT + item.bounds.T;
-        item.minMaxLT.maxL = displayItems.studio.canL + item.bounds.L + itemBoundsW;
-        item.minMaxLT.maxT = displayItems.studio.canT + item.bounds.T + itemBoundsH;
-    }
+    // ======= ======= TARGETS ======= =======
+    // ======= ======= TARGETS ======= =======
+    // ======= ======= TARGETS ======= =======
 
-    // == change relative LTWH to absolute LTWH for setup targets (which are 'children' of setup objects)
-    var target, setup;
-    if ((page.SetupItems.item) && (item.itemTargets.length > 0)) {
-        setup = page.SetupItems.item;
-        for (var i = 0; i < item.itemTargets.length; i++) {
-            target = item.itemTargets[i];
-            target.absLoc.L = target.initLTWH.L + setup.initLTWH.L + displayItems.studio.canL;
-            target.absLoc.T = target.initLTWH.T + setup.initLTWH.T + displayItems.studio.canT;
-            target.absLoc.W = target.initLTWH.L + setup.initLTWH.L + displayItems.studio.canL + target.initLTWH.W;
-            target.absLoc.H = target.initLTWH.T + setup.initLTWH.T + displayItems.studio.canT + target.initLTWH.H;
-        }
-    }
-    if (page.TargetItems.length > 0) {
-        var pageTargets = page.TargetItems;
+    // == page has active targets
+    if (page.pageTargets.length > 0) {
+        var pageTargets = page.pageTargets;
         for (var i = 0; i < pageTargets.length; i++) {
-            target = pageTargets[i];
-            target.absLoc.L = target.initLTWH.L + displayItems.studio.canL;
-            target.absLoc.T = target.initLTWH.T + displayItems.studio.canT;
-            target.absLoc.W = target.initLTWH.L + displayItems.studio.canL + target.initLTWH.W;
-            target.absLoc.H = target.initLTWH.T + displayItems.studio.canT + target.initLTWH.H;
+            var target = pageTargets[i];
+            target.absLoc.L = displayItems.studio.canL + target.initLTWH.L;
+            target.absLoc.T = displayItems.studio.canT + target.initLTWH.T;
+            target.absLoc.W = displayItems.studio.canL + target.initLTWH.L + target.initLTWH.W;
+            target.absLoc.H = displayItems.studio.canT + target.initLTWH.T + target.initLTWH.H;
         }
     }
 
-    window.addEventListener('mousemove', item.moveItem, true);
-    window.addEventListener('mouseup', item.mouseUp, true);
+    // == setup item has active targets (and may have other non-active targets)
+    if (page.SetupItem.targets.length > 0) {
+        var setupItem = page.SetupItem.item;
+        for (var i = 0; i < page.SetupItem.targets.length; i++) {
+            var target = page.SetupItem.targets[i];
+            target.absLoc.L = displayItems.studio.canL + setupItem.initLTWH.L + target.initLTWH.L;
+            target.absLoc.T = displayItems.studio.canT + setupItem.initLTWH.T + target.initLTWH.T;
+            target.absLoc.W = displayItems.studio.canL + setupItem.initLTWH.L + target.initLTWH.L + target.initLTWH.W;
+            target.absLoc.H = displayItems.studio.canT + setupItem.initLTWH.T + target.initLTWH.T + target.initLTWH.H;
+        }
+    }
+
+    // ======= ======= CONTROLS ======= =======
+    // ======= ======= CONTROLS ======= =======
+    // ======= ======= CONTROLS ======= =======
+
+    // == over-ride previous bounds values for control actors (they do not move; swap frames only)
+    if (page.SetupItem.controls.length > 0) {
+        var setupItem = page.SetupItem.item;
+        var control = page.SetupItem.controls[0];
+        actor.minMaxLT.minL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + actor.bounds.L;
+        actor.minMaxLT.minT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + actor.bounds.T;
+        actor.minMaxLT.maxL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + actor.bounds.L + itemBoundsW;
+        actor.minMaxLT.maxT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + actor.bounds.T + itemBoundsH;
+    }
+
+    window.addEventListener('mousemove', actor.moveItem, true);
+    window.addEventListener('mouseup', actor.mouseUp, true);
 }
+
+// ======= ======= ======= MOUSE MOVE ======= ======= =======
+// ======= ======= ======= MOUSE MOVE ======= ======= =======
+// ======= ======= ======= MOUSE MOVE ======= ======= =======
 
 // ======= moveItem =======
 Item.prototype.moveItem = function(e) {
     // console.log("moveItem");
 
     var page = clientApp.activePage;
-    var item = clientApp.activeActor;
-    var itemMove = item.itemMove;
+    var actor = clientApp.activeActor;
+    var itemMove = actor.itemMove;
 
     // == calculate change in mouse X/Y location in pixels
-    var dX = parseInt(e.clientX - item.startXY.mouseX);
-    var dY = parseInt(e.clientY - item.startXY.mouseY);
-    var deltaX = ((dX + item.dropLTWH.L)/item.bounds.W).toFixed(2);
-    var deltaY = ((dY + item.dropLTWH.T)/item.bounds.H).toFixed(2);
+    var dX = parseInt(e.clientX - actor.startXY.mouseX);
+    var dY = parseInt(e.clientY - actor.startXY.mouseY);
+
+    // == calculate percentage of X/Y travel across item bounds area
+    var deltaX = ((dX + actor.dropLTWH.L)/actor.bounds.W).toFixed(2);
+    var deltaY = ((dY + actor.dropLTWH.T)/actor.bounds.H).toFixed(2);
 
     switch(itemMove) {
         case "control":
-            var left = parseInt(item.startXY.itemL + dX);
-            var top = parseInt(item.startXY.itemT + dY);
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT + dY);
             var itemLT = getMoveBoundaries(left, top);
             getControlFrames(itemLT[0], itemLT[1], deltaX, deltaY);
             break;
         case "matrixAB":
-            var left = parseInt(item.startXY.itemL + dX);
-            var top = parseInt(item.startXY.itemT + dY);
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT + dY);
             var itemLT = getMoveBoundaries(left, top);
             updateMatrixAB(itemLT[0], itemLT[1]);
             break;
         case "dragger":
-            var left = parseInt(item.startXY.itemL + dX);
-            var top = parseInt(item.startXY.itemT + dY);
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT + dY);
             var itemLT = getMoveBoundaries(left, top);
-            if ((item.itemTargets.length > 0) || (page.TargetItems.length > 0)) {
-                if (item.itemTargets.length > 0) {
-                    checkItemTargets(itemLT[0], itemLT[1], "setup");
-                }
-                if (page.TargetItems.length > 0) {
-                    checkItemTargets(itemLT[0], itemLT[1], "page");
-                }
+
+            // == check for setup or page targets
+            if (page.SetupItem.targets.length > 0) {
+                checkItemTargets(itemLT[0], itemLT[1], "setup");
+            } else if (page.pageTargets.length > 0) {
+                checkItemTargets(itemLT[0], itemLT[1], "page");
             } else {
                 updateItemLoc(itemLT[0], itemLT[1]);
             }
             break;
         case "slider":
-            var left = parseInt(item.startXY.itemL + dX);
-            var top = parseInt(item.startXY.itemT - item.dropLTWH.T - (item.bounds.H * deltaX));
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT - actor.dropLTWH.T - (actor.bounds.H * deltaX));
             var itemLT = getMoveBoundaries(left, top);
             updateItemLoc(itemLT[0], itemLT[1]);
             break;
@@ -131,9 +150,6 @@ Item.prototype.moveItem = function(e) {
     // ======= updateMatrixAB =======
     function updateMatrixAB(left, top) {
         // console.log("updateMatrixAB");
-
-        var page = clientApp.activePage;
-        var item = clientApp.activeActor;
 
         // == calculate percent movement through frameset/limit frames to start/end
         var indexX = Math.round(-deltaX * page.studio.endFrame);
@@ -154,11 +170,11 @@ Item.prototype.moveItem = function(e) {
         // console.log("indexY:", indexY);
 
         // == set real-time item loc based on slider position
-        $(item.itemEl).css('z-index', '10');
-        $(item.itemEl).css('top', top + 'px');
-        $(item.itemEl).css('left', left + 'px');
-        item.startXY.dragL = left;
-        item.startXY.dragT = top;
+        $(actor.itemEl).css('z-index', '10');
+        $(actor.itemEl).css('top', top + 'px');
+        $(actor.itemEl).css('left', left + 'px');
+        actor.startXY.dragL = left;
+        actor.startXY.dragT = top;
 
         // == set real-time canvas frame based on slider position
         clientApp.updateCanvasFrame(indexX, indexY);
@@ -169,57 +185,47 @@ Item.prototype.moveItem = function(e) {
 
     // ======= checkItemTargets =======
     function checkItemTargets(left, top, targetType) {
-        console.log("checkItemTargets");
-
-        var page = clientApp.activePage;
-        var item = clientApp.activeActor;
+        // console.log("checkItemTargets");
 
         if (targetType == "page") {
-            var targetList = page.TargetItems;
+            var targetList = page.pageTargets;
         } else if (targetType == "setup") {
-            var targetList = item.itemTargets;
-            console.log("item.itemTargets:", item.itemTargets);
+            var targetList = page.SetupItem.targets;
         }
 
         // == set real-time item loc and canvas frame based on slider position
-        $(item.itemEl).css('z-index', '10');
-        $(item.itemEl).css('top', top + 'px');
-        $(item.itemEl).css('left', left + 'px');
-        item.startXY.dragL = left;
-        item.startXY.dragT = top;
+        $(actor.itemEl).css('z-index', '10');
+        $(actor.itemEl).css('top', top + 'px');
+        $(actor.itemEl).css('left', left + 'px');
+        actor.startXY.dragL = left;
+        actor.startXY.dragT = top;
 
         // == init collision detector for target
         var target;
-        var overlap = 10;
-        var draggerL = left + item.initLTWH.W/2;
-        var draggerT = top + item.initLTWH.H/2;
+        var draggerL = left + actor.initLTWH.W/2;
+        var draggerT = top + actor.initLTWH.H/2;
 
         // == search available targets for collision
         for (var i = 0; i < targetList.length; i++) {
             target = targetList[i];
 
-            // == set real-time item loc and canvas frame based on slider position
-            $(item.itemEl).css('top', top + 'px');
-            $(item.itemEl).css('left', left + 'px');
-            item.startXY.dragL = left;
-            item.startXY.dragT = top;
-
+            // == COLLISION with target
             if ((draggerL < target.absLoc.W) && (draggerT > target.absLoc.T) && (draggerL > target.absLoc.L) && (draggerT < target.absLoc.H)) {
                 console.log("-- HIT -- HIT -- HIT --");
 
                 // == locate dragged item at top/left of target
-                $(item.itemEl).off();
-                $(item.itemEl).css('top', target.absLoc.T + 'px');
-                $(item.itemEl).css('left', target.absLoc.L + 'px');
-                $(item.itemEl).css('background-size', target.initLTWH.W + 'px');
-                $(item.itemEl).css('background-repeat', 'no-repeat');
-                $(item.itemEl).css('width', target.initLTWH.W + 'px');
-                $(item.itemEl).css('height', target.initLTWH.H + 'px');
+                $(actor.itemEl).off();
+                $(actor.itemEl).css('top', target.absLoc.T + 'px');
+                $(actor.itemEl).css('left', target.absLoc.L + 'px');
+                $(actor.itemEl).css('background-size', target.initLTWH.W + 'px');
+                $(actor.itemEl).css('background-repeat', 'no-repeat');
+                $(actor.itemEl).css('width', target.initLTWH.W + 'px');
+                $(actor.itemEl).css('height', target.initLTWH.H + 'px');
 
-                clientApp.updateCanvasFrame(item.indexedFrame, null);
-                swapTargetOccupiers(target, item);
-                window.removeEventListener('mousemove', item.moveItem, true);
-                window.removeEventListener('mouseup', item.mouseUp, true);
+                clientApp.updateCanvasFrame(actor.indexedFrame, null);
+                swapTargetOccupiers(target, actor);
+                window.removeEventListener('mousemove', actor.moveItem, true);
+                window.removeEventListener('mouseup', actor.mouseUp, true);
             }
         }
     }
@@ -227,8 +233,6 @@ Item.prototype.moveItem = function(e) {
     // ======= swapTargetOccupiers =======
     function swapTargetOccupiers(target, newOccupier) {
         console.log("swapTargetOccupiers");
-        // console.log("target:", target);
-        // console.log("target.occupier:", target.occupier);
 
         // == fade out new occupier
         $(newOccupier.itemEl).fadeOut(1000, function() {
@@ -250,10 +254,10 @@ Item.prototype.moveItem = function(e) {
                 }, 500, function() {
                     console.log("itemReturned");
 
-                    // ======= MOUSEDOWN =======
+                    // == restore event listener on previous target occupier
                     $(occupier.itemEl).on('mousedown', function(e) {
                         console.log("\nmousedown");
-                        window.removeEventListener('mouseup', item.moveUp, true);
+                        window.removeEventListener('mouseup', actor.mouseUp, true);
                         var actor = clientApp.items[$(e.currentTarget).attr('id')];
                         var actorEl = $(e.currentTarget);
                         e.preventDefault();
@@ -274,15 +278,13 @@ Item.prototype.moveItem = function(e) {
         // console.log("getControlFrames");
         // console.log("dX, dY, deltaX, deltaY:", dX, dY, deltaX, deltaY);
 
-        var item = clientApp.activeActor;
-
         // == calculate percent movement through frameset/limit frames to start/end
-        var frameIndex = Math.round(-deltaX * item.itemImage.endFrame);
+        var frameIndex = Math.round(-deltaX * actor.itemImage.endFrame);
         if (frameIndex < 0) {
             frameIndex = 0;
         }
-        if (frameIndex > item.itemImage.endFrame) {
-            frameIndex = item.itemImage.endFrame;
+        if (frameIndex > actor.itemImage.endFrame) {
+            frameIndex = actor.itemImage.endFrame;
         }
         clientApp.updateControlFrame(frameIndex, null);
         clientApp.updateCanvasFrame(frameIndex, null);
@@ -291,8 +293,6 @@ Item.prototype.moveItem = function(e) {
     // ======= updateItemLoc =======
     function updateItemLoc(left, top) {
         // console.log("updateItemLoc");
-
-        var item = clientApp.activeActor;
 
         // == calculate percent movement through frameset/limit frames to start/end
         var frameIndex = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
@@ -304,11 +304,11 @@ Item.prototype.moveItem = function(e) {
         }
 
         // == set real-time item loc based on slider position
-        $(item.itemEl).css('z-index', '10');
-        $(item.itemEl).css('top', top + 'px');
-        $(item.itemEl).css('left', left + 'px');
-        item.startXY.dragL = left;
-        item.startXY.dragT = top;
+        $(actor.itemEl).css('z-index', '10');
+        $(actor.itemEl).css('top', top + 'px');
+        $(actor.itemEl).css('left', left + 'px');
+        actor.startXY.dragL = left;
+        actor.startXY.dragT = top;
 
         // == update screen XY locator (for development)
         $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
@@ -324,38 +324,39 @@ Item.prototype.moveItem = function(e) {
     // ======= getMoveBoundaries =======
     function getMoveBoundaries(left, top) {
         // console.log("getMoveBoundaries");
-        if (left < item.minMaxLT.minL) {
-            left = item.minMaxLT.minL;
+        if (left < actor.minMaxLT.minL) {
+            left = actor.minMaxLT.minL;
         }
-        if (left > item.minMaxLT.maxL) {
-            left = item.minMaxLT.maxL;
+        if (left > actor.minMaxLT.maxL) {
+            left = actor.minMaxLT.maxL;
         }
-        if (top < item.minMaxLT.minT) {
-            top = item.minMaxLT.minT;
+        if (top < actor.minMaxLT.minT) {
+            top = actor.minMaxLT.minT;
         }
-        if (top > item.minMaxLT.maxT) {
-            top = item.minMaxLT.maxT;
+        if (top > actor.minMaxLT.maxT) {
+            top = actor.minMaxLT.maxT;
         }
         return [left, top];
     }
 }
 
-// ======= ======= ======= MOUSEUP ======= ======= =======
-// ======= ======= ======= MOUSEUP ======= ======= =======
-// ======= ======= ======= MOUSEUP ======= ======= =======
+// ======= ======= ======= MOUSE UP ======= ======= =======
+// ======= ======= ======= MOUSE UP ======= ======= =======
+// ======= ======= ======= MOUSE UP ======= ======= =======
 
 // ======= mouseUp =======
 Item.prototype.mouseUp = function(e) {
     console.log("mouseUp");
-    var item = clientApp.activeActor;
+
+    var actor = clientApp.activeActor;
     $(clientApp.activeActor.itemEl).off();
-    window.removeEventListener('mousemove', item.moveItem, true);
+    window.removeEventListener('mousemove', actor.moveItem, true);
 
     // == store relative loc where item was dropped
-    item.dropLTWH.L = item.startXY.dragL - (clientApp.displayItems.studio.canL + item.bounds.L + item.bounds.W);
-    item.dropLTWH.T = item.startXY.dragT - (clientApp.displayItems.studio.canT + item.bounds.T);
-    item.dropLTWH.W = null;
-    item.dropLTWH.H = null;
+    actor.dropLTWH.L = actor.startXY.dragL - (clientApp.displayItems.studio.canL + actor.bounds.L + actor.bounds.W);
+    actor.dropLTWH.T = actor.startXY.dragT - (clientApp.displayItems.studio.canT + actor.bounds.T);
+    actor.dropLTWH.W = null;
+    actor.dropLTWH.H = null;
 
     // == reactivate item
     clientApp.activateLessonItems();
