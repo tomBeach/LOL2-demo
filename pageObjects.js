@@ -26,7 +26,7 @@ function initPages(items, targets) {
     // ======= ======= ======= ======= ======= intensity ======= ======= ======= ======= =======
     pages.page_1_0 = new Page (
         /* pageKey */ "1_0",
-        /* pageText */ "The first thing to decide when setting a light is: how bright should it be?  That means <span class='hilight'>INTENSITY</span>.  The power of a light is measured in watts -- which can range from a tiny 150W to a monster 20,000W (or 20K).  Lights from a small lighting kit typically start at 150 and go up to 1,000 watts.  Try 'em.'",
+        /* pageText */ "The first thing to decide when setting a light is: how bright should it be?  That means <span class='hilight'>INTENSITY</span>.  The power of a light is measured in watts -- which can range from a tiny 150W to a monster 20,000W (or 20K).  Lights from a small lighting kit typically start at 150 and go up to 1,000 watts.  <span class='hilightY'>Click and drag the lights</span> to the 'stand' target <span class='hilightY'>(red box)</span> to try 'em.'",
         /* SetupItem */ { item:null, targets:[], controls:[] },
         /* GroupItems */ [],
         /* GridItems */ [items.f150, items.f300, items.f650, items.f1000],
@@ -38,7 +38,7 @@ function initPages(items, targets) {
 	);
 	pages.page_1_1 = new Page (
         /* pageKey */ "1_1",
-        /* pageText */ "Once you choose power, another brightness factor is <span class='hilight'>DISTANCE</span>.  The closer your light is to the subject, the brighter it is.  <span class='hilight'>Drag the light icon</span> to see how brightness changes with distance.  What else happens as you move the light in and out?",
+        /* pageText */ "Once you choose power, another brightness factor is <span class='hilight'>DISTANCE</span>.  The closer your light is to the subject, the brighter it is.  <span class='hilightY'>Drag the light icon</span> to see how brightness changes with distance.  What else happens as you move the light in and out?",
         /* SetupItem */ { item:null, targets:[], controls:[] },
         /* GroupItems */ [],
         /* GridItems */ [],
@@ -50,7 +50,7 @@ function initPages(items, targets) {
 	);
     pages.page_1_2 = new Page (
         /* pageKey */ "1_2",
-        /* pageText */ "Often, moving lights is not easy --  especially when its a 20k HMI lighting up a city block.  But if it's too bright you can drop a <span class='hilight'>SCRIM</span> into the <span class='hilight'>barn door frame</span> and cut it down a bit.  Drag some scrims towards the light and drop them into the barndoor frame.  Easy!",
+        /* pageText */ "Often, moving lights is not easy --  especially when its a 20k HMI lighting up a city block.  But if it's too bright you can drop a <span class='hilight'>SCRIM</span> into the <span class='hilight'>barn door frame</span> and cut it down a bit.  <span class='hilightY'>Drag the scrims</span> towards the light and drop them into the barndoor frame.  Easy!",
         /* SetupItem */ { item:items.f650_0_2, targets:[targets.barndoorFrame], controls:[] },
         /* GroupItems */ [],
         /* GridItems */ [items.scrim1_0, items.scrim2_0, items.scrim3_0],
@@ -62,7 +62,7 @@ function initPages(items, targets) {
 	);
     pages.page_1_3 = new Page (
         /* pageKey */ "1_3",
-        /* pageText */ "If you are running out of time and need a simple adjustment, you can change the <span class='hilight'>SPOT/FLOOD</span> control knob on the back of the light (drag left and right).  This changes intensity slightly but also changes the beam spread, so you need to watch for spill-over where you don't want it.",
+        /* pageText */ "If you are running out of time and need a simple adjustment, you can change the <span class='hilight'>SPOT/FLOOD</span> control knob on the back of the light <span class='hilightY'>(click and drag left and right)</span>.  This changes intensity slightly but also changes the beam spread, so you need to watch for spill-over where you don't want it.",
         /* SetupItem */ { item:items.f650_0_2, targets:[], controls:[items.spotFlood] },
         /* GroupItems */ [],
         /* GridItems */ [],
@@ -100,7 +100,7 @@ function initPages(items, targets) {
 	);
     pages.page_2_2 = new Page (
         /* pageKey */ "2_2",
-        /* pageText */ "Diffuse light can be more 'natural' but it's also harder to control -- especially when a controller (like the floppy flag here) is close to the light.  Try moving the flag around with the <span class='hilight'>orange flag mover</span> to see how shadows work with <span class='hilight'>soft light</span>.",
+        /* pageText */ "Diffuse light can be more 'natural' but it's also harder to control -- especially when a controller (like the floppy flag here) is close to the light.  Try moving the flag around with the <span class='hilightY'>orange flag mover</span> to see how shadows work with <span class='hilight'>soft light</span>.",
         /* SetupItem */ { item:null, targets:[], controls:[] },
         /* GroupItems */ [],
         /* GridItems */ [],

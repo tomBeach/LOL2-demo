@@ -285,6 +285,9 @@ html {
 .hilight {
 	color: purple;
 }
+.hilightY {
+	color: yellow;
+}
 
 /* ======= gear labels ======= */
 .gearItem {
