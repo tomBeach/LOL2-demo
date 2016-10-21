@@ -449,7 +449,7 @@ canvas {
 #message-text {
     display: block;
     margin: 10px;
-    color: blue;
+    color: #222;
 }
 #message-text > .project-link {
 	display: block;
@@ -460,5 +460,8 @@ canvas {
 	background-color: #ddd;
 }
 #close-message {
+	width: 12em;
+	height: 2em;
     margin-left: 10px;
+	font-size: 1.2em;
 }
