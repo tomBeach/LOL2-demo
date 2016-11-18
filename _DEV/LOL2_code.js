@@ -1,6 +1,7 @@
-// ======= ======= ======= ======= ======= data ======= ======= ======= ======= =======
-// ======= ======= ======= ======= ======= data ======= ======= ======= ======= =======
-// ======= ======= ======= ======= ======= data ======= ======= ======= ======= =======
+
+// ======= ======= ======= ======= ======= script.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= script.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= script.js ======= ======= ======= ======= =======
 
 var displayItems = {
     studio: { itemName: "studio", itemText: "Studio View", can:null, ctx:null, canL:10, canT:280, canW:720, canH:405 },
@@ -26,9 +27,11 @@ var gearItems = {
     Softlight: { itemName:"Softlight", itemText:"Softlight", itemType:"light", image:"softlight_0.png" }
 }
 
-// ======= ======= ======= ======= ======= initialize ======= ======= ======= ======= =======
-// ======= ======= ======= ======= ======= initialize ======= ======= ======= ======= =======
-// ======= ======= ======= ======= ======= initialize ======= ======= ======= ======= =======
+
+// ======= ======= ======= INITIALIZE ======= ======= =======
+// ======= ======= ======= INITIALIZE ======= ======= =======
+// ======= ======= ======= INITIALIZE ======= ======= =======
+
 
 var clientApp = {
     pages: null,
@@ -57,21 +60,6 @@ var clientApp = {
         this.activatePrevNext();
         this.activateMenuItems("lessonMenu");
         this.activateDisplayItems();
-
-    },
-
-    // ======= makeLessonPage =======
-    makeLessonPage: function(lessonEl) {
-        console.log("\n ******* makeLessonPage *******");
-        console.log("activeLesson:", clientApp.activeLesson.lessonIndex);
-        console.log("activePage:  ", clientApp.activePage.pageKey);
-
-        this.initLessonCanvases();
-        this.clearPageElements();
-        this.makeLessonCanvases();
-        this.makeLessonItems();
-        this.activateLessonItems();
-        this.makeLessonText(lessonEl);
     },
 
     // ======= makeLessonMenu =======
@@ -89,7 +77,6 @@ var clientApp = {
             } else {
                 var menuState = "lessonItem active";
             }
-            console.log("menuState:", menuState);
 
             menuHtml += "<li><div id='" + key + "' class='" + menuState + "'>";
             menuHtml += "<span class='menu_title_active'>" + lesson.lessonIndex + " - " + lesson.lessonTitle + "</span>"
@@ -103,7 +90,6 @@ var clientApp = {
     // ======= makeGearMenu =======
     makeGearMenu: function() {
         console.log("makeGearMenu");
-        console.log("this.gearItems[0]:", this.gearItems[0]);
 
         var index = -1;
         var menuHtml = "<ul id='gearMenu'>";
@@ -119,72 +105,22 @@ var clientApp = {
         $('#storeroomMenuDisplay').html(menuHtml);
     },
 
-    // ======= makeLessonText =======
-    makeLessonText: function(lessonEl) {
-        console.log("makeLessonText");
 
-        var lessonSelectedId = $(lessonEl).attr('id') + "_selected";
-        var titleText = clientApp.activeLesson.lessonIndex + " - " + clientApp.activeLesson.lessonTitle;
-        var subTitleText = clientApp.activeLesson.lessonSubtitle;
+    // ======= ======= ======= USER ACTION ======= ======= =======
+    // ======= ======= ======= USER ACTION ======= ======= =======
+    // ======= ======= ======= USER ACTION ======= ======= =======
 
-        $('#selectedLesson').children('span').eq(0).text(titleText);
-        $('#selectedLesson').children('span').eq(1).text(subTitleText);
 
-        $("#lessonTextDisplay").fadeIn("fast", function() {
-            // console.log("MENU opacity 0");
-        });
-        $("#lessonMenuDisplay").fadeOut("fast", function() {
-            // console.log("MENU opacity 0");
-        });
-        $("#storeroomMenuDisplay").fadeOut("fast", function() {
-            // console.log("STOREROOM opacity 0");
-        });
+    // ======= makeLessonPage =======
+    makeLessonPage: function(lessonEl) {
+        console.log("\n ******* makeLessonPage *******");
 
-        // == update lesson text and activate prev/next
-        this.updateLessonText();
-    },
-
-    // ======= updateLessonText =======
-    updateLessonText: function(errorText) {
-        console.log("updateLessonText");
-
-        // == no page found... display msg
-        if (errorText) {
-            var lessonText = errorText;
-        } else {
-            var lessonText = clientApp.activePage.pageText;
-        }
-
-        // == remove previous lesson text
-        if ($('#lessonText').children('p').html()) {
-            $('#lessonText').animate({
-                height: 0,
-                opacity: 0
-            }, 500, function() {
-                console.log("collapsed");
-
-                // == replace prev lesson text with new text
-                $('#lessonText').children('p').html(lessonText);
-                $('#lessonText').animate({
-                    height: "200px",
-                    opacity: 1.0
-                }, 500, function() {
-                    console.log("expanded");
-                });
-            });
-        } else {
-
-            // == replace lessons list with lesson text
-            $('#lessonText').children('p').html(lessonText);
-            $('#lessonText').removeClass('hide');
-            $('#lessonText').css('display, block');
-            $('#lessonText').animate({
-                height: "200px",
-                opacity: 1.0
-            }, 500, function() {
-                console.log("expanded");
-            });
-        }
+        this.initLessonCanvases();
+        this.clearPageElements();
+        this.makeLessonCanvases();
+        this.makeLessonItems();
+        this.activateLessonItems();
+        this.makeLessonText(lessonEl);
     },
 
     // ======= initLessonCanvases =======
@@ -386,11 +322,6 @@ var clientApp = {
         var guides = page.guides;
         var targets = page.pageTargets;
         var gridders = page.GridItems;
-        // console.log("actors:", actors);
-        // console.log("groups:", groups);
-        // console.log("guides:", guides);
-        // console.log("targets:", targets);
-        // console.log("gridders:", gridders);
 
         var lessonItemsArray = [groups, gridders, actors, targets];
 
@@ -459,8 +390,6 @@ var clientApp = {
                                 newDiv = makeSetupPartHtml(control);
                                 control.itemEl = newDiv;
                                 locateSetupParts(control, item, newDiv);
-                                // border = makeControlOutline(control, item);
-                                // locateControlOutline(control, item, border);
                             }
                         }
                         break;
@@ -665,6 +594,74 @@ var clientApp = {
         }
     },
 
+    // ======= makeLessonText =======
+    makeLessonText: function(lessonEl) {
+        console.log("makeLessonText");
+
+        var lessonSelectedId = $(lessonEl).attr('id') + "_selected";
+        var titleText = clientApp.activeLesson.lessonIndex + " - " + clientApp.activeLesson.lessonTitle;
+        var subTitleText = clientApp.activeLesson.lessonSubtitle;
+
+        $('#selectedLesson').children('span').eq(0).text(titleText);
+        $('#selectedLesson').children('span').eq(1).text(subTitleText);
+
+        $("#lessonTextDisplay").fadeIn("fast", function() {
+            // console.log("MENU opacity 0");
+        });
+        $("#lessonMenuDisplay").fadeOut("fast", function() {
+            // console.log("MENU opacity 0");
+        });
+        $("#storeroomMenuDisplay").fadeOut("fast", function() {
+            // console.log("STOREROOM opacity 0");
+        });
+
+        // == update lesson text and activate prev/next
+        this.updateLessonText();
+    },
+
+    // ======= updateLessonText =======
+    updateLessonText: function(errorText) {
+        console.log("updateLessonText");
+
+        // == no page found... display msg
+        if (errorText) {
+            var lessonText = errorText;
+        } else {
+            var lessonText = clientApp.activePage.pageText;
+        }
+
+        // == remove previous lesson text
+        if ($('#lessonText').children('p').html()) {
+            $('#lessonText').animate({
+                height: 0,
+                opacity: 0
+            }, 500, function() {
+                console.log("collapsed");
+
+                // == replace prev lesson text with new text
+                $('#lessonText').children('p').html(lessonText);
+                $('#lessonText').animate({
+                    height: "200px",
+                    opacity: 1.0
+                }, 500, function() {
+                    console.log("expanded");
+                });
+            });
+        } else {
+
+            // == replace lessons list with lesson text
+            $('#lessonText').children('p').html(lessonText);
+            $('#lessonText').removeClass('hide');
+            $('#lessonText').css('display, block');
+            $('#lessonText').animate({
+                height: "200px",
+                opacity: 1.0
+            }, 500, function() {
+                console.log("expanded");
+            });
+        }
+    },
+
     // ======= selectSectionItem =======
     selectSectionItem: function(item) {
         console.log("selectSectionItem");
@@ -770,8 +767,6 @@ var clientApp = {
         // ======= activatePageItems =======
         function activatePageItems(items) {
             console.log("activatePageItems");
-            // console.log("items:", items);
-            // console.log("items.length:", items.length);
 
             if (!items.length) {
                 console.log("*** !items.length ***");
@@ -793,7 +788,6 @@ var clientApp = {
                 // ======= MOUSEENTER/LEAVE =======
                 $('#' + item.itemId).on('mouseenter', function(e) {
                     // console.log("\nmouseenter");
-                    // console.log("e.currentTarget:", e.currentTarget);
                     clientApp.toggleHoverText(e.currentTarget, item.itemType);
                 });
                 $('#' + item.itemId).on('mouseleave', function(e) {
@@ -802,11 +796,6 @@ var clientApp = {
                 });
             }
         }
-    },
-
-    // ======= activateMenuGrid =======
-    activateMenuGrid: function() {
-        console.log("activateMenuGrid");
     },
 
     // ======= activateDisplayItems =======
@@ -858,7 +847,7 @@ var clientApp = {
                 e.stopPropagation();
             });
             $('#lessonMenu').children('li').children('div').on('mouseleave', function(e) {
-                console.log("\n-- mouseleave");
+                // console.log("\n-- mouseleave");
                 clientApp.toggleHoverText(null, null);
                 e.stopPropagation();
             });
@@ -904,7 +893,6 @@ var clientApp = {
     // ======= getNextPage =======
     getNextPage: function(prevOrNext) {
         console.log("getNextPage");
-        console.log("prevOrNext:", prevOrNext);
 
         var lessonIndex = parseInt(clientApp.activeLesson.lessonIndex);
         var lessonCount = _.size(clientApp.lessons);
@@ -954,6 +942,11 @@ var clientApp = {
         }
     },
 
+    // ======= activateMenuGrid =======
+    activateMenuGrid: function() {
+        console.log("activateMenuGrid");
+    },
+
     // ======= ======= ======= UTILITIES ======= ======= =======
     // ======= ======= ======= UTILITIES ======= ======= =======
     // ======= ======= ======= UTILITIES ======= ======= =======
@@ -961,7 +954,6 @@ var clientApp = {
     // ======= updateControlFrame =======
     updateControlFrame: function(frameIndex) {
         // console.log("updateControlFrame");
-        // console.log("frameIndex:", frameIndex);
 
         var item = clientApp.activeActor;
 
@@ -1028,18 +1020,6 @@ var clientApp = {
     clearPageElements: function() {
         console.log("clearPageElements");
 
-        // <div id="grid"></div>
-    	// <div id="group"></div>
-    	// <div id="actors"></div>
-        // <div id="guides"></div>
-    	// <div id="setup"></div>
-    	// <div id="targets"></div>
-    	// <div id="controls"></div>
-    	// <div id="trackpad"></div>
-    	// <div id="tooltips"></div>
-    	// <div id="titleText"></div>
-    	// <div id="occupier"></div>
-
         // == removeActorsGuides
         $('#grid').empty();
         $('#actors').empty();
@@ -1065,7 +1045,6 @@ var clientApp = {
     // ======= toggleHoverText =======
     toggleHoverText: function(item, itemType) {
         // console.log("toggleHoverText");
-        // console.log("itemType:", itemType);
         if (clientApp.displayItems.warningFlag == false) {
             if ($(item).attr('id')) {
                 if (itemType == "display") {
@@ -1094,5 +1073,518 @@ $('#close-error, #close-message').on('click', function(e) {
     $('#error-box, #message-box').css('display', 'none');
 });
 
-
 clientApp.initialize();
+
+
+// ======= ======= ======= ======= ======= behaviors.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= behaviors.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= behaviors.js ======= ======= ======= ======= =======
+
+
+// ======= ======= ======= INIT MOVE ======= ======= =======
+// ======= ======= ======= INIT MOVE ======= ======= =======
+// ======= ======= ======= INIT MOVE ======= ======= =======
+
+// ======= initMove =======
+Item.prototype.initMove = function(e) {
+    console.log("initMove");
+
+    var page = clientApp.activePage;
+
+    // == get active item element
+    var actor = clientApp.activeActor;
+    var itemType = actor.itemType;
+    actor.itemEl = $("#" + actor.itemId).eq(0);
+
+    // == strip "px" suffix from left and top properties
+    var locL = parseInt($(actor.itemEl).css('left').substring(0, $(actor.itemEl).css('left').length - 2));
+    var locT = parseInt($(actor.itemEl).css('top').substring(0, $(actor.itemEl).css('top').length - 2));
+
+    // == limit moves to LTWH (left/top/width/height) boundaries
+    if (actor.bounds.W > (displayItems.studio.canW - actor.initLTWH.W)) {
+        var itemBoundsW = displayItems.studio.canW - actor.initLTWH.W;
+    } else {
+        var itemBoundsW = actor.bounds.W;
+    }
+    if (actor.bounds.H > (displayItems.studio.canH - actor.initLTWH.H)) {
+        var itemBoundsH = displayItems.studio.canH - actor.initLTWH.H;
+    } else {
+        var itemBoundsH = actor.bounds.H;
+    }
+
+    // ======= ======= ACTOR ======= =======
+    // ======= ======= ACTOR ======= =======
+    // ======= ======= ACTOR ======= =======
+
+    // == set item/mouse locations and bounds (absolute position)
+    actor.startXY.itemL = locL;
+    actor.startXY.itemT = locT;
+    actor.startXY.mouseX = e.clientX;
+    actor.startXY.mouseY = e.clientY;
+    actor.startXY.diffX = e.clientX - locL;
+    actor.startXY.diffY = e.clientY - locT;
+    actor.minMaxLT.minL = displayItems.studio.canL + actor.bounds.L;
+    actor.minMaxLT.minT = displayItems.studio.canT + actor.bounds.T;
+    actor.minMaxLT.maxL = displayItems.studio.canL + actor.bounds.L + itemBoundsW;
+    actor.minMaxLT.maxT = displayItems.studio.canT + actor.bounds.T + itemBoundsH;
+
+    // ======= ======= TARGETS ======= =======
+    // ======= ======= TARGETS ======= =======
+    // ======= ======= TARGETS ======= =======
+
+    // == page has active targets
+    if (page.pageTargets.length > 0) {
+        var pageTargets = page.pageTargets;
+        for (var i = 0; i < pageTargets.length; i++) {
+            var target = pageTargets[i];
+            target.absLoc.L = displayItems.studio.canL + target.initLTWH.L;
+            target.absLoc.T = displayItems.studio.canT + target.initLTWH.T;
+            target.absLoc.W = displayItems.studio.canL + target.initLTWH.L + target.initLTWH.W;
+            target.absLoc.H = displayItems.studio.canT + target.initLTWH.T + target.initLTWH.H;
+        }
+    }
+
+    // == setup item has active targets (and may have other non-active targets)
+    if (page.SetupItem.targets.length > 0) {
+        var setupItem = page.SetupItem.item;
+        for (var i = 0; i < page.SetupItem.targets.length; i++) {
+            var target = page.SetupItem.targets[i];
+            target.absLoc.L = displayItems.studio.canL + setupItem.initLTWH.L + target.initLTWH.L;
+            target.absLoc.T = displayItems.studio.canT + setupItem.initLTWH.T + target.initLTWH.T;
+            target.absLoc.W = displayItems.studio.canL + setupItem.initLTWH.L + target.initLTWH.L + target.initLTWH.W;
+            target.absLoc.H = displayItems.studio.canT + setupItem.initLTWH.T + target.initLTWH.T + target.initLTWH.H;
+        }
+    }
+
+    // ======= ======= CONTROLS ======= =======
+    // ======= ======= CONTROLS ======= =======
+    // ======= ======= CONTROLS ======= =======
+
+    // == over-ride previous bounds values for control actors (they do not move; swap frames only)
+    if (page.SetupItem.controls.length > 0) {
+        var setupItem = page.SetupItem.item;
+        var control = page.SetupItem.controls[0];
+        actor.minMaxLT.minL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + actor.bounds.L;
+        actor.minMaxLT.minT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + actor.bounds.T;
+        actor.minMaxLT.maxL = displayItems.studio.canL + setupItem.initLTWH.L + control.initLTWH.L + actor.bounds.L + itemBoundsW;
+        actor.minMaxLT.maxT = displayItems.studio.canT + setupItem.initLTWH.T + control.initLTWH.T + actor.bounds.T + itemBoundsH;
+    }
+
+    window.addEventListener('mousemove', actor.moveItem, true);
+    window.addEventListener('mouseup', actor.mouseUp, true);
+}
+
+// ======= ======= ======= MOUSE MOVE ======= ======= =======
+// ======= ======= ======= MOUSE MOVE ======= ======= =======
+// ======= ======= ======= MOUSE MOVE ======= ======= =======
+
+// ======= moveItem =======
+Item.prototype.moveItem = function(e) {
+    // console.log("moveItem");
+
+    var page = clientApp.activePage;
+    var actor = clientApp.activeActor;
+    var itemMove = actor.itemMove;
+
+    // == calculate change in mouse X/Y location in pixels
+    var dX = parseInt(e.clientX - actor.startXY.mouseX);
+    var dY = parseInt(e.clientY - actor.startXY.mouseY);
+
+    // == calculate percentage of X/Y travel across item bounds area
+    var deltaX = ((dX + actor.dropLTWH.L)/actor.bounds.W).toFixed(2);
+    var deltaY = ((dY + actor.dropLTWH.T)/actor.bounds.H).toFixed(2);
+
+    switch(itemMove) {
+        case "control":
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT + dY);
+            var itemLT = getMoveBoundaries(left, top);
+            getControlFrames(itemLT[0], itemLT[1], deltaX, deltaY);
+            break;
+        case "matrixAB":
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT + dY);
+            var itemLT = getMoveBoundaries(left, top);
+            updateMatrixAB(itemLT[0], itemLT[1]);
+            break;
+        case "dragger":
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT + dY);
+            var itemLT = getMoveBoundaries(left, top);
+
+            // == check for setup or page targets
+            if (page.SetupItem.targets.length > 0) {
+                checkItemTargets(itemLT[0], itemLT[1], "setup");
+            } else if (page.pageTargets.length > 0) {
+                checkItemTargets(itemLT[0], itemLT[1], "page");
+            } else {
+                updateItemLoc(itemLT[0], itemLT[1]);
+            }
+            break;
+        case "slider":
+            var left = parseInt(actor.startXY.itemL + dX);
+            var top = parseInt(actor.startXY.itemT - actor.dropLTWH.T - (actor.bounds.H * deltaX));
+            var itemLT = getMoveBoundaries(left, top);
+            updateItemLoc(itemLT[0], itemLT[1]);
+            break;
+    }
+
+    // ======= updateMatrixAB =======
+    function updateMatrixAB(left, top) {
+        // console.log("updateMatrixAB");
+
+        // == calculate percent movement through frameset/limit frames to start/end
+        var indexX = Math.round(-deltaX * page.studio.endFrame);
+        if (indexX < 0) {
+            indexX = 0;
+        }
+        if (indexX > page.studio.endFrame) {
+            indexX = page.studio.endFrame;
+        }
+        var indexY = Math.round(deltaY * page.studio.endFrame);
+        if (indexY < 0) {
+            indexY = 0;
+        }
+        if (indexY > page.studio.endFrame) {
+            indexY = page.studio.endFrame;
+        }
+
+        // == set real-time item loc based on slider position
+        $(actor.itemEl).css('z-index', '10');
+        $(actor.itemEl).css('top', top + 'px');
+        $(actor.itemEl).css('left', left + 'px');
+        actor.startXY.dragL = left;
+        actor.startXY.dragT = top;
+
+        // == set real-time canvas frame based on slider position
+        clientApp.updateCanvasFrame(indexX, indexY);
+
+        // == update locXY indicator
+        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+    }
+
+    // ======= checkItemTargets =======
+    function checkItemTargets(left, top, targetType) {
+        // console.log("checkItemTargets");
+
+        if (targetType == "page") {
+            var targetList = page.pageTargets;
+        } else if (targetType == "setup") {
+            var targetList = page.SetupItem.targets;
+        }
+
+        // == set real-time item loc and canvas frame based on slider position
+        $(actor.itemEl).css('z-index', '10');
+        $(actor.itemEl).css('top', top + 'px');
+        $(actor.itemEl).css('left', left + 'px');
+        actor.startXY.dragL = left;
+        actor.startXY.dragT = top;
+
+        // == init collision detector for target
+        var target;
+        var draggerL = left + actor.initLTWH.W/2;
+        var draggerT = top + actor.initLTWH.H/2;
+
+        // == search available targets for collision
+        for (var i = 0; i < targetList.length; i++) {
+            target = targetList[i];
+
+            // == COLLISION with target
+            if ((draggerL < target.absLoc.W) && (draggerT > target.absLoc.T) && (draggerL > target.absLoc.L) && (draggerT < target.absLoc.H)) {
+                console.log("-- HIT -- HIT -- HIT --");
+
+                // == locate dragged item at top/left of target
+                $(actor.itemEl).off();
+                $(actor.itemEl).css('top', target.absLoc.T + 'px');
+                $(actor.itemEl).css('left', target.absLoc.L + 'px');
+                $(actor.itemEl).css('background-size', target.initLTWH.W + 'px');
+                $(actor.itemEl).css('background-repeat', 'no-repeat');
+                $(actor.itemEl).css('width', target.initLTWH.W + 'px');
+                $(actor.itemEl).css('height', target.initLTWH.H + 'px');
+
+                clientApp.updateCanvasFrame(actor.indexedFrame, null);
+                swapTargetOccupiers(target, actor);
+                window.removeEventListener('mousemove', actor.moveItem, true);
+                window.removeEventListener('mouseup', actor.mouseUp, true);
+            }
+        }
+    }
+
+    // ======= swapTargetOccupiers =======
+    function swapTargetOccupiers(target, newOccupier) {
+        console.log("swapTargetOccupiers");
+
+        // == fade out new occupier
+        $(newOccupier.itemEl).fadeOut(1000, function() {
+
+            // == return target occupier to its original location
+            var occupier = target.occupier;
+            if (occupier) {
+                $(occupier.itemEl).css('visibility', 'visible');
+                $(occupier.itemEl).css('display', 'block');
+                $(occupier.itemEl).css('width', target.occupier.initLTWH.W * 0.4);
+                $(occupier.itemEl).css('height', target.occupier.initLTWH.H * 0.4);
+                $(occupier.itemEl).css('z-index', '10');
+                $(occupier.itemEl).css('background-size', '100%');
+                $(occupier.itemEl).animate({
+                    width: occupier.initLTWH.W,
+                    height: occupier.initLTWH.H,
+                    left: occupier.initLTWH.L,
+                    top: occupier.initLTWH.T
+                }, 500, function() {
+                    console.log("itemReturned");
+
+                    // == restore event listener on previous target occupier
+                    $(occupier.itemEl).on('mousedown', function(e) {
+                        console.log("\nmousedown");
+                        window.removeEventListener('mouseup', actor.mouseUp, true);
+                        var actor = clientApp.items[$(e.currentTarget).attr('id')];
+                        var actorEl = $(e.currentTarget);
+                        e.preventDefault();
+                        clientApp.activeActor = actor;
+                        actor.initMove(e, actorEl, actor);
+                    });
+
+                });
+            }
+
+            // == install newOccupier on target
+            target.occupier = newOccupier;
+        });
+    }
+
+    // ======= getControlFrames =======
+    function getControlFrames(dX, dY, deltaX, deltaY) {
+        // console.log("getControlFrames");
+
+        // == calculate percent movement through frameset/limit frames to start/end
+        var frameIndex = Math.round(-deltaX * actor.itemImage.endFrame);
+        if (frameIndex < 0) {
+            frameIndex = 0;
+        }
+        if (frameIndex > actor.itemImage.endFrame) {
+            frameIndex = actor.itemImage.endFrame;
+        }
+        clientApp.updateControlFrame(frameIndex, null);
+        clientApp.updateCanvasFrame(frameIndex, null);
+    }
+
+    // ======= updateItemLoc =======
+    function updateItemLoc(left, top) {
+        // console.log("updateItemLoc");
+
+        // == calculate percent movement through frameset/limit frames to start/end
+        var frameIndex = Math.round(-deltaX * clientApp.activePage.studio.endFrame);
+        if (frameIndex < 0) {
+            frameIndex = 0;
+        }
+        if (frameIndex > clientApp.activePage.studio.endFrame) {
+            frameIndex = clientApp.activePage.studio.endFrame;
+        }
+
+        // == set real-time item loc based on slider position
+        $(actor.itemEl).css('z-index', '10');
+        $(actor.itemEl).css('top', top + 'px');
+        $(actor.itemEl).css('left', left + 'px');
+        actor.startXY.dragL = left;
+        actor.startXY.dragT = top;
+
+        // == update screen XY locator (for development)
+        $('#locXYWH').html("<p class='info-text'>left: " + left + "</p><p class='info-text'>top: " + top + "</p>");
+
+        // == set real-time canvas frame based on slider/dragger position
+        clientApp.updateCanvasFrame(frameIndex, null);
+    }
+
+    // ======= ======= ======= MATH ======= ======= =======
+    // ======= ======= ======= MATH ======= ======= =======
+    // ======= ======= ======= MATH ======= ======= =======
+
+    // ======= getMoveBoundaries =======
+    function getMoveBoundaries(left, top) {
+        // console.log("getMoveBoundaries");
+        if (left < actor.minMaxLT.minL) {
+            left = actor.minMaxLT.minL;
+        }
+        if (left > actor.minMaxLT.maxL) {
+            left = actor.minMaxLT.maxL;
+        }
+        if (top < actor.minMaxLT.minT) {
+            top = actor.minMaxLT.minT;
+        }
+        if (top > actor.minMaxLT.maxT) {
+            top = actor.minMaxLT.maxT;
+        }
+        return [left, top];
+    }
+}
+
+// ======= ======= ======= MOUSE UP ======= ======= =======
+// ======= ======= ======= MOUSE UP ======= ======= =======
+// ======= ======= ======= MOUSE UP ======= ======= =======
+
+// ======= mouseUp =======
+Item.prototype.mouseUp = function(e) {
+    console.log("mouseUp");
+
+    var actor = clientApp.activeActor;
+    $(clientApp.activeActor.itemEl).off();
+    window.removeEventListener('mousemove', actor.moveItem, true);
+
+    // == store relative loc where item was dropped
+    actor.dropLTWH.L = actor.startXY.dragL - (clientApp.displayItems.studio.canL + actor.bounds.L + actor.bounds.W);
+    actor.dropLTWH.T = actor.startXY.dragT - (clientApp.displayItems.studio.canT + actor.bounds.T);
+    actor.dropLTWH.W = null;
+    actor.dropLTWH.H = null;
+
+    // == reactivate item
+    clientApp.activateLessonItems();
+}
+
+
+// ======= ======= ======= ======= ======= lessonObjects.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= lessonObjects.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= lessonObjects.js ======= ======= ======= ======= =======
+
+
+var defaultLesson = {
+    lessonIndex: 0,
+    lessonTitle: "lessonTitle",
+    lessonSubtitle: "lessonSubtitle",
+    pageKeys: []
+}
+
+function initLessons() {
+    console.log("initLessons");
+
+    // lessonTitle, lessonSubtitle
+    var lessons = {};
+
+    // ======= demo items =======
+	lessons.lesson_0 = new Lesson (
+        /* lessonIndex */    0,
+        /* lessonTitle */    "Intro to Lighting",
+        /* lessonSubtitle */ "qualtity, quality, color position",
+        /* pageKeys */       ["0_0"]
+	);
+    lessons.lesson_1 = new Lesson (
+        /* lessonIndex */    1,
+        /* lessonTitle */    "Intensity",
+        /* lessonSubtitle */ "lights and brightness",
+        /* pageKeys */       ["1_0", "1_1", "1_2", "1_3"]
+	);
+    lessons.lesson_2 = new Lesson (
+        /* lessonIndex */    2,
+        /* lessonTitle */    "Qualtity",
+        /* lessonSubtitle */ "soft light / hard light",
+        /* pageKeys */       ["2_0", "2_1", "2_2", "2_3", "2_4", "2_5"]
+	);
+    ...
+    return lessons;
+}
+
+function Lesson (lessonIndex, lessonTitle, lessonSubtitle, pageKeys) {
+    // console.log(' Lesson');
+    this.lessonIndex = lessonIndex;
+    this.lessonTitle = lessonTitle;
+    this.lessonSubtitle = lessonSubtitle;
+    this.pageKeys = pageKeys;
+}
+
+
+// ======= ======= ======= ======= ======= pageObjects.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= pageObjects.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= pageObjects.js ======= ======= ======= ======= =======
+
+
+function initPages(items, targets) {
+    console.log("initPages");
+
+    // pageKey, pageText, SetupItem, GroupItems, GridItems, ActorItems, pageTargets, studioCanvas, monitorCanvas
+    var pages = {};
+
+    ...
+
+    // ======= ======= ======= ======= ======= intensity ======= ======= ======= ======= =======
+    pages.page_1_2 = new Page (
+        /* pageKey */ "1_2",
+        /* pageText */ "Often, moving lights is not easy --  especially when its a 20k HMI lighting up a city block.  But if it's too bright you can drop a <span class='hilight'>SCRIM</span> into the <span class='hilight'>barn door frame</span> and cut it down a bit.  <span class='hilightY'>Drag the scrims</span> towards the light and drop them into the barndoor frame.  Easy!",
+        /* SetupItem */ { item:items.f650_0_2, targets:[targets.barndoorFrame], controls:[] },
+        /* GroupItems */ [],
+        /* GridItems */ [items.scrim1_0, items.scrim2_0, items.scrim3_0],
+        /* ActorItems */ [],
+        /* pageTargets */ [],
+        /* guides */ [],
+        /* studio */ { folder:null, image:"st_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] },
+        /* monitor */ { folder:null, image:"mn_int_power", startFrame:0, endFrame:4, initFrame:4, indexedFrames:[3, 2, 1] }
+	);
+
+    ...
+
+    function Page (pageKey, pageText, SetupItem, GroupItems, GridItems, ActorItems, pageTargets, guides, studio, monitor) {
+        // console.log(' Page');
+        this.pageKey = pageKey;
+        this.pageText = pageText;
+        this.SetupItem = SetupItem;
+        this.GroupItems = GroupItems;
+        this.GridItems = GridItems;
+        this.ActorItems = ActorItems;
+        this.pageTargets = pageTargets;
+        this.guides = guides;
+        this.studio = studio;
+        this.monitor = monitor;
+    }
+    return pages;
+}
+
+// ======= ======= ======= ======= ======= itemObjects.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= itemObjects.js ======= ======= ======= ======= =======
+// ======= ======= ======= ======= ======= itemObjects.js ======= ======= ======= ======= =======
+
+
+function initItems(targets) {
+    console.log("initItems");
+
+    var items = {};
+    var canvasS = clientApp.displayItems.studio;
+
+    ...
+
+    items.f650_0_2 = new Item(
+        /* itemId */ "f650_0_2",
+        /* itemEl */ null,
+        /* itemName */ "scrims_650",
+        /* itemText */ "",
+        /* itemType */ "setup",
+        /* itemMove */ "none",
+        /* itemImage */ "f650_0",
+        /* itemTargets */ [targets.barndoorFrame],
+        /* itemControls */ [items.spotFlood],
+        /* startXY */ { itemL:0, itemT:0, mouseX:0, mouseY:0, diffX:0, diffY:0, dragL:0, dragT:0 },
+        /* minMaxLT */ { minL:0, minT:0, maxL:0, maxT:0 },
+        /* dropLTWH */ { L:0, T:0, W:0, H:0 },
+        /* initLTWH */ { L:400, T:80, W:350, H:270 },
+        /* bounds */ { L:400, T:80, W:350, H:270 }
+    );
+
+    ...
+    
+    return items;
+}
+
+function Item(itemId, itemEl, itemName, itemText, itemType, itemMove, itemImage, itemTargets, itemControls, startXY, minMaxLT, dropLTWH, initLTWH, bounds) {
+    this.itemId = itemId;
+    this.itemEl = itemEl;
+    this.itemName = itemName;
+    this.itemText = itemText;
+    this.itemType = itemType;
+    this.itemMove = itemMove;
+    this.itemImage = itemImage;
+    this.itemTargets = itemTargets;
+    this.itemControls = itemControls;
+    this.startXY = startXY;
+    this.minMaxLT = minMaxLT;
+    this.initLTWH = initLTWH;
+    this.dropLTWH = dropLTWH;
+    this.bounds = bounds;
+}

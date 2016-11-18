@@ -25,6 +25,8 @@ html {
 	position: absolute;
 	top: 10px;
 	left: 10px;
+    width: 720px;
+    height: 216px;
 }
 
 /* ======= grid_image ======= */
@@ -157,6 +159,7 @@ html {
     background-color: white;
     border-top: solid 2px #666699;
     border-left: solid 2px #666699;
+    border-right: solid 2px #666699;
     z-index: 1;
 }
 #lessonMenuDisplay, #storeroomMenuDisplay, #lessonTextDisplay {
@@ -184,9 +187,12 @@ html {
 }
 #storeroomMenuDisplay {
 	display: none;
+    border-right: solid 2px #666699;
 }
 #lessonTextDisplay {
 	display: none;
+    border-right: solid 2px #666699;
+
 }
 #locXYWH {
 	left: 0;

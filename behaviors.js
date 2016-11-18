@@ -257,14 +257,20 @@ Item.prototype.moveItem = function(e) {
                     // == restore event listener on previous target occupier
                     $(occupier.itemEl).on('mousedown', function(e) {
                         console.log("\nmousedown");
-                        window.removeEventListener('mouseup', actor.mouseUp, true);
                         var actor = clientApp.items[$(e.currentTarget).attr('id')];
                         var actorEl = $(e.currentTarget);
                         e.preventDefault();
                         clientApp.activeActor = actor;
                         actor.initMove(e, actorEl, actor);
                     });
-
+                    $(occupier.itemEl).on('mouseenter', function(e) {
+                        // console.log("\nmouseenter");
+                        clientApp.toggleHoverText(occupier.itemEl, occupier.itemType);
+                    });
+                    $(occupier.itemEl).on('mouseleave', function(e) {
+                        // console.log("\nmouseleave");
+                        clientApp.toggleHoverText(null, null);
+                    });
                 });
             }
 
