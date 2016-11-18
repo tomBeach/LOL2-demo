@@ -21,6 +21,8 @@ html {
     background: -o-linear-gradient( to top, #777, #ccc);
     background: linear-gradient( to top, #777, #ccc);
 }
+
+/* ======= title ======= */
 #banner {
 	position: absolute;
 	top: 10px;
